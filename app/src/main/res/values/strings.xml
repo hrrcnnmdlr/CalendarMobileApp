@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Calendar</string>
+    <string name="next">Next</string>
+    <string name="month">Month</string>
+    <string name="prev">Prev</string>
+    <string name="lt"><![CDATA[<]]></string>
+    <string name="gt"><![CDATA[>]]></string>
+    <string name="date_and_time">Date and Time</string>
+    <string name="event_description">Event Description</string>
+    <string name="save">Save</string>
+    <string name="event_title">Event Title</string>
+    <string name="event_name">Event name</string>
+    <string name="save_event">Save Event</string>
+    <string name="save_event_button_text">Save Event</string>
+    <string name="event_description_hint">Description</string>
+    <string name="event_title_hint">Event Name</string>
+</resources>
