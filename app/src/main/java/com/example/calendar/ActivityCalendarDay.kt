@@ -2,16 +2,13 @@ package com.example.calendar
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.calendar.databinding.ActivityMainBinding
+import com.example.calendar.databinding.ActivityCalendarDayBinding
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
-
+class ActivityCalendarDay : AppCompatActivity() {
+    lateinit var binding: ActivityCalendarDayBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityCalendarDayBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
 }
-
-

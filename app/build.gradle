@@ -38,6 +38,9 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.android.material:material:1.4.+'
+    annotationProcessor 'androidx.databinding:databinding-compiler:7.4.2'
+    implementation 'androidx.databinding:databinding-ktx:7.4.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
