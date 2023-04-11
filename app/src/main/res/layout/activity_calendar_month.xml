@@ -16,7 +16,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="10dp"
         android:backgroundTint="@color/light_blue"
-        android:text="Set Reminder"
+        android:text="@string/set_reminder"
         android:textColor="@color/black" />
 
     <TextView
@@ -57,7 +57,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="0dp"
-        app:srcCompat="@drawable/ic_launcher_background"
+        app:srcCompat="@drawable/ic_launcher_foreground"
         android:contentDescription="@string/todo" />
 
     <CalendarView
@@ -99,6 +99,7 @@
         android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/button3"
         android:backgroundTint="@color/white_blue"
+        android:onClick="openWeeks"
         android:text="@string/week"
         android:textColor="@color/dark_blue_green" />
 
@@ -112,6 +113,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="3dp"
         android:backgroundTint="@color/background_blue"
+        android:onClick="openMonths"
         android:text="@string/month"
         android:textColor="@color/dark_blue_green"
         android:textStyle="bold" />
@@ -129,6 +131,7 @@
         android:layout_marginBottom="0dp"
         android:layout_toStartOf="@+id/button2"
         android:backgroundTint="@color/white_blue"
+        android:onClick="openDays"
         android:text="@string/day"
         android:textColor="@color/dark_blue_green" />
 
