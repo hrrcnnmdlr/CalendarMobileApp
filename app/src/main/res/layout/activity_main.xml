@@ -1,37 +1,132 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="327dp"
+        android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/light_blue"
+        android:text="@string/save"
+        android:textColor="@color/black" />
+
     <TextView
-        android:id="@+id/monthTextView"
+        android:id="@+id/goodMorning"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/goodMorning"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-    <GridView
-        android:id="@+id/calendarGridView"
+    <TextView
+        android:id="@+id/goodMorning2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/goodMorning"
+        android:layout_alignStart="@+id/goodMorning"
+        android:layout_alignEnd="@+id/goodMorning"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:text="@string/ownerName"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="82dp"
+        android:layout_height="76dp"
+        android:layout_alignTop="@+id/goodMorning"
+        android:layout_alignBottom="@+id/goodMorning2"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="0dp"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_alignStart="@+id/goodMorning"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="14dp"
+        android:dateTextAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:focusedMonthDateColor="@color/dark_blue_green"
+        android:selectedWeekBackgroundColor="@color/dark_blue_green"
+        android:unfocusedMonthDateColor="@color/dark_blue_green"
+        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:weekNumberColor="@color/grey"
+        android:weekSeparatorLineColor="@color/grey" />
+
+    <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="7"
-        android:layout_below="@id/monthTextView"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="2dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="270dp"
+        android:background="?android:attr/listDivider" />
 
     <Button
-        android:id="@+id/prevMonthButton"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lt"
-        android:layout_alignBaseline="@id/monthTextView"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignTop="@+id/button3"
+        android:layout_alignBottom="@+id/button3"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toStartOf="@+id/button3"
+        android:backgroundTint="@color/white_blue"
+        android:text="Week"
+        android:textColor="@color/dark_blue_green" />
 
     <Button
-        android:id="@+id/nextMonthButton"
+        android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/gt"
-        android:layout_alignBaseline="@id/monthTextView"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_alignBottom="@+id/divider"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="3dp"
+        android:backgroundTint="@color/white_blue"
+        android:text="Month"
+        android:textColor="@color/dark_blue_green" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button2"
+        android:layout_alignBottom="@+id/button3"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="125dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toStartOf="@+id/button2"
+        android:backgroundTint="@color/white_blue"
+        android:text="Day"
+        android:textColor="@color/dark_blue_green" />
 
 </RelativeLayout>

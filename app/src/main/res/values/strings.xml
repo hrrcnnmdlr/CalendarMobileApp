@@ -14,4 +14,6 @@
     <string name="save_event_button_text">Save Event</string>
     <string name="event_description_hint">Description</string>
     <string name="event_title_hint">Event Name</string>
+    <string name="goodMorning">Good Morning</string>
+    <string name="ownerName">Owner Name</string>
 </resources>
