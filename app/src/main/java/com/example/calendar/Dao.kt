@@ -11,7 +11,7 @@ interface EventDao {
     @Query("SELECT * FROM events WHERE id = :id")
     fun getEventById(id: Int): Event
 
-    @Query("SELECT * FROM events WHERE startDateTime = :dateTime")
+    @Query("SELECT * FROM events WHERE startDateTime = :dateTime OR endDateTime = :dateTime")
     fun getEventByStart(dateTime: Long): Event
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

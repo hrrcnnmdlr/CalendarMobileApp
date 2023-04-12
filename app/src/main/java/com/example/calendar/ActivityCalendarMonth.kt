@@ -28,6 +28,11 @@ class ActivityCalendarMonth : AppCompatActivity() {
         val monthIntent = Intent(this, ActivityCalendarMonth::class.java)
         startActivity(monthIntent)
     }
+
+    fun createEvent(view: View) {
+        val eventIntent = Intent(this, ActivityCalendarAddEvent::class.java)
+        startActivity(eventIntent)
+    }
 }
 
 

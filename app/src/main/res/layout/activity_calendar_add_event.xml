@@ -4,27 +4,45 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/eventNameEditText"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="Event name" />
+            android:autofillHints="New Event"
+            android:hint="Event name"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/black" />
 
         <EditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="Description" />
+            android:autofillHints=""
+            android:hint="Description"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/black" />
 
         <EditText
             android:id="@+id/locationEditText"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="Location" />
+            android:autofillHints=""
+            android:hint="Location"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/startDateTimeTextView"
@@ -33,7 +51,9 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="Start Date and Time" />
+            android:hint="Start Date and Time"
+            android:padding="5dp"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/endDateTimeTextView"
@@ -42,34 +62,40 @@
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="End Date and Time" />
+            android:hint="End Date and Time"
+            android:padding="5dp"
+            android:textColor="@color/black" />
 
         <Spinner
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:padding="5dp" />
 
         <Spinner
             android:id="@+id/repeatSpinner"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:padding="5dp" />
 
         <Spinner
             android:id="@+id/reminderSpinner"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:padding="5dp" />
 
         <Button
             android:id="@+id/addEventButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="250dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/white_blue"
             android:text="@string/save_event_button_text" />
 
     </LinearLayout>
-
 
 
 </RelativeLayout>
