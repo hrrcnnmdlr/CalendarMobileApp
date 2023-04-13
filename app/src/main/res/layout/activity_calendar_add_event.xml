@@ -70,19 +70,22 @@
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:contentDescription="Select a category option" />
 
         <Spinner
             android:id="@+id/repeatSpinner"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:contentDescription="Select a repeat option" />
 
         <Spinner
             android:id="@+id/reminderSpinner"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:padding="5dp" />
+            android:padding="5dp"
+            android:contentDescription="Select a reminder option" />
 
         <Button
             android:id="@+id/addEventButton"

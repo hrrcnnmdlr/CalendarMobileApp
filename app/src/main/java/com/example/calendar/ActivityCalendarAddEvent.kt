@@ -3,10 +3,8 @@ package com.example.calendar
 import android.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.calendar.databinding.ActivityCalendarAddEventBinding
