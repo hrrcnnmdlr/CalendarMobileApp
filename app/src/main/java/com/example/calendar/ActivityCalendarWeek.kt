@@ -16,7 +16,22 @@ class ActivityCalendarWeek : AppCompatActivity() {
         "Wed",
         "Th",
         "Fr",
-        "Sat",)
+        "Sat"
+    )
+    val months = listOf(
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalendarWeekBinding.inflate(layoutInflater)
@@ -27,6 +42,8 @@ class ActivityCalendarWeek : AppCompatActivity() {
         }
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        binding.month.text = months[calendar.get(Calendar.MONTH)]
+        binding.year.text = calendar.get(Calendar.YEAR).toString()
         binding.dayOfWeek01.text = week[if (dayOfWeek < 4){dayOfWeek+7-4}else {dayOfWeek - 4}]
         binding.dayOfWeek02.text = week[if (dayOfWeek < 3){dayOfWeek+7-3}else {dayOfWeek - 3}]
         binding.dayOfWeek03.text = week[if (dayOfWeek < 2){dayOfWeek+7-2}else {dayOfWeek - 2}]
@@ -61,6 +78,13 @@ class ActivityCalendarWeek : AppCompatActivity() {
         val date = intent.getLongExtra("date", -1)
         dayIntent.putExtra("date", date)
         startActivity(dayIntent)
+    }
+
+    fun openWeeks(view: View) {
+        val weekIntent = Intent(this, ActivityCalendarWeek::class.java)
+        val date = intent.getLongExtra("date", -1)
+        weekIntent.putExtra("date", date)
+        startActivity(weekIntent)
     }
 
     fun openMonths(view: View) {

@@ -24,7 +24,21 @@ class ActivityCalendarDay : AppCompatActivity() {
         "Wed",
         "Th",
         "Fr",
-        "Sat",
+        "Sat"
+    )
+    val months = listOf(
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
     )
     @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +51,8 @@ class ActivityCalendarDay : AppCompatActivity() {
         }
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+        binding.month2.text = months[calendar.get(Calendar.MONTH)]
+        binding.year2.text = calendar.get(Calendar.YEAR).toString()
         binding.textView17.text = week[dayOfWeek - 1]
         binding.textView18.text = day.toString()
         // val value = intent.getStringExtra("key")
@@ -46,6 +62,13 @@ class ActivityCalendarDay : AppCompatActivity() {
         val adapter = EventAdapter()
         recyclerView.adapter = adapter*/
         setContentView(binding.root)
+    }
+
+    fun openDays(view: View) {
+        val dayIntent = Intent(this, ActivityCalendarDay::class.java)
+        val date = intent.getLongExtra("date", -1)
+        dayIntent.putExtra("date", date)
+        startActivity(dayIntent)
     }
 
     fun openWeeks(view: View) {

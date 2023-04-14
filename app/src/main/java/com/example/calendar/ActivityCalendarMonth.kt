@@ -47,6 +47,14 @@ class ActivityCalendarMonth : AppCompatActivity() {
         startActivity(dayIntent)
     }
 
+    fun openMonths(view: View) {
+        val monthIntent = Intent(this, ActivityCalendarMonth::class.java)
+        var date = selectedDate
+        if (selectedDate == 0L) {date = binding.calendarView.date}
+        monthIntent.putExtra("date", date)
+        startActivity(monthIntent)
+    }
+
     fun createEvent(view: View) {
         val eventIntent = Intent(this, ActivityCalendarAddEvent::class.java)
         startActivity(eventIntent)
