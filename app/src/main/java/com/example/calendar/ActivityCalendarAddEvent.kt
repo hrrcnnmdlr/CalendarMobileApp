@@ -1,6 +1,5 @@
 package com.example.calendar
 
-import android.R
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -8,10 +7,7 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.calendar.databinding.ActivityCalendarAddEventBinding
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,11 +19,11 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Створення binding для Activity
         binding = ActivityCalendarAddEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ...
-
+        // Створення списку категорій подій та встановлення адаптера для Spinner
         val eventCategories = listOf(
             "Business",
             "Education",
@@ -42,10 +38,11 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             "Travel",
             "Other"
         )
-        val adapter1 = ArrayAdapter(this, R.layout.simple_spinner_item, eventCategories)
+        val adapter1 = ArrayAdapter(this, android.R.layout.simple_spinner_item, eventCategories)
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.categorySpinner.adapter = adapter1
 
+        // Створення списку варіантів повторення подій та встановлення адаптера для Spinner
         val repeatCategories = listOf(
             "Does not repeat",
             "Daily",
@@ -53,20 +50,23 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             "Monthly",
             "Yearly"
         )
-        val adapter2 = ArrayAdapter(this, R.layout.simple_spinner_item, repeatCategories)
+        val adapter2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, repeatCategories)
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.repeatSpinner.adapter = adapter2
 
+        // Створення списку напоминань та встановлення адаптера для Spinner
         val reminderCategories = listOf(
             "5 minutes before",
             "15 minutes before",
             "30 minutes before",
             "1 hour before",
-            "1 day before")
-        val adapter3 = ArrayAdapter(this, R.layout.simple_spinner_item, reminderCategories)
+            "1 day before"
+        )
+        val adapter3 = ArrayAdapter(this, android.R.layout.simple_spinner_item, reminderCategories)
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.reminderSpinner.adapter = adapter3
 
+        // Обробник натискання на TextView для вибору дати та часу початку та закінчення події
         binding.startDateTimeTextView.setOnClickListener {
             showDateTimePicker(true)
         }
@@ -74,7 +74,7 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
         binding.endDateTimeTextView.setOnClickListener {
             showDateTimePicker(false)
         }
-
+        // Обробник натискання на кнопку додавання події
         binding.addEventButton.setOnClickListener {
             val eventName = binding.eventNameEditText.text.toString()
             val description =
@@ -87,54 +87,57 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             val startDate = dateFormatter.parse(binding.startDateTimeTextView.text.toString())
             val endDate = dateFormatter.parse(binding.endDateTimeTextView.text.toString())
 
+            // Створити об'єкт події і додати його до бази даних
             val event = Event(
                 eventName = eventName,
                 description = description,
-                startDateTime = startDate?.time ?: 0,
-                endDateTime = endDate?.time ?: 0,
+                startDateTime = startDate?.time ?: 0, // Встановити дату та час початку події
+                endDateTime = endDate?.time ?: 0, // Встановити дату та час закінчення події
                 location = location,
                 category = category,
                 repeat = repeat,
                 reminder = reminder
             )
 
+            // Отримати доступ до бази даних та додати об'єкт події до неї
             val db = MainDB.getDatabase(this)
             GlobalScope.launch(Dispatchers.IO) {
                 db.getDao().addEvent(event)
             }
 
-
-            //val createIntent = Intent(this, ActivityCalendarWeek::class.java)
-            //startActivity(createIntent)
-            //Toast.makeText(this, "Event added successfully", Toast.LENGTH_SHORT).show()
+            // Показати повідомлення користувачеві про успішне додавання події
             Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show()
         }
-
-        // ...
     }
 
+    // Метод для відображення діалогового вікна вибору дати та часу
     var startDateTime: Long = 0
     var endDateTime: Long = 0
-    private fun showDateTimePicker(isStartDate: Boolean) {
+    fun showDateTimePicker(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
-
-        val datePickerDialog = DatePickerDialog(
-            this,
+        val datePickerDialog = DatePickerDialog(this,
             { _, year, month, dayOfMonth ->
                 calendar.set(year, month, dayOfMonth)
 
-                val timePickerDialog = TimePickerDialog(
-                    this,
+                val timePickerDialog = TimePickerDialog(this,
                     { _, hourOfDay, minute ->
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         calendar.set(Calendar.MINUTE, minute)
 
                         if (isStartDate) {
-                            startDateTime = calendar.timeInMillis
-                            binding.startDateTimeTextView.text = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(calendar.time)
+                            startDateTime =
+                                calendar.timeInMillis // Встановити дату та час початку події
+                            binding.startDateTimeTextView.text = SimpleDateFormat(
+                                "yyyy/MM/dd HH:mm",
+                                Locale.getDefault()
+                            ).format(calendar.time)
                         } else {
-                            endDateTime = calendar.timeInMillis
-                            binding.endDateTimeTextView.text = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(calendar.time)
+                            endDateTime =
+                                calendar.timeInMillis // Встановити дату та час закінчення події
+                            binding.endDateTimeTextView.text = SimpleDateFormat(
+                                "yyyy/MM/dd HH:mm",
+                                Locale.getDefault()
+                            ).format(calendar.time)
                         }
                     },
                     calendar.get(Calendar.HOUR_OF_DAY),
@@ -148,8 +151,6 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
-
         datePickerDialog.show()
     }
-// ...
 }

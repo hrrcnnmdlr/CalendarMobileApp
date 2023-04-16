@@ -7,17 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.databinding.ActivityCalendarDayBinding
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.util.*
 
 
 class ActivityCalendarDay : AppCompatActivity() {
+    // Прив'язка до розмітки ActivityCalendarDayBinding
     lateinit var binding: ActivityCalendarDayBinding
 
-    val week =  listOf(
+    // Список днів тижня
+    private val week =  listOf(
         "Su",
         "Mo",
         "Tu",
@@ -26,7 +24,8 @@ class ActivityCalendarDay : AppCompatActivity() {
         "Fr",
         "Sat"
     )
-    val months = listOf(
+    // Список місяців
+    private val months = listOf(
         "January",
         "February",
         "March",
@@ -40,30 +39,43 @@ class ActivityCalendarDay : AppCompatActivity() {
         "November",
         "December"
     )
-    @OptIn(DelicateCoroutinesApi::class)
+    // Функція onCreate() викликається при створенні Activity
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Приєднання прив'язки до розмітки ActivityCalendarDayBinding
         binding = ActivityCalendarDayBinding.inflate(layoutInflater)
+
+        // Отримання дати з Intent
         val dateInMillis = intent.getLongExtra("date", -1)
         val calendar = Calendar.getInstance()
         if (dateInMillis != -1L) {
             calendar.timeInMillis = dateInMillis
         }
+
+        // Отримання дня та дня тижня
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+
+        // Встановлення тексту для TextView
         binding.month2.text = months[calendar.get(Calendar.MONTH)]
         binding.year2.text = calendar.get(Calendar.YEAR).toString()
         binding.textView17.text = week[dayOfWeek - 1]
         binding.textView18.text = day.toString()
-        // val value = intent.getStringExtra("key")
 
-        /*val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = EventAdapter()
-        recyclerView.adapter = adapter*/
+        val eventView: RecyclerView = binding.recyclerEventView
+        val linearLayoutManager = LinearLayoutManager(this)
+        eventView.layoutManager = linearLayoutManager
+        eventView.setHasFixedSize(true)
+        val dataBase = MainDB.getDatabase(this)
+        eventView.visibility = View.VISIBLE
+        val mAdapter = EventAdapter(this, dataBase.getDao().getAllEvents())
+        eventView.adapter = mAdapter
+        // Приєднання прив'язки до кореневого елемента розмітки
         setContentView(binding.root)
     }
 
+    // Функція відкриття ActivityCalendarDay
     fun openDays(view: View) {
         val dayIntent = Intent(this, ActivityCalendarDay::class.java)
         val date = intent.getLongExtra("date", -1)
@@ -71,6 +83,7 @@ class ActivityCalendarDay : AppCompatActivity() {
         startActivity(dayIntent)
     }
 
+    // Функція відкриття ActivityCalendarWeek
     fun openWeeks(view: View) {
         val weekIntent = Intent(this, ActivityCalendarWeek::class.java)
         val date = intent.getLongExtra("date", -1)
@@ -78,6 +91,7 @@ class ActivityCalendarDay : AppCompatActivity() {
         startActivity(weekIntent)
     }
 
+    // Функція відкриття ActivityCalendarMonth
     fun openMonths(view: View) {
         val monthIntent = Intent(this, ActivityCalendarMonth::class.java)
         val date = intent.getLongExtra("date", -1)
@@ -85,6 +99,7 @@ class ActivityCalendarDay : AppCompatActivity() {
         startActivity(monthIntent)
     }
 
+    // Метод, який змінює відображуваний тиждень та запускає ActivityCalendarWeek зі зміненим датою.
     fun createEvent(view: View) {
         val eventIntent = Intent(this, ActivityCalendarAddEvent::class.java)
         startActivity(eventIntent)

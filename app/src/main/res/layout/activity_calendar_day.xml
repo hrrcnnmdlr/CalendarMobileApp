@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ActivityCalendarDay"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/month2"
@@ -20,7 +21,7 @@
             android:layout_marginEnd="10dp"
             android:text="September"
             android:textColor="@color/grey"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/year2"
             app:layout_constraintEnd_toStartOf="@+id/year2"
             app:layout_constraintTop_toTopOf="@+id/year2" />
@@ -31,7 +32,7 @@
             android:layout_height="0dp"
             android:text="2022"
             android:textColor="@color/grey"
-            android:textSize="18dp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintTop_toTopOf="@+id/textView17" />
@@ -240,6 +241,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:padding="16dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="@+id/goodMorning2"
             app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -337,9 +339,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recycler_event_view"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
@@ -347,7 +349,8 @@
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
