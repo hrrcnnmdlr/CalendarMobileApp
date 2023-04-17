@@ -9,7 +9,7 @@ interface EventDao {
     // Оголошуємо метод для отримання всіх подій з бази даних за допомогою SQL запиту
     // Застосовуємо Flow, щоб отримувати зміни в режимі реального часу
     @Query("SELECT * FROM events")
-    fun getAllEvents(): Flow<List<Event>>
+    fun getAllEvents(): List<Event>
 
     // Оголошуємо метод для отримання події за її ідентифікатором
     @Query("SELECT * FROM events WHERE id = :id")

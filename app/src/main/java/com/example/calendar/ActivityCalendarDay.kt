@@ -66,11 +66,12 @@ class ActivityCalendarDay : AppCompatActivity() {
         val eventView: RecyclerView = binding.recyclerEventView
         val linearLayoutManager = LinearLayoutManager(this)
         eventView.layoutManager = linearLayoutManager
-        eventView.setHasFixedSize(true)
         val dataBase = MainDB.getDatabase(this)
         eventView.visibility = View.VISIBLE
         val mAdapter = EventAdapter(this, dataBase.getDao().getAllEvents())
         eventView.adapter = mAdapter
+
+
         // Приєднання прив'язки до кореневого елемента розмітки
         setContentView(binding.root)
     }

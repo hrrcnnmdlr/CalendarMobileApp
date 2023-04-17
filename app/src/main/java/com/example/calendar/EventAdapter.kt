@@ -5,12 +5,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.runBlocking
 
 internal class EventAdapter(
     private val context: Context,
-    private val listEventsFlow: Flow<List<Event>>
+    private val events: List<Event>
 ) : RecyclerView.Adapter<EventViewHolder>() {
 
     // ініціалізуємо список подій
@@ -37,13 +35,7 @@ internal class EventAdapter(
 
     // метод, який повертає кількість подій в списку
     override fun getItemCount(): Int {
-        var count = 0
-        runBlocking {
-            listEventsFlow.collect { events ->
-                count = events.size
-            }
-        }
-        return count
+        return events.size
     }
 
 
