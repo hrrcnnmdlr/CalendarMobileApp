@@ -91,8 +91,8 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             val event = Event(
                 eventName = eventName,
                 description = description,
-                startDateTime = startDate?.time ?: 0, // Встановити дату та час початку події
-                endDateTime = endDate?.time ?: 0, // Встановити дату та час закінчення події
+                startDateTime = startDateTime, // Встановити дату та час початку події
+                endDateTime = endDateTime, // Встановити дату та час закінчення події
                 location = location,
                 category = category,
                 repeat = repeat,
@@ -115,36 +115,36 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
     var endDateTime: Long = 0
     fun showDateTimePicker(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
+        val dateInMillis = intent.getLongExtra("date", -1)
+        calendar.timeInMillis = dateInMillis
         val datePickerDialog = DatePickerDialog(this,
             { _, year, month, dayOfMonth ->
                 calendar.set(year, month, dayOfMonth)
-
                 val timePickerDialog = TimePickerDialog(this,
                     { _, hourOfDay, minute ->
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         calendar.set(Calendar.MINUTE, minute)
 
                         if (isStartDate) {
-                            startDateTime =
-                                calendar.timeInMillis // Встановити дату та час початку події
                             binding.startDateTimeTextView.text = SimpleDateFormat(
                                 "yyyy/MM/dd HH:mm",
                                 Locale.getDefault()
                             ).format(calendar.time)
+                            startDateTime =
+                                calendar.timeInMillis // Встановити дату та час початку події
                         } else {
-                            endDateTime =
-                                calendar.timeInMillis // Встановити дату та час закінчення події
                             binding.endDateTimeTextView.text = SimpleDateFormat(
                                 "yyyy/MM/dd HH:mm",
                                 Locale.getDefault()
                             ).format(calendar.time)
+                            endDateTime =
+                                calendar.timeInMillis // Встановити дату та час початку події
                         }
                     },
                     calendar.get(Calendar.HOUR_OF_DAY),
                     calendar.get(Calendar.MINUTE),
                     true
                 )
-
                 timePickerDialog.show()
             },
             calendar.get(Calendar.YEAR),

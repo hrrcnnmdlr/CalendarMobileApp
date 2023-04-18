@@ -5,7 +5,8 @@
     android:orientation="vertical">
 
     <data>
-
+        <variable name="month" type="String"/>
+        <variable name="year" type="String"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,64 +14,51 @@
         android:layout_height="match_parent"
         tools:context=".ActivityCalendarWeek">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/text_day3"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_below="@+id/textView2"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_marginTop="10dp"
+            android:text="Wednesday"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="@+id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_below="@+id/text_day3"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            app:layout_constraintEnd_toEndOf="@+id/divider"
-            app:layout_constraintStart_toStartOf="@+id/divider"
-            app:layout_constraintTop_toBottomOf="@+id/textView2">
+            android:background="@color/light_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_day3" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_rounded"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/ic_launcher_background"
-                    android:src="@drawable/ic_launcher_foreground" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:paddingStart="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Event Name"
-                        android:textColor="@color/dark_blue_green"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="10:00 AM - 12:00 PM"
-                        android:textColor="@color/dark_blue_green"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/bg_rounded" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_event_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_above="@+id/button"
+            android:layout_below="@+id/divider3"
+            android:layout_alignStart="@+id/divider3"
+            android:layout_alignEnd="@+id/divider3"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider3" />
 
         <TextView
             android:id="@+id/goodMorning"
@@ -427,26 +415,26 @@
         </TableLayout>
 
         <TextView
-            android:id="@+id/year"
+            android:id="@+id/year2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="2022"
+            android:text="@{year}"
             android:textColor="@color/grey"
             android:textSize="18dp"
             app:layout_constraintBottom_toTopOf="@+id/schedule_table"
             app:layout_constraintEnd_toEndOf="@+id/schedule_table" />
 
         <TextView
-            android:id="@+id/month"
+            android:id="@+id/month2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:text="September"
+            android:text="@{month}"
             android:textColor="@color/grey"
             android:textSize="18dp"
-            app:layout_constraintBottom_toBottomOf="@+id/year"
-            app:layout_constraintEnd_toStartOf="@+id/year" />
+            app:layout_constraintBottom_toBottomOf="@+id/year2"
+            app:layout_constraintEnd_toStartOf="@+id/year2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

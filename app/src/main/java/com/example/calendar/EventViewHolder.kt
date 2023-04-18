@@ -9,7 +9,6 @@ class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     // Оголошення текстових полів, що відображають ім'я події, опис та дату і час
     var eventName: TextView = itemView.findViewById(R.id.event_name)
-    var eventDescription: TextView = itemView.findViewById(R.id.event_description)
     var eventDateTime: TextView = itemView.findViewById(R.id.event_date_time)
     //var editEvent: ImageView = itemView.findViewById(R.id.edit_event)
 }

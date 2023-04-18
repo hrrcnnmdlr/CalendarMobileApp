@@ -5,6 +5,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.*
 
 internal class EventAdapter(
     private val context: Context,
@@ -12,7 +14,7 @@ internal class EventAdapter(
 ) : RecyclerView.Adapter<EventViewHolder>() {
 
     // ініціалізуємо список подій
-    private var mArrayList: List<Event> = emptyList() // список подій тепер є пустим
+    private var mArrayList: List<Event> = events // список подій тепер є пустим
     // ініціалізуємо базу даних
     private val mDatabase: MainDB = MainDB.getDatabase(context)
 
@@ -24,13 +26,17 @@ internal class EventAdapter(
     }
 
     // метод, який зв'язує дані з об'єктом EventViewHolder
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        val event = mArrayList[position]
-        holder.eventName.text = event.eventName
-        holder.eventDescription.text = event.description
-        holder.eventDateTime.text = "${event.startDateTime} - ${event.endDateTime}"
-        //holder.editEvent.setOnClickListener { listener.onEditClick(event) }
+        if (mArrayList.isNotEmpty()) {
+            val event = mArrayList[position]
+            holder.eventName.text = event.eventName
+            val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm") // формат дати
+            holder.eventDateTime.text = "${dateFormat.format(Date(event.startDateTime))} - ${dateFormat.format(Date(event.endDateTime))}"
+            //holder.editEvent.setOnClickListener { listener.onEditClick(event) }
+        } else {
+            // handle empty list
+        }
     }
 
     // метод, який повертає кількість подій в списку
