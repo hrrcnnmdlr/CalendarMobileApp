@@ -26,6 +26,7 @@ abstract class MainDB : RoomDatabase() {
                     .build().also { instance = it }
             }
         }
+
         private val migration1to2 = object : Migration(1, 2) {
             override fun migrate(database: SupportSQLiteDatabase) {
 

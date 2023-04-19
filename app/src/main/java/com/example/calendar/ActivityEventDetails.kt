@@ -52,7 +52,11 @@ class ActivityEventDetails: AppCompatActivity() {
                     binding.categoryTextView.text = category.name
                 }
                 binding.repeatTextView.text = event.repeat
-
+                binding.reminder5Min3.isChecked = event.remind5MinutesBefore
+                binding.reminder15Min3.isChecked = event.remind15MinutesBefore
+                binding.reminder30Min3.isChecked = event.remind30MinutesBefore
+                binding.reminder1Hour3.isChecked = event.remind1HourBefore
+                binding.reminder1Day3.isChecked = event.remind1DayBefore
 
             }
             // Додати обробник для кнопки редагування
