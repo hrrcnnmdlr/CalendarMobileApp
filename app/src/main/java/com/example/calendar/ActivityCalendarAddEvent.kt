@@ -3,6 +3,7 @@ package com.example.calendar
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -121,6 +122,9 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
 
             // Показати повідомлення користувачеві про успішне додавання події
             Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show()
+            val monthIntent = Intent(this, ActivityCalendarMonth::class.java)
+            monthIntent.putExtra("date", startDateTime)
+            startActivity(monthIntent)
         }
     }
 
@@ -212,5 +216,5 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
         )
         datePickerDialog.show()
     }
-
 }
+

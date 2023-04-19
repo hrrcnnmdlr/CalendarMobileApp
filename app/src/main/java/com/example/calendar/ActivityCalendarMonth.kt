@@ -1,11 +1,17 @@
 package com.example.calendar
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.CalendarView
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +30,35 @@ class ActivityCalendarMonth : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Створення сповіщення
+        val notification = NotificationCompat.Builder(this, "CHANNEL_ID")
+            .setContentTitle("Запущено службу нагадувань")
+            .setContentText("Ваші нагадування запущено у фоновому режимі")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSmallIcon(R.drawable.ic_notification)
+            .build()
+        // Запуск служби
+        val serviceIntent = Intent(this, EventService::class.java)
+        ContextCompat.startForegroundService(this, serviceIntent)
+        // Показ сповіщення
+        val notificationManager = NotificationManagerCompat.from(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        notificationManager.notify(1, notification)
+        val intent = Intent(this, EventService::class.java)
+        startService(intent)
 
         // Ініціалізація зв'язки з елементами UI через ViewBinding
         binding = ActivityCalendarMonthBinding.inflate(layoutInflater)
