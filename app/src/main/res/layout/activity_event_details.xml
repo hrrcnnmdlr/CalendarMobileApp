@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_blue"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/eventNameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="5dp"
+        android:text="Event Name"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/eventNameTextView"
+        android:layout_alignStart="@+id/eventNameTextView"
+        android:layout_alignEnd="@+id/eventNameTextView"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:text="Description"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/startDateTimeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/descriptionTextView"
+        android:layout_alignStart="@+id/descriptionTextView"
+        android:layout_alignEnd="@+id/descriptionTextView"
+        android:layout_marginTop="16dp"
+        android:padding="5dp"
+        android:text="Start Date and Time"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/endDateTimeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startDateTimeTextView"
+        android:layout_alignStart="@+id/startDateTimeTextView"
+        android:layout_alignEnd="@+id/startDateTimeTextView"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:text="End Date and Time"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/locationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/endDateTimeTextView"
+        android:layout_alignStart="@+id/endDateTimeTextView"
+        android:layout_alignEnd="@+id/endDateTimeTextView"
+        android:layout_marginTop="16dp"
+        android:padding="5dp"
+        android:text="Location"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/categoryTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/locationTextView"
+        android:layout_alignStart="@+id/locationTextView"
+        android:layout_alignEnd="@+id/locationTextView"
+        android:layout_marginTop="8dp"
+        android:padding="5dp"
+        android:text="Category"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/repeatTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categoryTextView"
+        android:layout_alignStart="@+id/categoryTextView"
+        android:layout_alignEnd="@+id/categoryTextView"
+        android:layout_marginTop="16dp"
+        android:padding="5dp"
+        android:text="Repeat"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:id="@+id/reminderTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/repeatTextView"
+        android:layout_alignStart="@+id/repeatTextView"
+        android:layout_alignEnd="@+id/repeatTextView"
+        android:layout_marginTop="8dp"
+        android:text="Reminder"
+        android:textColor="@color/dark_blue"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:padding="5dp" />
+
+    <Button
+        android:id="@+id/editEventButton"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/deleteEventButton"
+        android:layout_alignStart="@+id/deleteEventButton"
+        android:layout_alignEnd="@+id/deleteEventButton"
+        android:layout_marginBottom="20dp"
+        android:background="@color/light_blue"
+        android:padding="10dp"
+        android:text="Edit Event"
+        android:textColor="@color/dark_blue"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/deleteEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/light_blue"
+        android:padding="10dp"
+        android:text="Delete Event"
+        android:textColor="@color/dark_blue"
+        android:textSize="20sp" />
+</RelativeLayout>
+

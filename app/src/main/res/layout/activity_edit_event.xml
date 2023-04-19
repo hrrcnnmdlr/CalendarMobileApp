@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editEventLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ActivityEditEvent">
+
+    <EditText
+        android:id="@+id/eventNameEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/event_name" />
+
+    <EditText
+        android:id="@+id/eventDescriptionEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/eventNameEditText"
+        android:layout_alignStart="@+id/eventNameEditText"
+        android:layout_alignEnd="@+id/eventNameEditText"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/event_description" />
+
+    <EditText
+        android:id="@+id/locationEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/endDateTimeTextView"
+        android:layout_alignStart="@+id/endDateTimeTextView"
+        android:layout_alignEnd="@+id/endDateTimeTextView"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/location" />
+
+    <TextView
+        android:id="@+id/endDateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/startDateTimeTextView"
+        android:layout_alignStart="@+id/startDateTimeTextView"
+        android:layout_alignEnd="@+id/startDateTimeTextView"
+        android:layout_marginTop="10dp"
+        android:text="@string/end_date_time"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/startDateTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_below="@+id/eventDescriptionEditText"
+        android:layout_alignStart="@+id/eventDescriptionEditText"
+        android:layout_alignEnd="@+id/eventDescriptionEditText"
+        android:layout_marginTop="10dp"
+        android:text="@string/start_date_time"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/categorySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/locationEditText"
+        android:layout_alignStart="@+id/locationEditText"
+        android:layout_alignEnd="@+id/locationEditText"
+        android:layout_marginTop="10dp" />
+
+    <Spinner
+        android:id="@+id/repeatSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/categorySpinner"
+        android:layout_alignStart="@+id/categorySpinner"
+        android:layout_alignEnd="@+id/categorySpinner"
+        android:layout_marginTop="10dp" />
+
+    <Spinner
+        android:id="@+id/reminderSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/repeatSpinner"
+        android:layout_alignStart="@+id/categorySpinner"
+        android:layout_alignEnd="@+id/categorySpinner"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/reminderSpinner"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/cancel" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cancelButton"
+        android:layout_alignEnd="@+id/reminderSpinner"
+        android:layout_marginBottom="10dp"
+        android:text="@string/save" />
+
+</RelativeLayout>

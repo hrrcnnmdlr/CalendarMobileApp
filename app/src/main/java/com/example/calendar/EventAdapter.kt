@@ -2,6 +2,7 @@ package com.example.calendar
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,11 @@ internal class EventAdapter(
             holder.eventName.text = event.eventName
             val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm") // формат дати
             holder.eventDateTime.text = "${dateFormat.format(Date(event.startDateTime))} - ${dateFormat.format(Date(event.endDateTime))}"
-            //holder.editEvent.setOnClickListener { listener.onEditClick(event) }
+            holder.itemView.setOnClickListener {
+                val intent = Intent(context, ActivityEventDetails::class.java)
+                intent.putExtra("event_id", event.id)
+                context.startActivity(intent)
+            }
         } else {
             // handle empty list
         }

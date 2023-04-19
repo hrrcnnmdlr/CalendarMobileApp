@@ -1,11 +1,17 @@
 package com.example.calendar
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.example.calendar.databinding.ActivityCalendarAddEventBinding
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
@@ -38,9 +44,36 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             "Travel",
             "Other"
         )
-        val adapter1 = ArrayAdapter(this, android.R.layout.simple_spinner_item, eventCategories)
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val eventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
+        val categories = mutableListOf<String>()
+        val db = MainDB.getDatabase(this)
+        val categoryDao = db.categoryDao()
+        fun getAllCategories() {
+            categoryDao.getAllCategories().observeForever { categoriesList ->
+                categories.clear()
+                categories.addAll(categoriesList.map { it.name }) // map categories to their names
+            }
+        }
+        getAllCategories()
+        var selectedCategoryId: Int = 0
+        categories.add("New category") // додайте останній елемент у спінері
+        val adapter1 = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         binding.categorySpinner.adapter = adapter1
+        binding.categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (position == categories.size - 1) {
+                    showAddCategoryDialog(adapter1, eventViewModel, categories)
+                } else {
+                    //
+                }
+                selectedCategoryId = position
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // не робіть нічого
+            }
+        }
+
 
         // Створення списку варіантів повторення подій та встановлення адаптера для Spinner
         val repeatCategories = listOf(
@@ -88,13 +121,14 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             val endDate = dateFormatter.parse(binding.endDateTimeTextView.text.toString())
 
             // Створити об'єкт події і додати його до бази даних
+
             val event = Event(
                 eventName = eventName,
                 description = description,
                 startDateTime = startDateTime, // Встановити дату та час початку події
                 endDateTime = endDateTime, // Встановити дату та час закінчення події
                 location = location,
-                category = category,
+                categoryId = selectedCategoryId,
                 repeat = repeat,
                 reminder = reminder
             )
@@ -152,5 +186,31 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         datePickerDialog.show()
+    }
+    private fun showAddCategoryDialog(adapter: ArrayAdapter<String>, eventViewModel: EventViewModel, categories: MutableList<String>) {
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("New category")
+            .setMessage("Input name of category:")
+            .setView(input)
+            .setPositiveButton("Add") { _, _ ->
+                val categoryName = input.text.toString()
+                if (categoryName.isNotBlank()) {
+                    eventViewModel.insertCategory(Category(0, categoryName))
+                    // перезавантажити список категорій
+                    categories.removeAt(categories.size - 1)
+                    categories.add(categoryName)
+                    categories.add("New category")
+                    adapter.notifyDataSetChanged()
+                    // відобразіть події з новою категорією
+                    // ...
+                } else {
+                    Toast.makeText(this, "Name must not be empty", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cansel") { dialog, _ -> dialog.cancel() }
+            .create()
+        dialog.show()
     }
 }

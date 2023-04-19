@@ -1,5 +1,6 @@
 package com.example.calendar
 
+import androidx.lifecycle.Observer
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,28 +9,21 @@ import androidx.room.PrimaryKey
 data class Event(
     // Унікальний ідентифікатор події, який буде генеруватися автоматично
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-
     // Назва події
-    @ColumnInfo(name = "eventName") val eventName: String?,
-
+    @ColumnInfo(name = "eventName") val eventName: String,
     // Опис події
-    @ColumnInfo(name = "description") val description: String?,
-
+    @ColumnInfo(name = "description") val description: String,
     // Дата та час початку події (у мілісекундах з 1970 року)
-    @ColumnInfo(name = "startDateTime") val startDateTime: Long?,
-
+    @ColumnInfo(name = "startDateTime") val startDateTime: Long,
     // Дата та час завершення події (у мілісекундах з 1970 року)
-    @ColumnInfo(name = "endDateTime") val endDateTime: Long?,
-
+    @ColumnInfo(name = "endDateTime") val endDateTime: Long,
     // Місце проведення події
-    @ColumnInfo(name = "location") val location: String?,
-
+    @ColumnInfo(name = "location") val location: String,
     // Категорія події
-    @ColumnInfo(name = "category") val category: String?,
-
+    @ColumnInfo(name = "category_id") val categoryId: Int,
     // Повторення події (наприклад, щоденно або щотижня)
-    @ColumnInfo(name = "repeat") val repeat: String?,
-
+    @ColumnInfo(name = "repeat") val repeat: String,
     // Нагадування про подію (наприклад, за 30 хвилин до початку події)
-    @ColumnInfo(name = "reminder") val reminder: String?
-)
+    @ColumnInfo(name = "reminder") val reminder: String
+) {
+}

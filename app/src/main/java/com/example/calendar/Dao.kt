@@ -1,5 +1,6 @@
 package com.example.calendar
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -33,4 +34,25 @@ interface EventDao {
     // Оголошуємо метод для заміни події з бази даних з новими даними
     @Update
     fun updateEvent(event: Event)
+}
+
+@Dao
+interface CategoryDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCategory(category: Category)
+
+    @Query("SELECT * FROM categories")
+    fun getAllCategories(): LiveData<List<Category>>
+
+    @Query("SELECT * FROM categories WHERE id = :id")
+    fun getCategoryById(id: Int): Category
+
+    @Update
+    suspend fun updateCategory(category: Category)
+
+    @Delete
+    suspend fun deleteCategory(category: Category)
+
+    @Query("DELETE FROM categories")
+    suspend fun deleteAllCategories()
 }
