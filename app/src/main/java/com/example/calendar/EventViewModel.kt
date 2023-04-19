@@ -21,16 +21,32 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         allEvents = repository.allEvents
     }
 
+    fun insert(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(event, maxDate)
+    }
+
     fun insert(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(event)
+    }
+
+    fun update(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(event, maxDate)
     }
 
     fun update(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         repository.update(event)
     }
 
+    fun delete(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(event, maxDate)
+    }
+
     fun delete(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(event)
+    }
+
+    fun deleteAll(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(event, maxDate)
     }
 
     suspend fun getEventById(id: Int): Event? {

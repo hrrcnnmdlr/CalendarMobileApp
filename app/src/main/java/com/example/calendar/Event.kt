@@ -22,8 +22,19 @@ data class Event(
     // Категорія події
     @ColumnInfo(name = "category_id") val categoryId: Int,
     // Повторення події (наприклад, щоденно або щотижня)
-    @ColumnInfo(name = "repeat") val repeat: String,
     // Нагадування про подію (наприклад, за 30 хвилин до початку події)
-    @ColumnInfo(name = "reminder") val reminder: String
-) {
+    @ColumnInfo(name = "remind_5_minutes_before") var remind5MinutesBefore: Boolean = false,
+    @ColumnInfo(name = "remind_15_minutes_before")  var remind15MinutesBefore: Boolean = false,
+    @ColumnInfo(name = "remind_30_minutes_before") var remind30MinutesBefore: Boolean = false,
+    @ColumnInfo(name = "remind_1_hour_before") var remind1HourBefore: Boolean = false,
+    @ColumnInfo(name = "remind_1_day_before") var remind1DayBefore: Boolean = false,
+    @ColumnInfo(name = "repeat") var repeat: String = EventRepetition.NONE.toString(),
+)
+
+enum class EventRepetition {
+    NONE,
+    DAILY,
+    WEEKLY,
+    MONTHLY,
+    ANNUALLY
 }

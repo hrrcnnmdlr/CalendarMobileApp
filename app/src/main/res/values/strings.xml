@@ -30,4 +30,12 @@
     <string name="start_date_time">Start Date and Time</string>
     <string name="end_date_time">End Date and Time</string>
     <string name="cancel">Cancel</string>
+    <string name="reminder_5_min">5 min before</string>
+    <string name="reminder_15_min">15 min before</string>
+    <string name="reminder_30_min">30 min before</string>
+    <string name="reminder_1_hour">1 hour before</string>
+    <string name="reminder_1_day">1 day before</string>
+    <string name="set_category">Set Category</string>
+    <string name="max_repeat_date_and_time">Max Repeat Date and Time</string>
+    <string name="set_repeat">Set Repeat</string>
 </resources>

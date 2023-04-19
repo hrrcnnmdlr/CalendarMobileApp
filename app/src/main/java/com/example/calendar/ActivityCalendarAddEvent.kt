@@ -3,7 +3,6 @@ package com.example.calendar
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
@@ -11,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.calendar.databinding.ActivityCalendarAddEventBinding
 import kotlinx.coroutines.*
@@ -28,22 +28,6 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
         // Створення binding для Activity
         binding = ActivityCalendarAddEventBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // Створення списку категорій подій та встановлення адаптера для Spinner
-        val eventCategories = listOf(
-            "Business",
-            "Education",
-            "Entertainment",
-            "Food and Drink",
-            "Health and Wellness",
-            "Hobbies",
-            "Music",
-            "Networking",
-            "Sports",
-            "Technology",
-            "Travel",
-            "Other"
-        )
         val eventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
         val categories = mutableListOf<String>()
         val db = MainDB.getDatabase(this)
@@ -55,7 +39,7 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             }
         }
         getAllCategories()
-        var selectedCategoryId: Int = 0
+        var selectedCategoryId = 0
         categories.add("New category") // додайте останній елемент у спінері
         val adapter1 = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         binding.categorySpinner.adapter = adapter1
@@ -73,31 +57,31 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
                 // не робіть нічого
             }
         }
-
-
-        // Створення списку варіантів повторення подій та встановлення адаптера для Spinner
-        val repeatCategories = listOf(
-            "Does not repeat",
-            "Daily",
-            "Weekly",
-            "Monthly",
-            "Yearly"
-        )
-        val adapter2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, repeatCategories)
+        var selectedRepetition = EventRepetition.NONE
+        val eventRepetition = listOf(EventRepetition.DAILY, EventRepetition.WEEKLY,
+            EventRepetition.MONTHLY, EventRepetition.ANNUALLY, EventRepetition.NONE)
+        val adapter2 = ArrayAdapter(this, android.R.layout.simple_spinner_item, eventRepetition)
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.repeatSpinner.adapter = adapter2
+        binding.repeatSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (eventRepetition[position] != EventRepetition.NONE) {
+                    // Відкриваємо діалогове вікно для вибору максимальної дати
+                    showMaxEndDateDialog()
+                }
+                selectedRepetition = eventRepetition[position]
+            }
 
-        // Створення списку напоминань та встановлення адаптера для Spinner
-        val reminderCategories = listOf(
-            "5 minutes before",
-            "15 minutes before",
-            "30 minutes before",
-            "1 hour before",
-            "1 day before"
-        )
-        val adapter3 = ArrayAdapter(this, android.R.layout.simple_spinner_item, reminderCategories)
-        adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.reminderSpinner.adapter = adapter3
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // не робіть нічого
+            }
+        }
+        binding.repeatSpinner.adapter = adapter2
+        binding.repeatSpinner.setSelection(eventRepetition.size - 1)
 
         // Обробник натискання на TextView для вибору дати та часу початку та закінчення події
         binding.startDateTimeTextView.setOnClickListener {
@@ -109,34 +93,30 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
         }
         // Обробник натискання на кнопку додавання події
         binding.addEventButton.setOnClickListener {
-            val eventName = binding.eventNameEditText.text.toString()
-            val description =
-                binding.descriptionEditText.text.toString()
-            val location = binding.locationEditText.text.toString()
-            val category = binding.categorySpinner.selectedItem.toString()
-            val repeat = binding.repeatSpinner.selectedItem.toString()
-            val reminder = binding.reminderSpinner.selectedItem.toString()
-            val dateFormatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-            val startDate = dateFormatter.parse(binding.startDateTimeTextView.text.toString())
-            val endDate = dateFormatter.parse(binding.endDateTimeTextView.text.toString())
-
             // Створити об'єкт події і додати його до бази даних
-
             val event = Event(
-                eventName = eventName,
-                description = description,
+                eventName = binding.eventNameEditText.text.toString(),
+                description = binding.descriptionEditText.text.toString(),
                 startDateTime = startDateTime, // Встановити дату та час початку події
                 endDateTime = endDateTime, // Встановити дату та час закінчення події
-                location = location,
+                location = binding.locationEditText.text.toString(),
                 categoryId = selectedCategoryId,
-                repeat = repeat,
-                reminder = reminder
+                remind5MinutesBefore = binding.reminder5Min.isChecked,
+                remind15MinutesBefore = binding.reminder15Min.isChecked,
+                remind30MinutesBefore = binding.reminder30Min.isChecked,
+                remind1HourBefore = binding.reminder1Hour.isChecked,
+                remind1DayBefore = binding.reminder1Hour.isChecked,
+                repeat = selectedRepetition.toString()
             )
 
             // Отримати доступ до бази даних та додати об'єкт події до неї
-            val db = MainDB.getDatabase(this)
             GlobalScope.launch(Dispatchers.IO) {
-                db.getDao().addEvent(event)
+                if (selectedRepetition != EventRepetition.NONE) {
+                    eventViewModel.insert(event, maxDate)
+                }
+                else {
+                    eventViewModel.insert(event)
+                }
             }
 
             // Показати повідомлення користувачеві про успішне додавання події
@@ -145,9 +125,9 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
     }
 
     // Метод для відображення діалогового вікна вибору дати та часу
-    var startDateTime: Long = 0
-    var endDateTime: Long = 0
-    fun showDateTimePicker(isStartDate: Boolean) {
+    private var startDateTime: Long = 0
+    private var endDateTime: Long = 0
+    private fun showDateTimePicker(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
         val dateInMillis = intent.getLongExtra("date", -1)
         calendar.timeInMillis = dateInMillis
@@ -213,4 +193,24 @@ class ActivityCalendarAddEvent : AppCompatActivity() {
             .create()
         dialog.show()
     }
+    private var maxDate: Long = -1L
+    // Функція для відображення діалогового вікна для вибору максимальної дати
+    private fun showMaxEndDateDialog() {
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                // Встановлюємо максимальну дату в TextView
+                calendar.set(year, month, dayOfMonth)
+                maxDate = calendar.timeInMillis
+                val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(calendar.time)
+                binding.textMaxEndDate.text = formattedDate
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.show()
+    }
+
 }

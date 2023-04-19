@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -13,80 +14,152 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <EditText
             android:id="@+id/eventNameEditText"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:autofillHints="New Event"
-            android:hint="Event name"
+            android:hint="@string/event_name"
             android:inputType=""
             android:padding="5dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_blue" />
 
         <EditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:autofillHints=""
-            android:hint="Description"
+            android:hint="@string/event_description"
             android:inputType=""
             android:padding="5dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_blue" />
 
         <EditText
             android:id="@+id/locationEditText"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:autofillHints=""
-            android:hint="Location"
+            android:hint="@string/location"
             android:inputType=""
             android:padding="5dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_blue" />
 
         <TextView
             android:id="@+id/startDateTimeTextView"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="Start Date and Time"
+            android:hint="@string/start_date_time"
             android:padding="5dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_blue" />
 
         <TextView
             android:id="@+id/endDateTimeTextView"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="End Date and Time"
+            android:hint="@string/end_date_time"
             android:padding="5dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/set_category"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/categorySpinner"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
+            android:contentDescription="@string/set_category"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
             android:padding="5dp"
-            android:contentDescription="Select a category option" />
+            android:text="@string/set_repeat"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp" />
 
         <Spinner
             android:id="@+id/repeatSpinner"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:padding="5dp"
-            android:contentDescription="Select a repeat option" />
+            android:layout_height="38dp"
+            android:contentDescription="@string/set_repeat"
+            android:padding="5dp" />
 
-        <Spinner
-            android:id="@+id/reminderSpinner"
+        <TextView
+            android:id="@+id/text_max_end_date"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="38dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/max_repeat_date_and_time"
             android:padding="5dp"
-            android:contentDescription="Select a reminder option" />
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/set_reminder"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/reminder_5_min"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_5_min"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_15_min"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_15_min"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_30_min"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_30_min"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_1_hour"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_1_hour"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_1_day"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_1_day"
+            android:textColor="@color/dark_blue" />
 
         <Button
             android:id="@+id/addEventButton"
@@ -96,7 +169,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/white_blue"
+            android:background="@drawable/bg_rounded"
             android:text="@string/save_event_button_text" />
 
     </LinearLayout>

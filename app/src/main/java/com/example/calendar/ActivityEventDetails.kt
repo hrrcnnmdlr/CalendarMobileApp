@@ -52,7 +52,8 @@ class ActivityEventDetails: AppCompatActivity() {
                     binding.categoryTextView.text = category.name
                 }
                 binding.repeatTextView.text = event.repeat
-                binding.reminderTextView.text = event.reminder
+
+
             }
             // Додати обробник для кнопки редагування
             binding.editEventButton.setOnClickListener {
@@ -71,6 +72,5 @@ class ActivityEventDetails: AppCompatActivity() {
                 finish()
             }
         }
-
     }
 }

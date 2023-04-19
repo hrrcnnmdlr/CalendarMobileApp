@@ -1,8 +1,11 @@
 package com.example.calendar
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
+import java.util.Calendar
 
 // Оголошуємо інтерфейс EventDao, який відповідає за доступ до даних таблиці events у базі даних
 @Dao
@@ -31,10 +34,13 @@ interface EventDao {
     @Delete
     fun deleteEvent(event: Event)
 
+
     // Оголошуємо метод для заміни події з бази даних з новими даними
     @Update
     fun updateEvent(event: Event)
 }
+
+
 
 @Dao
 interface CategoryDao {
