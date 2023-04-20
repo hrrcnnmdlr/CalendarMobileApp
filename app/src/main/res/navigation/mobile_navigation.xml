@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_month">
+
+    <fragment
+        android:id="@+id/nav_month"
+        android:name="com.example.calendar.fragments.MonthFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_month" >
+        <action
+            android:id="@+id/action_nav_month_to_dayFragment"
+            app:destination="@id/nav_day" />
+        <action
+            android:id="@+id/action_nav_month_to_weekFragment"
+            app:destination="@id/nav_week" />
+        <action
+            android:id="@+id/action_nav_month_to_addEventFragment"
+            app:destination="@id/nav_add_event" />
+        <action
+            android:id="@+id/action_nav_month_to_eventDetailsFragment"
+            app:destination="@id/nav_event_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_day"
+        android:name="com.example.calendar.fragments.DayFragment"
+        android:label="fragment_day"
+        tools:layout="@layout/fragment_day" >
+        <action
+            android:id="@+id/action_dayFragment_to_addEventFragment"
+            app:destination="@id/nav_add_event" />
+        <action
+            android:id="@+id/action_nav_day_to_eventDetailsFragment"
+            app:destination="@id/nav_event_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_week"
+        android:name="com.example.calendar.fragments.WeekFragment"
+        android:label="fragment_week"
+        tools:layout="@layout/fragment_week" >
+        <action
+            android:id="@+id/action_weekFragment_to_addEventFragment"
+            app:destination="@id/nav_add_event" />
+        <action
+            android:id="@+id/action_nav_week_to_eventDetailsFragment"
+            app:destination="@id/nav_event_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_add_event"
+        android:name="com.example.calendar.fragments.AddEventFragment"
+        android:label="fragment_add_event"
+        tools:layout="@layout/fragment_add_event" />
+    <fragment
+        android:id="@+id/nav_edit_event"
+        android:name="com.example.calendar.fragments.EditEventFragment"
+        android:label="fragment_edit_event"
+        tools:layout="@layout/fragment_edit_event" />
+    <fragment
+        android:id="@+id/nav_event_details"
+        android:name="com.example.calendar.fragments.EventDetailsFragment"
+        android:label="fragment_event_details"
+        tools:layout="@layout/fragment_event_details" >
+        <action
+            android:id="@+id/action_eventDetailsFragment_to_editEventFragment"
+            app:destination="@id/nav_edit_event" />
+    </fragment>
+
+</navigation>

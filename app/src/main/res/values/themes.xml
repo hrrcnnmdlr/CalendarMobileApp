@@ -2,9 +2,18 @@
     <!-- Base application theme. -->
     <style name="Theme.Calendar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/white_blue</item>
         <item name="colorPrimaryDark">@color/dark_blue_green</item>
         <item name="colorAccent">@color/white_blue</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.Calendar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Calendar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Calendar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

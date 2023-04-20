@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.calendar.fragments.AddEventFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <EditText
+            android:id="@+id/eventNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:autofillHints="New Event"
+            android:hint="@string/event_name"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/dark_blue" />
+
+        <EditText
+            android:id="@+id/descriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:autofillHints=""
+            android:hint="@string/event_description"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/dark_blue" />
+
+        <EditText
+            android:id="@+id/locationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:autofillHints=""
+            android:hint="@string/location"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/startDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/start_date_time"
+            android:padding="5dp"
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/endDateTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/end_date_time"
+            android:padding="5dp"
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/set_category"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/categorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:contentDescription="@string/set_category"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/set_repeat"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/repeatSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:contentDescription="@string/set_repeat"
+            android:padding="5dp" />
+
+        <TextView
+            android:id="@+id/text_max_end_date"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="@string/max_repeat_date_and_time"
+            android:padding="5dp"
+            android:textColor="@color/dark_blue" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/set_reminder"
+            android:textColor="@color/dark_blue"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/reminder_5_min"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_5_min"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_15_min"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_15_min"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_30_min"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_30_min"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_1_hour"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_1_hour"
+            android:textColor="@color/dark_blue" />
+
+        <CheckBox
+            android:id="@+id/reminder_1_day"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:padding="5dp"
+            android:text="@string/reminder_1_day"
+            android:textColor="@color/dark_blue" />
+
+        <Button
+            android:id="@+id/addEventButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="250dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_rounded"
+            android:text="@string/save_event" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
+
+</FrameLayout>
