@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.*
 import com.example.calendar.database.EventAdapter
+import com.example.calendar.database.EventViewModel
 import com.example.calendar.database.MainDB
 import com.example.calendar.databinding.FragmentWeekBinding
 import kotlinx.coroutines.Dispatchers
@@ -39,13 +41,11 @@ class WeekFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // отримуємо передану дату
-        val args = arguments
-        val dateInMillis = args?.getLong("date")
+        val dateInMillis = selectedDate
         Log.d("DATE", "$dateInMillis")
         val calendar = Calendar.getInstance()
-        if (dateInMillis != null) {
-            calendar.timeInMillis = dateInMillis
-        }
+        calendar.timeInMillis = dateInMillis
+
 
         // отримуємо поточний день, день тижня і місяць
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -100,110 +100,102 @@ class WeekFragment : Fragment() {
         val date = cal.timeInMillis
         // launch a coroutine on the IO dispatcher to get the events from the database
         lifecycleScope.launch(Dispatchers.IO) {
-            val dataBase = MainDB.getDatabase(requireContext())
-            val events = dataBase.getDao().getEventsForDay(date)
+            val viewModel: EventViewModel by viewModels()
+            val events = viewModel.getEventsForDay(date)
             // switch back to the main thread to update the UI
             withContext(Dispatchers.Main) {
-                val mAdapter = EventAdapter(requireContext(), events)
-                eventView.adapter = mAdapter
+                events.observe(viewLifecycleOwner) { events ->
+                    // This code will be executed when the LiveData object emits a new value
+                    val mAdapter = EventAdapter(requireContext(), events)
+                    eventView.adapter = mAdapter
+                }
             }
-        }
-        val bundle = Bundle()
-        val controller = findNavController()
-        binding.daybutton.setOnClickListener {
-            if (dateInMillis != null) {
-                bundle.putLong("date", dateInMillis)
-            }
-            controller.navigateUp()
-            controller.navigate(R.id.nav_day, bundle)
-        }
-        binding.monthbutton.setOnClickListener {
-            if (dateInMillis != null) {
-                bundle.putLong("date", dateInMillis)
-            }
-            controller.navigate(R.id.nav_month, bundle)
-        }
-        binding.button.setOnClickListener {
-            if (dateInMillis != null) {
-                bundle.putLong("date", dateInMillis)
-            }
-            controller.navigate(R.id.nav_add_event, bundle)
         }
         val calen = Calendar.getInstance()
-        if (dateInMillis != null) {
-            calen.timeInMillis = dateInMillis
+        calen.timeInMillis = selectedDate
+        val controller = findNavController()
+        binding.daybutton.setOnClickListener {
+            controller.navigateUp()
+            controller.navigate(R.id.nav_day)
+        }
+        binding.monthbutton.setOnClickListener {
+
+            controller.navigate(R.id.nav_month)
+        }
+        binding.button.setOnClickListener {
+            controller.navigate(R.id.nav_add_event)
         }
         binding.date01.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -3)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.date02.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -2)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.date03.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -1)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.date05.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 1)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.date06.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 2)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.date07.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 3)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.dayOfWeek01.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -3)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.dayOfWeek02.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -2)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.dayOfWeek03.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -1)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.dayOfWeek05.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 1)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.dayOfWeek06.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 2)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.dayOfWeek07.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 3)
-            bundle.putLong("date", calen.timeInMillis)
+            selectedDate = calen.timeInMillis
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
     }
 

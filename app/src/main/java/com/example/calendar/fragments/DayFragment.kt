@@ -1,17 +1,19 @@
 package com.example.calendar.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.*
 import com.example.calendar.database.EventAdapter
-import com.example.calendar.database.MainDB
+import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentDayBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,12 +41,9 @@ class DayFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Отримання дати з args
-        val args = arguments
-        val dateInMillis = args?.getLong("date")
+        val dateInMillis = selectedDate
         val calendar = Calendar.getInstance()
-        if (dateInMillis != null) {
-            calendar.timeInMillis = dateInMillis
-        }
+        calendar.timeInMillis = dateInMillis
 
         // Отримання дня та дня тижня
         val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -71,34 +70,28 @@ class DayFragment : Fragment() {
         val date = cal.timeInMillis
         // launch a coroutine on the IO dispatcher to get the events from the database
         lifecycleScope.launch(Dispatchers.IO) {
-            val dataBase = MainDB.getDatabase(requireContext())
-            val events = dataBase.getDao().getEventsForDay(date)
+            val viewModel: EventViewModel by viewModels()
+            val events = viewModel.getEventsForDay(date)
             // switch back to the main thread to update the UI
             withContext(Dispatchers.Main) {
-                val mAdapter = EventAdapter(requireContext(), events)
-                eventView.adapter = mAdapter
+                events.observe(viewLifecycleOwner) { events ->
+                    // This code will be executed when the LiveData object emits a new value
+                    Log.d("DayFragment", "Events: $events")
+                    val mAdapter = EventAdapter(requireContext(), events)
+                    eventView.adapter = mAdapter
+                }
             }
         }
-        val bundle = Bundle()
         val controller = findNavController()
         binding.weekbutton.setOnClickListener {
-            if (dateInMillis != null) {
-                bundle.putLong("date", dateInMillis)
-            }
             controller.navigateUp()
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.monthbutton.setOnClickListener {
-            if (dateInMillis != null) {
-                bundle.putLong("date", dateInMillis)
-            }
-            controller.navigate(R.id.nav_month, bundle)
+            controller.navigate(R.id.nav_month)
         }
         binding.button.setOnClickListener {
-            if (dateInMillis != null) {
-                bundle.putLong("date", dateInMillis)
-            }
-            controller.navigate(R.id.nav_add_event, bundle)
+            controller.navigate(R.id.nav_add_event)
         }
     }
 

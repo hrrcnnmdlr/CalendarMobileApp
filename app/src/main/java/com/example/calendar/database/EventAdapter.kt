@@ -2,18 +2,14 @@ package com.example.calendar.database
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
-import com.example.calendar.fragments.EventDetailsFragment
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.navigation.fragment.findNavController
 
 
 internal class EventAdapter(

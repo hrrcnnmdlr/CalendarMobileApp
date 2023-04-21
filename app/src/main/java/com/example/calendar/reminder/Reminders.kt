@@ -68,7 +68,8 @@ class EventService : Service() {
     private fun getEventsFromDatabase(): List<Event> {
         val db = MainDB.getDatabase(applicationContext)
         val eventDao = db.getDao()
-        return eventDao.getAllEvents()
+        val events = eventDao.getAllEvents()
+        return events.value ?: emptyList()
     }
 }
 

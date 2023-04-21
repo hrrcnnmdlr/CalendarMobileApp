@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -135,7 +136,9 @@ class AddEventFragment : Fragment() {
                 if (selectedRepetition != EventRepetition.NONE) {
                     eventViewModel.insert(event, maxDate)
                 }
-                else { eventViewModel.insert(event)}
+                else {
+                    eventViewModel.insert(event)
+                }
             }
 
             // Показати повідомлення користувачеві про успішне додавання події
@@ -152,11 +155,9 @@ class AddEventFragment : Fragment() {
     private var endDateTime: Long = 0
     private fun showDateTimePicker(isStartDate: Boolean) {
         val calendar = Calendar.getInstance()
-        val args = arguments
-        val dateInMillis = args?.getLong("date")
-        if (dateInMillis != null) {
-            calendar.timeInMillis = dateInMillis
-        }
+        val dateInMillis = selectedDate
+        calendar.timeInMillis = dateInMillis
+
         val datePickerDialog = DatePickerDialog(requireContext(),
             { _, year, month, dayOfMonth ->
                 calendar.set(year, month, dayOfMonth)
@@ -223,6 +224,9 @@ class AddEventFragment : Fragment() {
     // Функція для відображення діалогового вікна для вибору максимальної дати
     private fun showMaxEndDateDialog() {
         val calendar = Calendar.getInstance()
+        var changed = false
+        val dateInMillis = selectedDate
+        calendar.timeInMillis = dateInMillis
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, month, dayOfMonth ->
@@ -231,12 +235,19 @@ class AddEventFragment : Fragment() {
                 maxDate = calendar.timeInMillis
                 val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(calendar.time)
                 binding.textMaxEndDate.text = formattedDate
+                changed = true
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
         )
         datePickerDialog.show()
+        Log.d("Changed", changed.toString())
+        if (!changed){
+            calendar.timeInMillis = selectedDate + 900000
+            val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(calendar.time)
+            binding.textMaxEndDate.text = formattedDate
+        }
     }
 
     override fun onDestroyView() {

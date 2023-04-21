@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,13 +22,14 @@ import com.example.calendar.database.EventAdapter
 import com.example.calendar.reminder.EventService
 import com.example.calendar.database.MainDB
 import com.example.calendar.R
+import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentMonthBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-
+var selectedDate: Long = 0L
 class MonthFragment : Fragment() {
 
     private var _binding: FragmentMonthBinding? = null
@@ -34,7 +37,6 @@ class MonthFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     // Початкова дата - 0, щоб при запуску вибрати поточну дату
-    var selectedDate: Long = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +80,9 @@ class MonthFragment : Fragment() {
         notificationManager.notify(1, notification)
 
         val calendarView = binding.calendarView
+
         // Встановлення вибраної дати, якщо вона передана із попередньої активності
+        if (selectedDate != 0L) {calendarView.date = selectedDate}
         selectedDate = calendarView.date
 
         calendarView.date = selectedDate
@@ -90,12 +94,15 @@ class MonthFragment : Fragment() {
             }.timeInMillis
 
             lifecycleScope.launch(Dispatchers.IO) {
-                val dataBase = MainDB.getDatabase(requireContext())
-                val events = dataBase.getDao().getEventsForDay(selectedDateInMillis)
+                val viewModel: EventViewModel by viewModels()
+                val events = viewModel.getEventsForDay(selectedDate)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
-                    val mAdapter = EventAdapter(requireContext(), events)
-                    eventView.adapter = mAdapter
+                    events.observe(viewLifecycleOwner) { events ->
+                        // This code will be executed when the LiveData object emits a new value
+                        val mAdapter = EventAdapter(requireContext(), events)
+                        eventView.adapter = mAdapter
+                    }
                 }
             }
             val calendar = Calendar.getInstance()
@@ -131,23 +138,22 @@ class MonthFragment : Fragment() {
             val events = dataBase.getDao().getEventsForDay(date)
             // switch back to the main thread to update the UI
             withContext(Dispatchers.Main) {
-                val mAdapter = EventAdapter(requireContext(), events)
-                eventView.adapter = mAdapter
+                events.observe(viewLifecycleOwner) { events ->
+                    // This code will be executed when the LiveData object emits a new value
+                    val mAdapter = EventAdapter(requireContext(), events)
+                    eventView.adapter = mAdapter
+                }
             }
         }
-        val bundle = Bundle()
         val controller = findNavController()
         binding.weekbutton.setOnClickListener {
-            bundle.putLong("date", selectedDate)
-            controller.navigate(R.id.nav_week, bundle)
+            controller.navigate(R.id.nav_week)
         }
         binding.daybutton.setOnClickListener {
-            bundle.putLong("date", selectedDate)
-            controller.navigate(R.id.nav_day, bundle)
+            controller.navigate(R.id.nav_day)
         }
         binding.button.setOnClickListener {
-            bundle.putLong("date", selectedDate)
-            controller.navigate(R.id.nav_add_event, bundle)
+            controller.navigate(R.id.nav_add_event)
         }
     }
 
