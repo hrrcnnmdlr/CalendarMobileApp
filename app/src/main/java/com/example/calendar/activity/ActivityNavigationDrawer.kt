@@ -26,10 +26,6 @@ class ActivityNavigationDrawer : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarActivityNavigationDrawer.toolbar)
 
-        //binding.appBarActivityNavigationDrawer.fab.setOnClickListener { view ->
-        //   Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        //        .setAction("Action", null).show()
-        //}
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController =
@@ -38,7 +34,7 @@ class ActivityNavigationDrawer : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_month, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_month, R.id.nav_view
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

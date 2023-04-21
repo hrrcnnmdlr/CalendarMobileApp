@@ -6,47 +6,49 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 
 class EventViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: EventRepository
     private val categoryRepository: CategoryRepository
+    private val scheduleRepository: ScheduleRepository
     private val allEvents: LiveData<List<Event>>
 
     init {
         val database = MainDB.getDatabase(application)
         val eventsDao = database.getDao()
         val categoryDao = database.categoryDao()
+        val scheduleDao = database.scheduleDao()
         repository = EventRepository(eventsDao)
         categoryRepository = CategoryRepository(categoryDao)
+        scheduleRepository = ScheduleRepository(scheduleDao)
         allEvents = repository.allEvents
     }
 
-    fun insert(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(event, maxDate)
+    suspend fun insert(event: Event): Int {
+        return repository.insert(event)
+    }
+    suspend fun insert(event: Event, maxDate: Long): Int {
+        return repository.insert(event.copy(
+            maxDateForRepeat = if(event.repeat != EventRepetition.NONE.toString()){0}else {maxDate},
+            repeatParentId = if(event.repeat != EventRepetition.NONE.toString()){0}else {event.id}
+        ))
     }
 
-    fun insert(event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(event)
+    suspend fun update(event: Event): Int {
+        return repository.update(event)
     }
 
-    fun update(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(event, maxDate)
+    suspend fun update(event: Event, maxDate: Long): Int {
+        return repository.update(event.copy(
+            maxDateForRepeat = if(event.repeat != EventRepetition.NONE.toString()){0}else {maxDate},
+            repeatParentId = if(event.repeat != EventRepetition.NONE.toString()){0}else {event.id}
+        ))
     }
 
-    fun update(event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(event)
-    }
-
-    fun delete(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(event, maxDate)
-    }
-
-    fun delete(event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(event)
-    }
-
-    fun deleteAll(event: Event, maxDate: Long) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(event, maxDate)
+    suspend fun delete(event: Event): Int {
+        return repository.delete(event)
     }
 
     suspend fun getEventById(id: Int): Event? {
@@ -69,4 +71,94 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         return categoryRepository.getCategoryById(id)
     }
 
+    fun insertClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        var currentEvent = event // Створення копії об'єкту event
+        scheduleRepository.insertClass(schedule)
+        var eventId = repository.insertForClass(currentEvent)
+        while (true) {
+            val calendar1 = Calendar.getInstance()
+            calendar1.timeInMillis = currentEvent.startDateTime
+            calendar1.add(Calendar.DAY_OF_MONTH, 7)
+            val calendar2 = Calendar.getInstance()
+            calendar2.timeInMillis = currentEvent.endDateTime
+            calendar2.add(Calendar.DAY_OF_MONTH, 7)
+            if (calendar1.timeInMillis > currentEvent.maxDateForRepeat!!) {
+                break
+            }
+            val newSchedule = copyWithNewIdSchedule(schedule, eventId)
+            val newEvent = copyWithNewDatesSchedule(repository.getEventById(eventId), currentEvent.startDateTime, currentEvent.endDateTime)
+            eventId = repository.insertForClass(newEvent)
+            scheduleRepository.insertClass(newSchedule)
+            currentEvent = newEvent // Оновлення копії об'єкту currentEvent
+        }
+    }
+
+    private fun copyWithNewDatesSchedule(event: Event, startDate: Long, endDate: Long): Event {
+        return event.copy(
+            id = 0, // Призначаємо 0, щоб зберегти як новий запис в базі даних
+            startDateTime = startDate,
+            endDateTime = endDate
+        )
+    }
+
+    fun insertUniqueClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        scheduleRepository.insertClass(schedule)
+        repository.insertForClass(event)
+    }
+
+    fun deleteClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        scheduleRepository.deleteClass(schedule)
+        repository.deleteForClass(event)
+    }
+
+    fun deleteAllRepeatedClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        val ids = repository.deleteAllRepeated(event)
+        for (id in ids)
+            scheduleRepository.getClassById(id)?.let { scheduleRepository.deleteClass(it) }
+    }
+
+    fun deleteAllNextClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        val ids = repository.deleteAllNextRepeated(event)
+        for (id in ids)
+            scheduleRepository.getClassById(id)?.let { scheduleRepository.deleteClass(it) }
+    }
+
+    fun updateClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        scheduleRepository.updateClass(schedule)
+        repository.updateForClass(event)
+    }
+
+    fun updateAllNextClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
+        if (events != null) {
+            for (element in events){
+                if (event.startDateTime <= element.startDateTime){
+                    repository.updateForClass(element)
+                    scheduleRepository.getClassById(element.id)
+                        ?.let { scheduleRepository.updateClass(it) }
+                }
+            }
+        }
+    }
+
+    fun updateAllRepeatedClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+        val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
+        if (events != null) {
+            for (element in events) {
+                repository.updateForClass(element)
+                scheduleRepository.getClassById(element.id)
+                    ?.let { scheduleRepository.updateClass(it) }
+            }
+        }
+    }
+
+    suspend fun getClassById(id: Int): Schedule? {
+        return scheduleRepository.getClassById(id)
+    }
+}
+
+fun copyWithNewIdSchedule(schedule: Schedule, id: Int): Schedule {
+    return schedule.copy(
+        eventId = id
+    )
 }

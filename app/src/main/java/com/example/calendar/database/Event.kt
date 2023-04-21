@@ -28,6 +28,8 @@ data class Event(
     @ColumnInfo(name = "remind_1_hour_before") var remind1HourBefore: Boolean = false,
     @ColumnInfo(name = "remind_1_day_before") var remind1DayBefore: Boolean = false,
     @ColumnInfo(name = "repeat") var repeat: String = EventRepetition.NONE.toString(),
+    @ColumnInfo(name = "repeatParentId") val repeatParentId: Int? = null,
+    @ColumnInfo(name = "maxDateForRepeat") val maxDateForRepeat: Long? = null
 )
 
 enum class EventRepetition {

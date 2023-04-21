@@ -24,16 +24,19 @@ interface EventDao {
     // Оголошуємо метод для додавання нової події в базу даних
     // Якщо вже існує подія з таким же ідентифікатором, то замінюємо її на нову
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addEvent(event: Event)
+    fun addEvent(event: Event) : Int = event.id
 
     // Оголошуємо метод для видалення події з бази даних
     @Delete
-    fun deleteEvent(event: Event)
+    fun deleteEvent(event: Event) : Int = event.id
 
 
     // Оголошуємо метод для заміни події з бази даних з новими даними
     @Update
-    fun updateEvent(event: Event)
+    fun updateEvent(event: Event) : Int = event.id
+
+    @Query("SELECT * FROM events WHERE repeatParentId = :id")
+    fun getEventsByParentId(id: Int): List<Event>
 }
 
 
@@ -57,4 +60,25 @@ interface CategoryDao {
 
     @Query("DELETE FROM categories")
     suspend fun deleteAllCategories()
+}
+
+@Dao
+interface ScheduleDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertClass(schedule : Schedule) : Int = schedule.eventId
+
+    @Query("SELECT * FROM schedule")
+    fun getAllClasses(): LiveData<List<Schedule>>
+
+    @Query("SELECT * FROM schedule WHERE eventId = :id")
+    fun getClassById(id: Int): Schedule
+
+    @Update
+    suspend fun updateClass(schedule : Schedule) : Int = schedule.eventId
+
+    @Delete
+    suspend fun deleteClass(schedule : Schedule) : Int = schedule.eventId
+
+    @Query("DELETE FROM schedule")
+    suspend fun deleteClasses()
 }

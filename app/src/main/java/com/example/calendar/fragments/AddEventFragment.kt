@@ -111,6 +111,7 @@ class AddEventFragment : Fragment() {
         }
         // Обробник натискання на кнопку додавання події
         binding.addEventButton.setOnClickListener {
+            var parentId = 0
             // Створити об'єкт події і додати його до бази даних
             val event = Event(
                 eventName = binding.eventNameEditText.text.toString(),
@@ -124,7 +125,9 @@ class AddEventFragment : Fragment() {
                 remind30MinutesBefore = binding.reminder30Min.isChecked,
                 remind1HourBefore = binding.reminder1Hour.isChecked,
                 remind1DayBefore = binding.reminder1Hour.isChecked,
-                repeat = selectedRepetition.toString()
+                repeat = selectedRepetition.toString(),
+                repeatParentId = 0,
+                maxDateForRepeat = 0
             )
 
             // Отримати доступ до бази даних та додати об'єкт події до неї
@@ -132,9 +135,7 @@ class AddEventFragment : Fragment() {
                 if (selectedRepetition != EventRepetition.NONE) {
                     eventViewModel.insert(event, maxDate)
                 }
-                else {
-                    eventViewModel.insert(event)
-                }
+                else { eventViewModel.insert(event)}
             }
 
             // Показати повідомлення користувачеві про успішне додавання події

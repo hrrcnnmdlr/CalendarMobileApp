@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.calendar.R
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentEventDetailsBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,8 +83,10 @@ class EventDetailsFragment : Fragment() {
             }
             // Додати обробник для кнопки видалення
             binding.deleteEventButton.setOnClickListener {
-                if (event != null) {
-                    eventViewModel.delete(event)
+                lifecycleScope.launch(Dispatchers.IO) {
+                    if (event != null) {
+                        eventViewModel.delete(event)
+                    }
                 }
                 Toast.makeText(requireContext(), "Event deleted", Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()

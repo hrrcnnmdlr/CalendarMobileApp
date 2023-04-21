@@ -85,6 +85,7 @@ class DayFragment : Fragment() {
             if (dateInMillis != null) {
                 bundle.putLong("date", dateInMillis)
             }
+            controller.navigateUp()
             controller.navigate(R.id.nav_week, bundle)
         }
         binding.monthbutton.setOnClickListener {

@@ -1,6 +1,5 @@
 package com.example.calendar.database
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import kotlinx.coroutines.Dispatchers
@@ -15,238 +14,206 @@ class EventRepository(private val eventDao: EventDao) {
         emit(events)
     }
 
-    suspend fun insert(event: Event, maxDate: Long) {
+    suspend fun insert(event: Event) : Int {
+        var id = 0
         withContext(Dispatchers.IO) {
-            if (event.startDateTime < maxDate) {
-                eventDao.addEvent(event)
+            if (event.startDateTime < event.maxDateForRepeat!! || event.repeat == EventRepetition.NONE.toString()) {
+                id = eventDao.addEvent(event)
             }
-            if (event.remind5MinutesBefore) {
-                Log.d("REMIND", "5 minutes")
-            }
-            if (event.remind15MinutesBefore) {
-                Log.d("REMIND", "15 minutes")
-            }
-            if (event.remind30MinutesBefore) {
-                Log.d("REMIND", "30 minutes")
-            }
-            if (event.remind1HourBefore) {
-                Log.d("REMIND", "1 hour")
-            }
-            if (event.remind1DayBefore) {
-                Log.d("REMIND", "1 day")
-            }
-            if (event.repeat == EventRepetition.DAILY.toString() && event.startDateTime < maxDate) {
+            if ((event.repeat == EventRepetition.DAILY.toString()) && (event.startDateTime < event.maxDateForRepeat)) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.DAY_OF_MONTH, 1)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.DAY_OF_MONTH, 1)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
-            else if (event.repeat == EventRepetition.WEEKLY.toString() && event.startDateTime < maxDate) {
+            if (event.repeat == EventRepetition.WEEKLY.toString() && event.startDateTime < event.maxDateForRepeat) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.DAY_OF_MONTH, 7)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.DAY_OF_MONTH, 7)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
-            else if (event.repeat == EventRepetition.MONTHLY.toString() && event.startDateTime < maxDate) {
+            if (event.repeat == EventRepetition.MONTHLY.toString() && event.startDateTime < event.maxDateForRepeat) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.MONTH, 1)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.MONTH, 1)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
-            else if (event.repeat == EventRepetition.ANNUALLY.toString() && event.startDateTime < maxDate) {
+            if (event.repeat == EventRepetition.ANNUALLY.toString() && event.startDateTime < event.maxDateForRepeat) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.YEAR, 1)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.YEAR, 1)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
         }
+        return id
     }
 
-    suspend fun insert(event: Event) {
+    suspend fun insertForClass(event: Event) : Int {
+        var id = 0
         withContext(Dispatchers.IO) {
-            eventDao.addEvent(event)
-            if (event.remind5MinutesBefore) {
-                Log.d("REMIND", "5 minutes")
-            }
-            if (event.remind15MinutesBefore) {
-                Log.d("REMIND", "15 minutes")
-            }
-            if (event.remind30MinutesBefore) {
-                Log.d("REMIND", "30 minutes")
-            }
-            if (event.remind1HourBefore) {
-                Log.d("REMIND", "1 hour")
-            }
-            if (event.remind1DayBefore) {
-                Log.d("REMIND", "1 day")
-            }
+            id = eventDao.addEvent(event)
         }
+        return id
     }
 
-    suspend fun update(event: Event, maxDate: Long) {
+    suspend fun update(event: Event): Int {
+        var id: Int
+        val prevEvent: Event
         withContext(Dispatchers.IO) {
-            eventDao.updateEvent(event)
-            if (event.remind5MinutesBefore) {
-                Log.d("REMIND", "5 minutes")
+            prevEvent = eventDao.getEventById(event.id)
+            if (prevEvent.repeat != EventRepetition.NONE.toString()) {
+                deleteAllRepeatedExceptThis(prevEvent)
             }
-            if (event.remind15MinutesBefore) {
-                Log.d("REMIND", "15 minutes")
-            }
-            if (event.remind30MinutesBefore) {
-                Log.d("REMIND", "30 minutes")
-            }
-            if (event.remind1HourBefore) {
-                Log.d("REMIND", "1 hour")
-            }
-            if (event.remind1DayBefore) {
-                Log.d("REMIND", "1 day")
-            }
-            if (event.repeat == EventRepetition.DAILY.toString() && event.startDateTime < maxDate) {
+            id = eventDao.updateEvent(event)
+            if (event.repeat == EventRepetition.DAILY.toString() && event.startDateTime < event.maxDateForRepeat!!
+                && event.repeat != prevEvent.repeat
+            ) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.DAY_OF_MONTH, 1)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.DAY_OF_MONTH, 1)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
-            else if (event.repeat == EventRepetition.WEEKLY.toString() && event.startDateTime < maxDate) {
+            if (event.repeat == EventRepetition.WEEKLY.toString() && event.startDateTime < event.maxDateForRepeat!!
+                && event.repeat != prevEvent.repeat
+            ) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.DAY_OF_MONTH, 7)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.DAY_OF_MONTH, 7)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
-            else if (event.repeat == EventRepetition.MONTHLY.toString() && event.startDateTime < maxDate) {
+            if (event.repeat == EventRepetition.MONTHLY.toString() && event.startDateTime < event.maxDateForRepeat!!
+                && event.repeat != prevEvent.repeat
+            ) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.MONTH, 1)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.MONTH, 1)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
-            else if (event.repeat == EventRepetition.ANNUALLY.toString() && event.startDateTime < maxDate) {
+            if (event.repeat == EventRepetition.ANNUALLY.toString() && event.startDateTime < event.maxDateForRepeat!!
+                && event.repeat != prevEvent.repeat
+            ) {
                 val calendar1 = Calendar.getInstance()
                 calendar1.timeInMillis = event.startDateTime
                 calendar1.add(Calendar.YEAR, 1)
                 val calendar2 = Calendar.getInstance()
                 calendar2.timeInMillis = event.endDateTime
                 calendar2.add(Calendar.YEAR, 1)
-                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis), maxDate)
+                insert(copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis))
             }
         }
+        return id
     }
 
-    suspend fun update(event: Event) {
+    suspend fun updateForClass(event: Event): Int {
+        var id: Int
         withContext(Dispatchers.IO) {
-            eventDao.updateEvent(event)
-            if (event.remind5MinutesBefore) {
-                Log.d("REMIND", "5 minutes")
-            }
-            if (event.remind15MinutesBefore) {
-                Log.d("REMIND", "15 minutes")
-            }
-            if (event.remind30MinutesBefore) {
-                Log.d("REMIND", "30 minutes")
-            }
-            if (event.remind1HourBefore) {
-                Log.d("REMIND", "1 hour")
-            }
-            if (event.remind1DayBefore) {
-                Log.d("REMIND", "1 day")
-            }
+            id = eventDao.updateEvent(event)
         }
+        return id
     }
 
-    suspend fun delete(event: Event) {
+    suspend fun delete(event: Event): Int {
+        var id: Int
         withContext(Dispatchers.IO) {
-            if (event.remind5MinutesBefore) {
-                Log.d("DELETE REMIND", "5 minutes")
-            }
-            if (event.remind15MinutesBefore) {
-                Log.d("DELETE REMIND", "15 minutes")
-            }
-            if (event.remind30MinutesBefore) {
-                Log.d("DELETE REMIND", "30 minutes")
-            }
-            if (event.remind1HourBefore) {
-                Log.d("DELETE REMIND", "1 hour")
-            }
-            if (event.remind1DayBefore) {
-                Log.d("DELETE REMIND", "1 day")
-            }
-            eventDao.deleteEvent(event)
+            id = eventDao.deleteEvent(event)
         }
-    }
-    suspend fun delete(event: Event, maxDate: Long) {
-        withContext(Dispatchers.IO) {
-            eventDao.deleteEvent(event)
-            if (event.repeat == EventRepetition.DAILY.toString() && event.startDateTime < maxDate) {
-                val calendar1 = Calendar.getInstance()
-                calendar1.timeInMillis = event.startDateTime
-                calendar1.add(Calendar.DAY_OF_MONTH, 1)
-                val calendar2 = Calendar.getInstance()
-                calendar2.timeInMillis = event.endDateTime
-                calendar2.add(Calendar.DAY_OF_MONTH, 1)
-                val repeatedEvent = copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis)
-                eventDao.deleteEvent(repeatedEvent)
-                delete(repeatedEvent, maxDate)
-            }
-            else if (event.repeat == EventRepetition.WEEKLY.toString() && event.startDateTime < maxDate) {
-                val calendar1 = Calendar.getInstance()
-                calendar1.timeInMillis = event.startDateTime
-                calendar1.add(Calendar.DAY_OF_MONTH, 7)
-                val calendar2 = Calendar.getInstance()
-                calendar2.timeInMillis = event.endDateTime
-                calendar2.add(Calendar.DAY_OF_MONTH, 7)
-                val repeatedEvent = copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis)
-                eventDao.deleteEvent(repeatedEvent)
-                delete(repeatedEvent, maxDate)
-            }
-            else if (event.repeat == EventRepetition.MONTHLY.toString() && event.startDateTime < maxDate) {
-                val calendar1 = Calendar.getInstance()
-                calendar1.timeInMillis = event.startDateTime
-                calendar1.add(Calendar.MONTH, 1)
-                val calendar2 = Calendar.getInstance()
-                calendar2.timeInMillis = event.endDateTime
-                calendar2.add(Calendar.MONTH, 1)
-                val repeatedEvent = copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis)
-                eventDao.deleteEvent(repeatedEvent)
-                delete(repeatedEvent, maxDate)
-            }
-            else if (event.repeat == EventRepetition.ANNUALLY.toString() && event.startDateTime < maxDate) {
-                val calendar1 = Calendar.getInstance()
-                calendar1.timeInMillis = event.startDateTime
-                calendar1.add(Calendar.YEAR, 1)
-                val calendar2 = Calendar.getInstance()
-                calendar2.timeInMillis = event.endDateTime
-                calendar2.add(Calendar.YEAR, 1)
-                val repeatedEvent = copyWithNewDates(event, calendar1.timeInMillis, calendar2.timeInMillis)
-                eventDao.deleteEvent(repeatedEvent)
-                delete(repeatedEvent, maxDate)
-            }
-        }
+        return id
     }
 
-    suspend fun getEventById(eventId: Int): Event? {
+    suspend fun deleteAllRepeated(event: Event): List<Int> {
+        val ids = mutableListOf<Int>()
+        withContext(Dispatchers.IO) {
+            ids.add(eventDao.deleteEvent(event))
+            if (event.repeat != EventRepetition.NONE.toString()) {
+                val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
+                if (events != null) {
+                    for (element in events) {
+                        ids.add(eventDao.deleteEvent(element))
+                    }
+                }
+            }
+        }
+        return ids
+    }
+
+    suspend fun deleteAllRepeatedExceptThis(event: Event): List<Int> {
+        val ids = mutableListOf<Int>()
+        withContext(Dispatchers.IO) {
+            ids.add(eventDao.deleteEvent(event))
+            if (event.repeat != EventRepetition.NONE.toString()) {
+                val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
+                if (events != null) {
+                    for (element in events) {
+                        if (element != event) {
+                            ids.add(eventDao.deleteEvent(element))
+                        }
+                    }
+                }
+            }
+        }
+        return ids
+    }
+
+    suspend fun deleteAllNextRepeated(event: Event): List<Int> {
+        val ids = mutableListOf<Int>()
+        withContext(Dispatchers.IO) {
+            ids.add(eventDao.deleteEvent(event))
+            if (event.repeat != EventRepetition.NONE.toString()) {
+                val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
+                if (events != null) {
+                    for (element in events) {
+                        if (element.startDateTime >= event.startDateTime) {
+                            ids.add(eventDao.deleteEvent(element))
+                        }
+                    }
+                }
+            }
+        }
+        return ids
+    }
+
+    suspend fun deleteForClass(event: Event): Int {
+        var id: Int
+        withContext(Dispatchers.IO) {
+            id = eventDao.deleteEvent(event)
+        }
+        return id
+    }
+
+
+    suspend fun getEventById(eventId: Int): Event {
         return withContext(Dispatchers.IO) {
             eventDao.getEventById(eventId)
         }
+    }
+
+    suspend fun getEventsByParentId(parentId: Int): List<Event> {
+        var events: List<Event>
+        withContext(Dispatchers.IO) {
+            events = eventDao.getEventsByParentId(parentId)
+        }
+        return events
     }
 }
 

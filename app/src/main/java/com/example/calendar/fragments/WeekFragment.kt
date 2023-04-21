@@ -114,6 +114,7 @@ class WeekFragment : Fragment() {
             if (dateInMillis != null) {
                 bundle.putLong("date", dateInMillis)
             }
+            controller.navigateUp()
             controller.navigate(R.id.nav_day, bundle)
         }
         binding.monthbutton.setOnClickListener {
@@ -128,32 +129,83 @@ class WeekFragment : Fragment() {
             }
             controller.navigate(R.id.nav_add_event, bundle)
         }
+        val calen = Calendar.getInstance()
+        if (dateInMillis != null) {
+            calen.timeInMillis = dateInMillis
+        }
+        binding.date01.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, -3)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.date02.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, -2)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.date03.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, -1)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.date05.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, 1)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.date06.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, 2)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.date07.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, 3)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.dayOfWeek01.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, -3)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.dayOfWeek02.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, -2)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.dayOfWeek03.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, -1)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.dayOfWeek05.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, 1)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.dayOfWeek06.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, 2)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
+        binding.dayOfWeek07.setOnClickListener {
+            calen.add(Calendar.DAY_OF_MONTH, 3)
+            bundle.putLong("date", calen.timeInMillis)
+            controller.navigateUp()
+            controller.navigate(R.id.nav_week, bundle)
+        }
     }
-    /*
-    // Методи, які змінюють відображуваний тиждень в залежності від дня тижня, на який користувач натиснув.
-    fun day1() {
-        changeWeek(-3)
-    }
-
-    fun day2() {
-        changeWeek(-2)
-    }
-
-    fun day3() {
-        changeWeek(-1)
-    }
-
-    fun day5() {
-        changeWeek(1)
-    }
-
-    fun day6() {
-        changeWeek(2)
-    }
-
-    fun day7() {
-        changeWeek(3)
-    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

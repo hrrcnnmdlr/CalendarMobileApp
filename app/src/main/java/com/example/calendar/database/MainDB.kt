@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-
 // Анотація @Database означає, що клас MainDB є базою даних, яка містить таблицю events.
-@Database(entities = [Event::class, Category::class], version = 4)
+@Database(entities = [Event::class, Category::class, Schedule::class], version = 5)
 abstract class MainDB : RoomDatabase() {
 
     // Статичний метод companion object використовується для забезпечення доступу до бази даних.
@@ -22,7 +21,7 @@ abstract class MainDB : RoomDatabase() {
                     context.applicationContext,
                     MainDB::class.java,
                     name = "calendar.db"
-                ).addMigrations(migration1to2, migration2to3, migration3to4)
+                ).addMigrations(migration1to2, migration2to3, migration3to4, migration4to5)
                     .build().also { instance = it }
             }
         }
@@ -50,8 +49,22 @@ abstract class MainDB : RoomDatabase() {
                 database.execSQL("DROP TABLE temp_events")
             }
         }
+        private val migration4to5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE events ADD COLUMN repeatParentId INTEGER;")
+                database.execSQL("ALTER TABLE events ADD COLUMN maxDateForRepeat INTEGER;")
+                database.execSQL("CREATE TABLE schedule (\n" +
+                        "    eventId INTEGER PRIMARY KEY NOT NULL,\n" +
+                        "    classNumber INTEGER NOT NULL,\n" +
+                        "    homework TEXT,\n" +
+                        "    attendance INTEGER DEFAULT 0,\n" +
+                        "    completedHomework INTEGER DEFAULT 0,\n" +
+                        "    obtainedGrade REAL);")
+            }
+        }
     }
     // Абстрактний метод, який повертає об'єкт EventDao для виконання запитів до таблиці events.
     abstract fun getDao(): EventDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun scheduleDao(): ScheduleDao
 }

@@ -23,6 +23,8 @@ import com.example.calendar.database.EventRepetition
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.database.MainDB
 import com.example.calendar.databinding.FragmentEditEventBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -144,9 +146,9 @@ class EditEventFragment : Fragment() {
             binding.categorySpinner2.setSelection(selectedCategoryId-1) //event.category)
 
             var selectedRepetition = EventRepetition.NONE
-            val eventRepetition = listOf(
+            val eventRepetition = listOf(EventRepetition.NONE,
                 EventRepetition.DAILY, EventRepetition.WEEKLY,
-                EventRepetition.MONTHLY, EventRepetition.ANNUALLY, EventRepetition.NONE
+                EventRepetition.MONTHLY, EventRepetition.ANNUALLY
             )
             val adapter2 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, eventRepetition)
             adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -171,10 +173,8 @@ class EditEventFragment : Fragment() {
             binding.repeatSpinner2.adapter = adapter2
             if (event != null) {
                 var i = 0
-                while (event.repeat == eventRepetition[i].toString()) {
-                    binding.repeatSpinner2.setSelection(i-1)
-                    ++i
-                }
+                do { binding.repeatSpinner2.setSelection(i+1); ++i } while
+                        (event.repeat != eventRepetition[i].toString())
                 binding.reminder5Min2.isChecked = event.remind5MinutesBefore
                 binding.reminder15Min2.isChecked = event.remind15MinutesBefore
                 binding.reminder30Min2.isChecked = event.remind30MinutesBefore
@@ -185,6 +185,11 @@ class EditEventFragment : Fragment() {
             binding.saveButton.setOnClickListener {
                 if (binding.eventNameEditText.text.toString().isEmpty()) {
                     Toast.makeText(requireContext(), "Event name cannot be empty", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (startDateTime >= endDateTime) {
+                    Toast.makeText(requireContext(), "Invalid start/end time", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -209,11 +214,12 @@ class EditEventFragment : Fragment() {
                 )
 
                 if (updatedEvent != null) {
-                    if (selectedRepetition != EventRepetition.NONE) {
-                        eventViewModel.update(event, maxDate)
-                    }
-                    else {
-                        eventViewModel.update(event)
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        if (selectedRepetition != EventRepetition.NONE) {
+                            eventViewModel.update(event, maxDate)
+                        } else {
+                            eventViewModel.update(event)
+                        }
                     }
                 }
                 findNavController().navigateUp()
