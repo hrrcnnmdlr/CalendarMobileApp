@@ -32,21 +32,23 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         return repository.insert(event)
     }
     suspend fun insert(event: Event, maxDate: Long): Int {
-        return repository.insert(event.copy(
-            maxDateForRepeat = if(event.repeat != EventRepetition.NONE.toString()){0}else {maxDate},
-            repeatParentId = if(event.repeat != EventRepetition.NONE.toString()){0}else {event.id}
-        ))
+        return repository.insert(copyWithDate(event, maxDate))
+    }
+
+    private fun copyWithDate(event: Event, maxDate: Long): Event {
+        return event.copy(
+            maxDateForRepeat = maxDate
+        )
     }
 
     suspend fun update(event: Event, updateAll: Boolean = false, updateNext: Boolean = false, updateOne: Boolean = false): Int {
+        Log.d("UPDATEEVENT! 1", "$event")
         return repository.update(event, updateAll, updateNext, updateOne)
     }
 
     suspend fun update(event: Event, maxDate: Long, updateAll: Boolean = false, updateNext: Boolean = false, updateOne: Boolean = false): Int {
-        return repository.update(event.copy(
-            maxDateForRepeat = if(event.repeat != EventRepetition.NONE.toString()){0}else {maxDate},
-            repeatParentId = if(event.repeat != EventRepetition.NONE.toString()){0}else {event.id}
-        ), updateAll, updateNext, updateOne)
+        Log.d("UPDATEEVENT! 2", "$event")
+        return repository.update(copyWithDate(event, maxDate), updateAll, updateNext, updateOne)
     }
 
     suspend fun delete(event: Event): Int {

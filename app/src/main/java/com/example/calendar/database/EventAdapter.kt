@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
+import com.example.calendar.fragments.eventId
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,10 +39,9 @@ internal class EventAdapter(
             val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm") // формат дати
             holder.eventDateTime.text = "${dateFormat.format(Date(event.startDateTime))} - ${dateFormat.format(Date(event.endDateTime))}"
             holder.itemView.setOnClickListener {
-                val bundle = Bundle()
                 val controller = findNavController(holder.itemView)
-                bundle.putInt("event_id", event.id)
-                controller.navigate(R.id.nav_event_details, bundle)
+                eventId = event.id
+                controller.navigate(R.id.nav_event_details)
             }
         } else {
             // handle empty list

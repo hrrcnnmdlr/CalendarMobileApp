@@ -112,7 +112,25 @@ class AddEventFragment : Fragment() {
         }
         // Обробник натискання на кнопку додавання події
         binding.addEventButton.setOnClickListener {
-            var parentId = 0
+            if (binding.eventNameEditText.text.toString().isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Event name cannot be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@setOnClickListener
+            }
+
+            if (startDateTime == 0L || endDateTime == 0L || startDateTime > endDateTime) {
+                Toast.makeText(
+                    requireContext(),
+                    "Invalid start/end time",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+                return@setOnClickListener
+            }
+
             // Створити об'єкт події і додати його до бази даних
             val event = Event(
                 eventName = binding.eventNameEditText.text.toString(),
@@ -140,13 +158,8 @@ class AddEventFragment : Fragment() {
                     eventViewModel.insert(event)
                 }
             }
-
             // Показати повідомлення користувачеві про успішне додавання події
-            Toast.makeText(requireContext(), event.toString(), Toast.LENGTH_SHORT).show()
-            val bundle = Bundle()
-            bundle.putLong("date", startDateTime)
-            val controller = findNavController()
-            controller.navigate(R.id.nav_month, bundle)
+            findNavController().navigateUp()
         }
     }
 

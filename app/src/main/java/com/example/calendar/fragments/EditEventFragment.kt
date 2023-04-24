@@ -21,6 +21,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.calendar.R
 import com.example.calendar.database.*
 import com.example.calendar.databinding.FragmentEditEventBinding
 import kotlinx.coroutines.Dispatchers
@@ -36,48 +37,49 @@ class EditEventFragment : Fragment() {
     private var startDateTime: Long = 0
     private var endDateTime: Long = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEditEventBinding.inflate(inflater, container, false)
-        return binding?.root
+        return binding!!.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        var selectedCategoryId = -1
-        val args = arguments
-        val eventId = args?.getInt("event_id")
-        if (eventId == null) {
-            Toast.makeText(requireContext(), "Invalid event id", Toast.LENGTH_SHORT).show()
-            findNavController().navigateUp()
-        }
-        var event: Event? = null
+    override fun onResume() {
+        super.onResume()
+        updateData()
+    }
+
+    private var selectedCategoryId = -1
+    private val eventIdEdit = eventId
+    private var event: Event? = null
+    private var selectedRepetition = EventRepetition.NONE
+    private fun updateData() {
+        val eventViewModel = ViewModelProvider(requireActivity())[EventViewModel::class.java]
+        val db = MainDB.getDatabase(requireContext())
+        val categoryDao = db.categoryDao()
+        val categories = mutableListOf<String>()
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
-                if (eventId != null) {
-                    event = viewModel.getEventById(eventId)
-                    Log.d("EDITEVENT", "$event")
-                }
+                event = viewModel.getEventById(eventIdEdit)
+                Log.d("EDITEVENT", "$event")
                 if (event != null) {
                     startDateTime = event!!.startDateTime
                     endDateTime = event!!.endDateTime
                     Handler(Looper.getMainLooper()).post {
-                        binding?.eventNameEditText?.setText(event!!.eventName)
-                        binding?.eventDescriptionEditText?.setText(event!!.description)
-                        binding?.locationEditText?.setText(event!!.location)
+                        binding!!.eventNameEditText.setText(event!!.eventName)
+                        binding!!.eventDescriptionEditText.setText(event!!.description)
+                        binding!!.locationEditText.setText(event!!.location)
                     }
                     selectedCategoryId = event!!.categoryId
-                    binding?.categorySpinner2?.setSelection(selectedCategoryId - 1)
+                    binding!!.categorySpinner2.setSelection(selectedCategoryId - 1)
                 } else {
                     Toast.makeText(requireContext(), "Event not found", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
                 Handler(Looper.getMainLooper()).post {
-                    binding?.startDateTimeTextView?.text = SimpleDateFormat(
+                    binding!!.startDateTimeTextView.text = SimpleDateFormat(
                         "yyyy/MM/dd HH:mm",
                         Locale.getDefault()
                     ).format(Date(startDateTime))
@@ -89,20 +91,15 @@ class EditEventFragment : Fragment() {
                             ).format(Date(startDateTime))
                         } $endDateTime"
                     )
-                    binding?.endDateTimeTextView?.text = SimpleDateFormat(
+                    binding!!.endDateTimeTextView.text = SimpleDateFormat(
                         "yyyy/MM/dd HH:mm",
                         Locale.getDefault()
                     ).format(Date(endDateTime))
                 }
+                // Set selected category ID after loading categories
+                selectedCategoryId = event?.categoryId ?: 0
             }
         }
-
-        val eventViewModel =
-            ViewModelProvider(requireActivity())[EventViewModel::class.java]
-        val categories = mutableListOf<String>()
-        val db = MainDB.getDatabase(requireContext())
-        val categoryDao = db.categoryDao()
-
         fun getAllCategories(context: Context) {
             categoryDao.getAllCategories().observeForever { categoriesList ->
                 categories.clear()
@@ -118,53 +115,49 @@ class EditEventFragment : Fragment() {
                     android.R.layout.simple_spinner_item,
                     categories
                 )
-                binding?.categorySpinner2?.adapter = adapter1
-
-                if (categories.size > 0) {
-                    selectedCategoryId = if (event != null) {
-                        (event?.categoryId ?: binding?.categorySpinner2?.setSelection(event!!.categoryId - 1)) as Int
-                    } else {
-                        0
+                binding!!.categorySpinner2.adapter = adapter1
+                lifecycleScope.launch {
+                    if (categories.size > 0) {
+                        selectedCategoryId = if (event != null) {
+                            (event?.categoryId
+                                ?: binding!!.categorySpinner2.setSelection(event!!.categoryId - 1)) as Int
+                        } else {
+                            0
+                        }
                     }
-                }
-            }
-        }
-        getAllCategories(requireContext())
-        if (categories.size > 0) {
-            if (eventId?.let { viewModel.getEventById(it) } == event) {
-                selectedCategoryId = event!!.categoryId
-            }
-        }
+                    binding!!.categorySpinner2.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if (categories.size > 0 && position == categories.size - 1) {
+                                    showAddCategoryDialog(adapter1, eventViewModel, categories)
+                                } else {
+                                    selectedCategoryId = id.toInt() + 1
+                                }
+                            }
 
-        val adapter1 =
-            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
-        binding?.categorySpinner2?.adapter = adapter1
-        binding?.categorySpinner2?.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    if (categories.size > 0 && position == categories.size - 1) {
-                        showAddCategoryDialog(adapter1, eventViewModel, categories)
-                    } else {
-                        selectedCategoryId = id.toInt() + 1
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                                // do nothing
+                            }
+                        }
+
+                    if (event != null) {
+                        selectedCategoryId = event!!.categoryId
+                        binding!!.categorySpinner2.setSelection(selectedCategoryId - 1)
                     }
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // do nothing
+                    binding!!.categorySpinner2.setSelection(selectedCategoryId - 1) //event.category)
                 }
             }
-        if (event != null) {
-            selectedCategoryId = event!!.categoryId
-            binding?.categorySpinner2?.setSelection(selectedCategoryId - 1)
         }
-        binding?.categorySpinner2?.setSelection(selectedCategoryId - 1) //event.category)
-
-        var selectedRepetition = EventRepetition.NONE
+        lifecycleScope.launch {
+            getAllCategories(requireContext())
+            val adapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
+            binding!!.categorySpinner2.adapter = adapter1
+        }
         val eventRepetition = listOf(
             EventRepetition.NONE,
             EventRepetition.DAILY, EventRepetition.WEEKLY,
@@ -176,7 +169,8 @@ class EditEventFragment : Fragment() {
             eventRepetition
         )
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding?.repeatSpinner2?.onItemSelectedListener =
+        var firstChange = true
+        binding!!.repeatSpinner2.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -186,7 +180,11 @@ class EditEventFragment : Fragment() {
                 ) {
                     if (eventRepetition[position] != EventRepetition.NONE) {
                         // Відкриваємо діалогове вікно для вибору максимальної дати
-                        binding?.let { event?.let { it1 -> showMaxEndDateDialog(it, it1) } }
+                        if (event?.maxDateForRepeat == null || !firstChange) {
+                            binding!!.let { event?.let { it1 -> showMaxEndDateDialog(it, it1) } }
+                        } else {
+                            firstChange = false
+                        }
                     }
                     selectedRepetition = eventRepetition[position]
                 }
@@ -195,22 +193,38 @@ class EditEventFragment : Fragment() {
                     // не робіть нічого
                 }
             }
-        binding?.repeatSpinner2?.adapter = adapter2
-        if (event != null) {
-            var i = 0
-            do {
-                binding?.repeatSpinner2?.setSelection(i + 1); ++i
-            } while
-                    (event!!.repeat != eventRepetition[i-1].toString())
-            binding?.reminder5Min2?.isChecked = event!!.remind5MinutesBefore
-            binding?.reminder15Min2?.isChecked = event!!.remind15MinutesBefore
-            binding?.reminder30Min2?.isChecked = event!!.remind30MinutesBefore
-            binding?.reminder1Hour2?.isChecked = event!!.remind1HourBefore
-            binding?.reminder1Day2?.isChecked = event!!.remind1DayBefore
+        lifecycleScope.launch {
+            binding!!.repeatSpinner2.adapter = adapter2
+            if (event != null) {
+                for ((i, repeat) in eventRepetition.withIndex()) {
+                    Log.d("ITERATOR", "$i")
+                    if (repeat.toString() == event!!.repeat) {
+                        binding!!.repeatSpinner2.setSelection(i)
+                        Log.d("ITERATOR", "$i")
+                        if (event!!.repeat != EventRepetition.NONE.toString()) {
+                            val formattedDate =
+                                SimpleDateFormat(
+                                    "dd.MM.yyyy",
+                                    Locale.getDefault()
+                                ).format(event!!.maxDateForRepeat)
+                            binding!!.textMaxEndDate2.text = formattedDate
+                        }
+                    }
+                }
+                binding!!.reminder5Min2.isChecked = event!!.remind5MinutesBefore
+                binding!!.reminder15Min2.isChecked = event!!.remind15MinutesBefore
+                binding!!.reminder30Min2.isChecked = event!!.remind30MinutesBefore
+                binding!!.reminder1Hour2.isChecked = event!!.remind1HourBefore
+                binding!!.reminder1Day2.isChecked = event!!.remind1DayBefore
+            }
         }
-
-        binding?.saveButton?.setOnClickListener {
-            if (binding?.eventNameEditText?.text.toString().isEmpty()) {
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateData()
+        val eventViewModel = ViewModelProvider(requireActivity())[EventViewModel::class.java]
+        binding!!.saveButton.setOnClickListener {
+            if (binding!!.eventNameEditText.text.toString().isEmpty()) {
                 Toast.makeText(
                     requireContext(),
                     "Event name cannot be empty",
@@ -219,7 +233,7 @@ class EditEventFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            if (startDateTime >= endDateTime) {
+            if (startDateTime > endDateTime) {
                 Toast.makeText(
                     requireContext(),
                     "Invalid start/end time",
@@ -231,11 +245,11 @@ class EditEventFragment : Fragment() {
 
 
             val updatedEvent = event?.copy(
-                eventName = binding?.eventNameEditText?.text.toString(),
-                description = binding?.eventDescriptionEditText?.text.toString(),
+                eventName = binding!!.eventNameEditText.text.toString(),
+                description = binding!!.eventDescriptionEditText.text.toString(),
                 startDateTime = startDateTime, // Встановити дату та час початку події
                 endDateTime = endDateTime, // Встановити дату та час закінчення події
-                location = binding?.locationEditText?.text.toString(),
+                location = binding!!.locationEditText.text.toString(),
                 categoryId = selectedCategoryId,
                 remind5MinutesBefore = binding!!.reminder5Min2.isChecked,
                 remind15MinutesBefore = binding!!.reminder15Min2.isChecked,
@@ -244,10 +258,14 @@ class EditEventFragment : Fragment() {
                 remind1DayBefore = binding!!.reminder1Hour2.isChecked,
                 repeat = selectedRepetition.toString()
             )
-            lifecycleScope.launch(Dispatchers.IO) {
+            Log.d("UPDATE update", "$updatedEvent")
+            Log.d("UPDATE event", "$event")
+            lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     if (event != null && updatedEvent != null) {
+                        Log.d("UPDATEEVENT    -1", "$id   $event")
                         if (event!!.repeat != EventRepetition.NONE.toString()) {
+                            Log.d("UPDATEEVENT    00", "$id   $event")
                             val alertDialogBuilder =
                                 androidx.appcompat.app.AlertDialog.Builder(requireContext())
                             alertDialogBuilder.apply {
@@ -256,77 +274,85 @@ class EditEventFragment : Fragment() {
                                 setPositiveButton("All Repeated Events") { _, _ ->
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO) {
-                                            eventViewModel.update(updatedEvent, maxDate, updateAll = true)
+                                            Log.d("UPDATE all", "$updatedEvent")
+                                            eventViewModel.update(
+                                                updatedEvent,
+                                                maxDate,
+                                                updateAll = true
+                                            )
                                         }
                                     }
                                     Toast.makeText(
-                                        requireContext(),
+                                        context,
                                         "All repeated events updated",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    findNavController().navigateUp()
                                 }
                                 setNegativeButton("Just This One") { _, _ ->
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO) {
-                                            eventViewModel.update(updatedEvent, maxDate, updateOne = true)
+                                            Log.d("UPDATE one", "$updatedEvent")
+                                            eventViewModel.update(
+                                                updatedEvent,
+                                                maxDate,
+                                                updateOne = true
+                                            )
                                         }
                                     }
                                     Toast.makeText(
-                                        requireContext(),
+                                        context,
                                         "Event updated",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    findNavController().navigateUp()
                                 }
                                 setNeutralButton("This And All Next Events") { _, _ ->
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO) {
-                                            eventViewModel.update(updatedEvent, maxDate, updateNext = true)
+                                            Log.d("UPDATE next", "$updatedEvent")
+                                            eventViewModel.update(
+                                                updatedEvent,
+                                                maxDate,
+                                                updateNext = true
+                                            )
                                         }
                                     }
                                     Toast.makeText(
-                                        requireContext(),
+                                        context,
                                         "This and next events updated",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    findNavController().navigateUp()
                                 }
                             }
-                            alertDialogBuilder.create().show()
+                            requireActivity().runOnUiThread {
+                                alertDialogBuilder.create().show()
+                            }
                         } else {
+                            Log.d("UPDATEEVENT    0", "$id   $event")
                             lifecycleScope.launch {
                                 withContext(Dispatchers.IO) {
                                     eventViewModel.update(updatedEvent)
                                 }
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Event updated",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                            Toast.makeText(
-                                requireContext(),
-                                "Event updated",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            findNavController().navigateUp()
                         }
                     }
                 }
             }
             findNavController().navigateUp()
+        }
 
-            binding?.cancelButton?.setOnClickListener {
-                findNavController().navigateUp()
-            }
-
-            binding?.startDateTimeTextView?.setOnClickListener {
-                if (event != null) {
-                    showDateTimePicker(true, event!!.startDateTime, binding!!)
-                }
-            }
-
-            binding?.endDateTimeTextView?.setOnClickListener {
-                if (event != null) {
-                    this.showDateTimePicker(false, event!!.endDateTime, binding!!)
-                }
-            }
+        binding!!.cancelButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+        binding!!.startDateTimeTextView.setOnClickListener {
+            showDateTimePicker(true, event!!.startDateTime, binding!!)
+        }
+        binding!!.endDateTimeTextView.setOnClickListener {
+            showDateTimePicker(false, event!!.endDateTime, binding!!)
         }
     }
     // Метод для відображення діалогового вікна вибору дати та часу

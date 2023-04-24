@@ -30,6 +30,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 var selectedDate: Long = 0L
+var eventId: Int = 0
 class MonthFragment : Fragment() {
 
     private var _binding: FragmentMonthBinding? = null
@@ -95,7 +96,7 @@ class MonthFragment : Fragment() {
 
             lifecycleScope.launch(Dispatchers.IO) {
                 val viewModel: EventViewModel by viewModels()
-                val events = viewModel.getEventsForDay(selectedDate)
+                val events = viewModel.getEventsForDay(selectedDateInMillis)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     events.observe(viewLifecycleOwner) { events ->
@@ -123,6 +124,7 @@ class MonthFragment : Fragment() {
         calendar.timeInMillis = dateInMillis
 
         val cal = Calendar.getInstance()
+        cal.timeInMillis = 0
         cal.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
         cal.set(Calendar.MONTH, calendar.get(Calendar.MONTH))
         cal.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH))
@@ -131,7 +133,6 @@ class MonthFragment : Fragment() {
         cal.set(Calendar.SECOND, 0)
         cal.set(Calendar.MILLISECOND, 0)
         val date = cal.timeInMillis
-
         // launch a coroutine on the IO dispatcher to get the events from the database
         lifecycleScope.launch(Dispatchers.IO) {
             val dataBase = MainDB.getDatabase(requireContext())

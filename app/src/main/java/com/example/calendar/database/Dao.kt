@@ -21,21 +21,22 @@ interface EventDao {
     // Оголошуємо метод для отримання всіх подій, які відбуваються в задану дату
     // date - дата в мілісекундах, починаючи з 1 січня 1970 року
     // 86400000 - кількість мілісекунд у 1 добі
-    @Query("SELECT * FROM events WHERE startDateTime >= :date AND startDateTime < :date + 86400000 OR endDateTime >= :date AND endDateTime < :date + 86400000")
+    @Query("SELECT * FROM events WHERE startDateTime >= :date AND startDateTime < :date + 86399999 OR endDateTime >= :date AND endDateTime < :date + 86399999")
     fun getEventsForDay(date: Long): LiveData<List<Event>>
 
     // Оголошуємо метод для додавання нової події в базу даних
     // Якщо вже існує подія з таким же ідентифікатором, то замінюємо її на нову
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun add(event: Event)
+    fun add(event: Event): Long
 
-    suspend fun addEvent(event: Event): Int {
-        val id = event.id
+    suspend fun addEvent(event: Event): Long {
+        val id: Long
         withContext(Dispatchers.Default) {
-            add(event)
+            id = add(event)
         }
         return id
     }
+
 
     // Оголошуємо метод для видалення події з бази даних
     @Delete
@@ -48,13 +49,19 @@ interface EventDao {
         return id
     }
 
-    suspend fun addRepeat(event: Event): Int {
+    suspend fun addRepeat(event: Event): Long {
         if (event.maxDateForRepeat != null) {
             if (event.startDateTime < event.maxDateForRepeat) {
                 return addEvent(event)
             }
         }
         return 0
+    }
+
+    private fun copyWithParentId(event: Event, parentId: Int): Event {
+        return event.copy(
+            repeatParentId = parentId
+        )
     }
 
     suspend fun updateRepeat(event: Event): Int {
@@ -81,7 +88,7 @@ interface EventDao {
     fun update(event: Event)
 
     @Update
-    suspend fun updateEvent(event: Event) : Int {
+    suspend fun updateEvent(event: Event): Int {
         val id = event.id
         withContext(Dispatchers.Default) {
             update(event)

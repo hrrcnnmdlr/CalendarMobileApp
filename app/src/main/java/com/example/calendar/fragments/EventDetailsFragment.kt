@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.calendar.R
 import com.example.calendar.database.Event
-import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.EventRepetition
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentEventDetailsBinding
@@ -31,7 +29,7 @@ class EventDetailsFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var eventViewModel: EventViewModel
-    private var eventId: Int = -1
+    private var eventIdDetails: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,18 +41,14 @@ class EventDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Отримати ідентифікатор зустрічі, переданий з попередньої активності
-        val args = arguments
-        eventId = args?.getInt("event_id")!!
-
+        eventIdDetails = eventId
         // Створити ViewModel для доступу до даних
         eventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
         // Отримати дані про зустріч за заданим ідентифікатором
         lifecycleScope.launch {
             val event: Event
             withContext(Dispatchers.IO) {
-                event = eventId.let { eventViewModel.getEventById(it) }
+                event = eventIdDetails.let { eventViewModel.getEventById(it) }
             }
             // Відобразити дані про зустріч
             binding.eventNameTextView.text = event.eventName
@@ -79,9 +73,7 @@ class EventDetailsFragment : Fragment() {
             // Додати обробник для кнопки редагування
             binding.editEventButton.setOnClickListener {
                 lifecycleScope.launch {
-                    val bundle = Bundle()
-                    bundle.putInt("event_id", eventId)
-                    findNavController().navigate(R.id.nav_edit_event, bundle)
+                    findNavController().navigate(R.id.nav_edit_event)
                 }
             }
             // Додати обробник для кнопки видалення
