@@ -88,7 +88,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:padding="5dp"
-            android:text="Event Name"
+            android:text="@string/event_name"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -102,7 +102,7 @@
             android:layout_alignEnd="@+id/eventNameTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="Description"
+            android:text="@string/event_description"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -116,7 +116,7 @@
             android:layout_alignEnd="@+id/descriptionTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="Start Date and Time"
+            android:text="@string/start_date_and_time"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -130,7 +130,7 @@
             android:layout_alignEnd="@+id/startDateTimeTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="End Date and Time"
+            android:text="@string/end_date_and_time"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -144,7 +144,7 @@
             android:layout_alignEnd="@+id/endDateTimeTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="Location"
+            android:text="@string/location"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -158,7 +158,7 @@
             android:layout_alignEnd="@+id/locationTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="Category"
+            android:text="@string/category"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -172,7 +172,7 @@
             android:layout_alignEnd="@+id/categoryTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="Repeat"
+            android:text="@string/repeat"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -186,7 +186,7 @@
             android:layout_alignEnd="@+id/repeatTextView"
             android:layout_marginTop="8dp"
             android:padding="5dp"
-            android:text="Reminder"
+            android:text="@string/reminder"
             android:textColor="@color/dark_blue"
             android:textSize="18sp"
             android:textStyle="normal|bold" />
@@ -201,7 +201,7 @@
             android:layout_marginBottom="20dp"
             android:background="@color/light_blue"
             android:padding="10dp"
-            android:text="Edit Event"
+            android:text="@string/edit"
             android:textColor="@color/dark_blue"
             android:textSize="20sp" />
 
@@ -215,7 +215,7 @@
             android:layout_marginBottom="20dp"
             android:background="@color/light_blue"
             android:padding="10dp"
-            android:text="Delete Event"
+            android:text="@string/delete"
             android:textColor="@color/dark_blue"
             android:textSize="20sp" />
     </RelativeLayout>

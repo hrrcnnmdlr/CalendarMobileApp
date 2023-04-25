@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.example.calendar.*
 import com.example.calendar.database.*
 import com.example.calendar.databinding.FragmentAddEventBinding
@@ -178,17 +179,19 @@ class AddEventFragment : Fragment() {
                     { _, hourOfDay, minute ->
                         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
                         calendar.set(Calendar.MINUTE, minute)
-
+                        val dateFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
+                        getString("date_format_preference", "dd/MM/yyyy")
+                        val timeFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
+                        getString("time_format_preference", "HH:mm")
                         if (isStartDate) {
                             binding.startDateTimeTextView.text = SimpleDateFormat(
-                                "yyyy/MM/dd HH:mm",
+                                "$dateFormat $timeFormat",
                                 Locale.getDefault()
                             ).format(calendar.time)
-                            startDateTime =
-                                calendar.timeInMillis // Встановити дату та час початку події
+                            startDateTime = calendar.timeInMillis
                         } else {
                             binding.endDateTimeTextView.text = SimpleDateFormat(
-                                "yyyy/MM/dd HH:mm",
+                                "$dateFormat $timeFormat",
                                 Locale.getDefault()
                             ).format(calendar.time)
                             endDateTime =
@@ -246,7 +249,9 @@ class AddEventFragment : Fragment() {
                 // Встановлюємо максимальну дату в TextView
                 calendar.set(year, month, dayOfMonth)
                 maxDate = calendar.timeInMillis
-                val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(calendar.time)
+                val dateFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
+                getString("date_format_preference", "dd/MM/yyyy")
+                val formattedDate = SimpleDateFormat(dateFormat, Locale.getDefault()).format(calendar.time)
                 binding.textMaxEndDate.text = formattedDate
                 changed = true
             },
@@ -258,7 +263,9 @@ class AddEventFragment : Fragment() {
         Log.d("Changed", changed.toString())
         if (!changed){
             calendar.timeInMillis = selectedDate + 900000
-            val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(calendar.time)
+            val dateFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
+            getString("date_format_preference", "dd/MM/yyyy")
+            val formattedDate = SimpleDateFormat(dateFormat, Locale.getDefault()).format(calendar.time)
             binding.textMaxEndDate.text = formattedDate
         }
     }

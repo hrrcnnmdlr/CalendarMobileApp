@@ -7,4 +7,12 @@
         <item name="colorAccent">@color/white_blue</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.Calendar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Calendar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Calendar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

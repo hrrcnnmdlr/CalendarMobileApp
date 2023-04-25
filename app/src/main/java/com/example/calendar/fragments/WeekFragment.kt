@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.*
@@ -39,6 +40,14 @@ class WeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val ownerName = sharedPrefs.getString("ownerName", "")
+
+        binding.userName.text = ownerName
+
+
 
         // отримуємо передану дату
         val dateInMillis = selectedDate

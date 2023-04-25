@@ -2,10 +2,11 @@ package com.example.calendar.database
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
 import com.example.calendar.fragments.eventId
@@ -36,8 +37,16 @@ internal class EventAdapter(
         if (mArrayList.isNotEmpty()) {
             val event = mArrayList[position]
             holder.eventName.text = event.eventName
-            val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm") // формат дати
-            holder.eventDateTime.text = "${dateFormat.format(Date(event.startDateTime))} - ${dateFormat.format(Date(event.endDateTime))}"
+            val dateFormat = PreferenceManager.getDefaultSharedPreferences(context).
+            getString("date_format_preference", "dd/MM/yyyy")
+            val timeFormat = PreferenceManager.getDefaultSharedPreferences(context).
+            getString("time_format_preference", "HH:mm")
+            Log.d("PROBLEM", "${PreferenceManager.getDefaultSharedPreferences(context).
+            getString("date_format_preference", "")}")
+            Log.d("PROBLEM", "${PreferenceManager.getDefaultSharedPreferences(context).
+            getString("time_format_preference", "")}")
+            val dateFormater = SimpleDateFormat("$dateFormat $timeFormat") // формат дати
+            holder.eventDateTime.text = "${dateFormater.format(Date(event.startDateTime))} - ${dateFormater.format(Date(event.endDateTime))}"
             holder.itemView.setOnClickListener {
                 val controller = findNavController(holder.itemView)
                 eventId = event.id

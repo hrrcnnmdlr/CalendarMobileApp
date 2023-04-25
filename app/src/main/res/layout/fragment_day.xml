@@ -44,7 +44,7 @@
             android:foregroundGravity="center"
             app:layout_constraintBottom_toBottomOf="@+id/textView18"
             app:layout_constraintEnd_toEndOf="@+id/textView18"
-            app:layout_constraintStart_toEndOf="@+id/goodMorning2"
+            app:layout_constraintStart_toEndOf="@+id/userName"
             app:layout_constraintStart_toStartOf="@+id/textView18"
             app:layout_constraintTop_toTopOf="@+id/textView17">
 
@@ -76,8 +76,8 @@
             android:textAlignment="inherit"
             android:textColor="@color/light_blue"
             android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@+id/goodMorning2"
-            app:layout_constraintTop_toBottomOf="@+id/goodMorning2" />
+            app:layout_constraintStart_toStartOf="@+id/userName"
+            app:layout_constraintTop_toBottomOf="@+id/userName" />
 
         <Button
             android:id="@+id/button"
@@ -111,7 +111,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/goodMorning2"
+            android:id="@+id/userName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/goodMorning"
@@ -131,11 +131,11 @@
             android:layout_width="72dp"
             android:layout_height="0dp"
             android:layout_alignTop="@+id/goodMorning"
-            android:layout_alignBottom="@+id/goodMorning2"
+            android:layout_alignBottom="@+id/userName"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:contentDescription=""
-            app:layout_constraintBottom_toBottomOf="@+id/goodMorning2"
+            app:layout_constraintBottom_toBottomOf="@+id/userName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/goodMorning"
             app:layout_constraintVertical_bias="0.0"

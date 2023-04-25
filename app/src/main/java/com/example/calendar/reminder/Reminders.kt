@@ -1,13 +1,17 @@
 package com.example.calendar.reminder
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.Manifest
+import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
+import android.provider.Settings
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.calendar.R
 import com.example.calendar.activity.ActivityNavigationDrawer
@@ -23,6 +27,7 @@ class EventService : Service() {
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         timer = Timer()
         timer.scheduleAtFixedRate(object : TimerTask() {
@@ -71,6 +76,7 @@ class EventService : Service() {
         val events = eventDao.getAllEvents()
         return events.value ?: emptyList()
     }
+
 }
 
 private fun createReminder(event: Event, context: Context) {

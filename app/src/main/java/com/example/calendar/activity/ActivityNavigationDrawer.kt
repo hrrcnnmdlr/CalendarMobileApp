@@ -1,17 +1,20 @@
 package com.example.calendar.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.navigation.NavigationView
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityNavigationDrawerBinding
+import com.google.android.material.navigation.NavigationView
+
 
 class ActivityNavigationDrawer : AppCompatActivity() {
 
@@ -28,8 +31,8 @@ class ActivityNavigationDrawer : AppCompatActivity() {
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val navController =
-            findNavController(R.id.nav_host_fragment_content_activity_navigation_drawer)
+        val navController = findNavController(R.id.nav_host_fragment_content_activity_navigation_drawer)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -39,7 +42,17 @@ class ActivityNavigationDrawer : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                val startSettingsActivity = Intent(this, SettingsActivity::class.java)
+                startActivity(startSettingsActivity)
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -49,8 +62,7 @@ class ActivityNavigationDrawer : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController =
-            findNavController(R.id.nav_host_fragment_content_activity_navigation_drawer)
+        val navController = findNavController(R.id.nav_host_fragment_content_activity_navigation_drawer)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }

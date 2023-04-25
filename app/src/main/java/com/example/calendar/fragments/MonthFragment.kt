@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.database.EventAdapter
@@ -54,13 +55,11 @@ class MonthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val eventView: RecyclerView = binding.recyclerEventView
-        // Поле зі зв'язкою до елементів UI через ViewBinding
 
-        // Початкова дата - 0, щоб при запуску вибрати поточну дату
         // Створення сповіщення
         val notification = NotificationCompat.Builder(requireContext(), "CHANNEL_ID")
-            .setContentTitle("Запущено службу нагадувань")
-            .setContentText("Ваші нагадування запущено у фоновому режимі")
+            .setContentTitle("Reminder service started")
+            .setContentText("Your reminders have been started in the background")
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSmallIcon(R.drawable.ic_notification)
             .build()
@@ -76,9 +75,21 @@ class MonthFragment : Fragment() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
             return
         }
         notificationManager.notify(1, notification)
+
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val ownerName = sharedPrefs.getString("ownerName", "")
+
+        binding.userName.text = ownerName
 
         val calendarView = binding.calendarView
 

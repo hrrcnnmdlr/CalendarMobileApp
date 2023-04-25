@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import com.example.calendar.R
 import com.example.calendar.database.Event
 import com.example.calendar.database.EventRepetition
@@ -50,14 +51,18 @@ class EventDetailsFragment : Fragment() {
             withContext(Dispatchers.IO) {
                 event = eventIdDetails.let { eventViewModel.getEventById(it) }
             }
+            val dateFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
+            getString("date_format_preference", "dd/MM/yyyy")
+            val timeFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
+            getString("time_format_preference", "HH:mm")
             // Відобразити дані про зустріч
             binding.eventNameTextView.text = event.eventName
             binding.descriptionTextView.text = event.description
             binding.startDateTimeTextView.text =
-                SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+                SimpleDateFormat("$dateFormat $timeFormat", Locale.getDefault())
                     .format(event.startDateTime)
             binding.endDateTimeTextView.text =
-                SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+                SimpleDateFormat("$dateFormat $timeFormat", Locale.getDefault())
                     .format(event.endDateTime)
             binding.locationTextView.text = event.location
             val category = eventViewModel.getCategoryById(event.categoryId)
