@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Календар</string>
+    <string name="next">Далі</string>
+    <string name="month">Місяць</string>
+    <string name="prev">Назад</string>
+    <string name="date_and_time">Дата та час</string>
+    <string name="event_description">Опис події</string>
+    <string name="save">Зберегти</string>
+    <string name="event_title">Назва події</string>
+    <string name="event_name">Назва події</string>
+
+    <string name="save_event">Зберегти подію</string>
+    <string name="goodMorning">Доброго ранку</string>
+    <string name="ownerName">Ім\'я власника</string>
+    <string name="week">Тиждень</string>
+    <string name="day">День</string>
+    <string name="reminder">Нагадування</string>
+    <string name="set_reminder">Встановити нагадування</string>
+
+    <!-- TODO: Видаліть або змініть цей текст заповнювача -->
+    <string name="hello_blank_fragment">Привіт порожній фрагмент</string>
+    <string name="category">Категорія</string>
+    <string name="repeat">Повторення</string>
+    <string name="location">Місце</string>
+    <string name="start_date_time">Дата та час початку</string>
+    <string name="end_date_time">Дата та час закінчення</string>
+    <string name="cancel">Скасувати</string>
+    <string name="reminder_5_min">За 5 хвилин</string>
+    <string name="reminder_15_min">За 15 хвилин</string>
+    <string name="reminder_30_min">За 30 хвилин</string>
+    <string name="reminder_1_hour">За 1 годину</string>
+    <string name="reminder_1_day">За 1 день</string>
+    <string name="set_category">Встановити категорію</string>
+    <string name="max_repeat_date_and_time">Максимальна дата та час повторення</string>
+    <string name="set_repeat">Встановити повторення</string>
+    <string name="title_activity_navigation_drawer">ActivityNavigationDrawer</string>
+    <string name="navigation_drawer_open">Відкрити навігаційну панель</string>
+    <string name="navigation_drawer_close">Закрити навігаційну панель</string>
+    <string name="nav_header_title">Календар</string>
+    <string name="nav_header_subtitle">Зробіть це просто</string>
+    <string name="nav_header_desc">Шапка навігації</string>
+    <string name="action_settings">Налаштування</string>
+    <string name="menu_home">Календар</string>
+    <string name="menu_schedule">Розклад</string>
+    <string name="action_search">Пошук</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Повідомлення</string>
+    <string name="sync_header">Синхронізація</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Ваш підпис</string>
+    <string name="reply_title">Дія за замовчуванням для відповіді</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Періодична синхронізація електронної пошти</string>
+    <string name="attachment_title">Завантаження вхідних вкладень</string>
+    <string name="attachment_summary_on">Автоматично завантажувати вкладення для вхідних електронних листів</string>
+    <string name="attachment_summary_off">Завантажувати вкладення тільки за запитом</string>
+    <string name="settings">Налаштування</string>
+    <string name="todo">Текст вашого списку справ тут</string>
+    <string name="start_date_and_time">Дата та час початку</string>
+    <string name="end_date_and_time">Дата та час закінчення</string>
+    <string name="edit">Редагувати</string>
+    <string name="delete">Видалити</string>
+
+    <string name="user_category">Користувач</string>
+    <string name="user_name_title">Ім\'я користувача</string>
+    <string name="user_name_summary">Введіть ім\'я користувача</string>
+    <string name="choose_photo_title">Обрати фото</string>
+    <string name="date_time_category">Дата та час</string>
+    <string name="time_format_title">Формат часу</string>
+    <string name="date_format_title">Формат дати</string>
+    <string name="language_category">Мова</string>
+    <string name="language_title">Мова</string>
+</resources>

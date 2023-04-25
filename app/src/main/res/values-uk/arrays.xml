@@ -1,8 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="time_formats_labels">
-        <item>12-hour format</item>
-        <item>24-hour format</item>
+        <item>12-годинний формат</item>
+        <item>24-годинний формат</item>
     </string-array>
     <string-array name="time_formats">
         <item>h:mm a</item>
@@ -19,8 +19,8 @@
         <item>yyyy/MM/dd</item>
     </string-array>
     <string-array name="languages">
-        <item>English</item>
-        <item>Ukrainian</item>
+        <item>Англійська</item>
+        <item>Українська</item>
     </string-array>
     <string-array name="languages_values">
         <item>en</item>

@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="time_formats_labels">
         <item>12-hour format</item>
         <item>24-hour format</item>

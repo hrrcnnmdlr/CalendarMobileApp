@@ -1,15 +1,17 @@
 package com.example.calendar.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.*
 import com.example.calendar.R
 import java.text.SimpleDateFormat
+import androidx.fragment.app.FragmentManager
 import java.util.*
 
 class SettingsActivity : AppCompatActivity() {
-
+    lateinit var fragmentManager: FragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
@@ -19,6 +21,7 @@ class SettingsActivity : AppCompatActivity() {
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
         }
+        fragmentManager = supportFragmentManager
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
@@ -93,9 +96,23 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 "language_preference" -> {
                     val newLanguage = newValue as String
-                    val preferences =
-                        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                    val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
                     preferences.edit().putString("language_preference", newLanguage).apply()
+
+                    // Оновлення всіх текстових ресурсів відповідно до нової мови
+                    val resources = resources
+                    val configuration = resources.configuration
+                    configuration.setLocale(Locale(newLanguage))
+                    resources.updateConfiguration(configuration, resources.displayMetrics)
+
+                    // Перезапуск активності для оновлення всіх текстових ресурсів
+                    requireActivity().recreate()
+                    val intent = requireActivity().packageManager.getLaunchIntentForPackage(requireActivity().packageName)
+                    intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    requireActivity().finish()
+                    if (intent != null) {
+                        startActivity(intent)
+                    }
                     Log.d("TAG", "Нова мова: $newLanguage")
                 }
             }
