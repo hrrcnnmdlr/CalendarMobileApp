@@ -75,4 +75,6 @@
     <string name="date_format_title">Date Format</string>
     <string name="language_category">Language</string>
     <string name="language_title">Language</string>
+    <string name="search_edit_text">Enter name or id</string>
+    <string name="search_button_name">Search</string>
 </resources>

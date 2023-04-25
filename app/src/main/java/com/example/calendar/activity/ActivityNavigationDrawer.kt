@@ -51,6 +51,11 @@ class ActivityNavigationDrawer : AppCompatActivity() {
                 startActivity(startSettingsActivity)
                 return true
             }
+            R.id.action_search -> {
+                val startSearchActivity = Intent(this, SearchActivity::class.java)
+                startActivity(startSearchActivity)
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

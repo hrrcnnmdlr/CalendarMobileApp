@@ -13,7 +13,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.*
-import com.example.calendar.database.SearchAdapter
+import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentWeekBinding
 import kotlinx.coroutines.Dispatchers
@@ -114,7 +114,7 @@ class WeekFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 events.observe(viewLifecycleOwner) { events ->
                     // This code will be executed when the LiveData object emits a new value
-                    val mAdapter = SearchAdapter(requireContext(), events)
+                    val mAdapter = EventAdapter(requireContext(), events)
                     eventView.adapter = mAdapter
                 }
             }

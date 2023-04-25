@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-internal class SearchAdapter(
+internal class SearcherAdapter(
     private val context: Context,
     private val events: List<Event>
 ) : RecyclerView.Adapter<EventViewHolder>() {

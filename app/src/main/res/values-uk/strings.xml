@@ -73,4 +73,6 @@
     <string name="date_format_title">Формат дати</string>
     <string name="language_category">Мова</string>
     <string name="language_title">Мова</string>
+    <string name="search_edit_text">Введіть назву або айді</string>
+    <string name="search_button_name">Пошук</string>
 </resources>

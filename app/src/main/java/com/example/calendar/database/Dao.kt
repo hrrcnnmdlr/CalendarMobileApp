@@ -101,6 +101,13 @@ interface EventDao {
 
     @Query("SELECT * FROM events WHERE repeatParentId = :id")
     fun getEventsByParentId(id: Int): List<Event>
+
+    @Query("SELECT * FROM events WHERE (id = :id) OR (eventName LIKE '%' || :string || '%')")
+    fun getEventsForSearch(id: Int, string: String): LiveData<List<Event>>
+
+    fun getEventsForSearchRecycler(string: String): LiveData<List<Event>> {
+        return getEventsForSearch(string.toInt(), string)
+    }
 }
 
 

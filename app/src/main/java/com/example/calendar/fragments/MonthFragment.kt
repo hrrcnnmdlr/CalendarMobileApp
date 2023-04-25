@@ -18,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.database.SearchAdapter
+import com.example.calendar.database.EventAdapter
 import com.example.calendar.reminder.EventService
 import com.example.calendar.database.MainDB
 import com.example.calendar.R
@@ -37,7 +37,6 @@ class MonthFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    // Початкова дата - 0, щоб при запуску вибрати поточну дату
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -111,7 +110,7 @@ class MonthFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     events.observe(viewLifecycleOwner) { events ->
                         // This code will be executed when the LiveData object emits a new value
-                        val mAdapter = SearchAdapter(requireContext(), events)
+                        val mAdapter = EventAdapter(requireContext(), events)
                         eventView.adapter = mAdapter
                     }
                 }
@@ -151,7 +150,7 @@ class MonthFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 events.observe(viewLifecycleOwner) { events ->
                     // This code will be executed when the LiveData object emits a new value
-                    val mAdapter = SearchAdapter(requireContext(), events)
+                    val mAdapter = EventAdapter(requireContext(), events)
                     eventView.adapter = mAdapter
                 }
             }
