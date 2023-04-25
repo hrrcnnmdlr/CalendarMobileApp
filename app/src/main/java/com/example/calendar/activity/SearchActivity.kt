@@ -1,10 +1,12 @@
 package com.example.calendar.activity
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.calendar.R
 import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.MainDB
 import com.example.calendar.databinding.ActivitySearchBinding
@@ -16,15 +18,17 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setContentView(binding.root)
         var searchText: String
-
         val searchView = binding.recyclerViewSearch
         val linearLayoutManager = LinearLayoutManager(this)
         searchView.layoutManager = linearLayoutManager
         searchView.visibility = View.VISIBLE
 
         binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
+            if (hasFocus) {
                 searchText = binding.editTextSearch.text.toString()
                 lifecycleScope.launch(Dispatchers.IO) {
                     val dataBase = MainDB.getDatabase(this@SearchActivity)
@@ -55,6 +59,14 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
         }
-        setContentView(binding.root)
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

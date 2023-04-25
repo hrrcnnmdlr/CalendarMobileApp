@@ -12,10 +12,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.*
+import com.example.calendar.R
 import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentDayBinding
+import com.example.calendar.months
+import com.example.calendar.week
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

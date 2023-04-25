@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
 
 class EventRepository(private val eventDao: EventDao) {
     val allEvents: LiveData<List<Event>> = eventDao.getAllEvents()

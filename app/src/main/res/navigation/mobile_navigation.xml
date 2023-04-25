@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_nav_week_to_eventDetailsFragment"
             app:destination="@id/nav_event_details" />
+        <action
+            android:id="@+id/action_nav_week_to_scheduleWeekFragment"
+            app:destination="@id/nav_schedule_week" />
     </fragment>
     <fragment
         android:id="@+id/nav_add_event"
@@ -65,6 +68,52 @@
         <action
             android:id="@+id/action_eventDetailsFragment_to_editEventFragment"
             app:destination="@id/nav_edit_event" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_schedule_add"
+        android:name="com.example.calendar.fragments.ScheduleAddLessonFragment"
+        android:label="fragment_schedule_add_lesson"
+        tools:layout="@layout/fragment_schedule_add_lesson" />
+    <fragment
+        android:id="@+id/nav_schedule_day"
+        android:name="com.example.calendar.fragments.ScheduleDayFragment"
+        android:label="fragment_schedule_day"
+        tools:layout="@layout/fragment_schedule_day" >
+        <action
+            android:id="@+id/action_scheduleDayFragment_to_scheduleAddLessonFragment"
+            app:destination="@id/nav_schedule_add" />
+        <action
+            android:id="@+id/action_scheduleDayFragment_to_scheduleLessonDetailsFragment"
+            app:destination="@id/nav_schedule_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_schedule_edit"
+        android:name="com.example.calendar.fragments.ScheduleEditLessonFragment"
+        android:label="fragment_schedule_edit_lesson"
+        tools:layout="@layout/fragment_schedule_edit_lesson" />
+    <fragment
+        android:id="@+id/nav_schedule_details"
+        android:name="com.example.calendar.fragments.ScheduleLessonDetailsFragment"
+        android:label="fragment_schedule_lesson_details"
+        tools:layout="@layout/fragment_schedule_lesson_details" >
+        <action
+            android:id="@+id/action_scheduleLessonDetailsFragment_to_scheduleEditLessonFragment"
+            app:destination="@id/nav_schedule_edit" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_schedule_week"
+        android:name="com.example.calendar.fragments.ScheduleWeekFragment"
+        android:label="fragment_schedule_week"
+        tools:layout="@layout/fragment_schedule_week" >
+        <action
+            android:id="@+id/action_scheduleWeekFragment_to_scheduleDayFragment"
+            app:destination="@id/nav_schedule_day" />
+        <action
+            android:id="@+id/action_scheduleWeekFragment_to_scheduleLessonDetailsFragment"
+            app:destination="@id/nav_schedule_details" />
+        <action
+            android:id="@+id/action_scheduleWeekFragment_to_scheduleAddLessonFragment"
+            app:destination="@id/nav_schedule_add" />
     </fragment>
 
 </navigation>

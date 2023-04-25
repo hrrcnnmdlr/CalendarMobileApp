@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ScheduleAddLessonFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/lessonNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:autofillHints="New Event"
+            android:hint="Lesson Name"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/lessonDescriptionEditText"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:autofillHints=""
+            android:hint="Lesson Description"
+            android:inputType=""
+            android:padding="5dp"
+            android:textColor="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="@+id/lessonNameEditText"
+            app:layout_constraintStart_toStartOf="@+id/lessonNameEditText"
+            app:layout_constraintTop_toBottomOf="@+id/lessonNameEditText" />
+
+        <Button
+            android:id="@+id/addEventButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="300dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_rounded"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Spinner
+            android:id="@+id/spinner_lessons"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView31"
+            app:layout_constraintStart_toStartOf="@+id/textView31"
+            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="Set number of lesson"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/lessonDescriptionEditText"
+            app:layout_constraintStart_toStartOf="@+id/lessonDescriptionEditText"
+            app:layout_constraintTop_toBottomOf="@+id/lessonDescriptionEditText" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:hint="Home work"
+            android:inputType="textPersonName"
+            android:padding="5dp"
+            android:textColor="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="@+id/spinner_lessons"
+            app:layout_constraintStart_toStartOf="@+id/spinner_lessons"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

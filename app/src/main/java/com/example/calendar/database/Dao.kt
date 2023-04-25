@@ -106,7 +106,12 @@ interface EventDao {
     fun getEventsForSearch(id: Int, string: String): LiveData<List<Event>>
 
     fun getEventsForSearchRecycler(string: String): LiveData<List<Event>> {
-        return getEventsForSearch(string.toInt(), string)
+        val id = string.toIntOrNull()
+        return if (id != null) {
+            getEventsForSearch(id, string)
+        } else {
+            getEventsForSearch(0, string)
+        }
     }
 }
 

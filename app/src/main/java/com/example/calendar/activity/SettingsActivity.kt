@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.preference.*
 import com.example.calendar.R
 import java.text.SimpleDateFormat
-import androidx.fragment.app.FragmentManager
 import java.util.*
 
 class SettingsActivity : AppCompatActivity() {

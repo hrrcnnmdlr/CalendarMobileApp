@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ScheduleLessonDetailsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/number_of_lesson"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Number of Lesson"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lesson_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/lesson_name"
+            app:layout_constraintTop_toBottomOf="@+id/lesson_description" />
+
+        <TextView
+            android:id="@+id/home_work"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Home work"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lesson_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/lesson_name"
+            app:layout_constraintTop_toBottomOf="@+id/number_of_lesson" />
+
+        <TextView
+            android:id="@+id/completedHomework"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Is homework completed"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lesson_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/lesson_name"
+            app:layout_constraintTop_toBottomOf="@+id/home_work" />
+
+        <TextView
+            android:id="@+id/attendance"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Attendance"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lesson_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/lesson_name"
+            app:layout_constraintTop_toBottomOf="@+id/completedHomework" />
+
+        <TextView
+            android:id="@+id/grade"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Grade"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lesson_name"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/lesson_name"
+            app:layout_constraintTop_toBottomOf="@+id/attendance" />
+
+        <TextView
+            android:id="@+id/lesson_name"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Lesson Name"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/lesson_description"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="Lesson Description"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="@+id/lesson_name"
+            app:layout_constraintStart_toStartOf="@+id/lesson_name"
+            app:layout_constraintTop_toBottomOf="@+id/lesson_name" />
+
+        <Button
+            android:id="@+id/editEventButton2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/deleteEventButton"
+            android:layout_alignStart="@+id/deleteEventButton"
+            android:layout_alignEnd="@+id/deleteEventButton"
+            android:layout_marginBottom="10dp"
+            android:background="@color/light_blue"
+            android:padding="10dp"
+            android:text="@string/edit"
+            android:textColor="@color/dark_blue"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/deleteEventButton2"
+            app:layout_constraintEnd_toEndOf="@+id/deleteEventButton2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/deleteEventButton2" />
+
+        <Button
+            android:id="@+id/deleteEventButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@color/light_blue"
+            android:padding="10dp"
+            android:text="@string/delete"
+            android:textColor="@color/dark_blue"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

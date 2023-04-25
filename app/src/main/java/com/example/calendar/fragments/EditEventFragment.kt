@@ -22,7 +22,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import com.example.calendar.R
 import com.example.calendar.database.*
 import com.example.calendar.databinding.FragmentEditEventBinding
 import kotlinx.coroutines.Dispatchers
