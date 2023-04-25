@@ -358,6 +358,11 @@ class EventRepository(private val eventDao: EventDao) {
         return eventDao.getEventsForDay(date)
     }
 
+    fun getEventsByName(eventName: String): LiveData<List<Event>> {
+        return eventDao.getEventsByName(eventName)
+    }
+
+
 }
 
 fun copyWithNewDates(event: Event, startDate: Long, endDate: Long, parentId: Int): Event {

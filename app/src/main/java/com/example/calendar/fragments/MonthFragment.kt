@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.calendar.database.EventAdapter
+import com.example.calendar.database.SearchAdapter
 import com.example.calendar.reminder.EventService
 import com.example.calendar.database.MainDB
 import com.example.calendar.R
@@ -112,7 +111,7 @@ class MonthFragment : Fragment() {
                 withContext(Dispatchers.Main) {
                     events.observe(viewLifecycleOwner) { events ->
                         // This code will be executed when the LiveData object emits a new value
-                        val mAdapter = EventAdapter(requireContext(), events)
+                        val mAdapter = SearchAdapter(requireContext(), events)
                         eventView.adapter = mAdapter
                     }
                 }
@@ -152,7 +151,7 @@ class MonthFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 events.observe(viewLifecycleOwner) { events ->
                     // This code will be executed when the LiveData object emits a new value
-                    val mAdapter = EventAdapter(requireContext(), events)
+                    val mAdapter = SearchAdapter(requireContext(), events)
                     eventView.adapter = mAdapter
                 }
             }

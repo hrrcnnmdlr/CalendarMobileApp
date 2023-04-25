@@ -73,6 +73,10 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getEventsForDay(date)
     }
 
+    fun getEventsByName(eventName: String): LiveData<List<Event>> {
+        return repository.getEventsByName(eventName)
+    }
+
     fun insertCategory(category: Category) = viewModelScope.launch(Dispatchers.IO) {
         categoryRepository.insertCategory(category)
     }

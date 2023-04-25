@@ -14,6 +14,9 @@ interface EventDao {
     @Query("SELECT * FROM events")
     fun getAllEvents(): LiveData<List<Event>>
 
+    @Query("SELECT * FROM events WHERE eventName LIKE '%' || :eventName || '%'")
+    fun getEventsByName(eventName: String): LiveData<List<Event>>
+
     // Оголошуємо метод для отримання події за її ідентифікатором
     @Query("SELECT * FROM events WHERE id = :id")
     fun getEventById(id: Int): Event
