@@ -277,7 +277,7 @@ class EventRepository(private val eventDao: EventDao) {
         return ids
     }
 
-    suspend fun deleteAllRepeatedMin(event: Event): List<Long> {
+    private suspend fun deleteAllRepeatedMin(event: Event): List<Long> {
         val end = mutableListOf<Long>()
         val start = mutableListOf<Long>()
         end.add(event.endDateTime)
@@ -293,33 +293,15 @@ class EventRepository(private val eventDao: EventDao) {
                 }
             }
         }
-        var i = 0
         var id = 0
         var t = start[0]
-        for (time in start){
+        for ((i, time) in start.withIndex()){
             if (t > time) {
                 t = time
                 id = i
             }
-            i++
         }
         return listOf( start[id], end[id])
-    }
-
-    private suspend fun deleteAllRepeatedExceptThis(event: Event): List<Int> {
-        val ids = mutableListOf<Int>()
-        ids.add(eventDao.deleteEvent(event))
-        if (event.repeat != EventRepetition.NONE.toString()) {
-            val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
-            if (events != null) {
-                for (element in events) {
-                    if (element != event) {
-                        ids.add(eventDao.deleteEvent(element))
-                    }
-                }
-            }
-        }
-        return ids
     }
 
     suspend fun deleteAllNextRepeated(event: Event): List<Int> {
@@ -358,6 +340,10 @@ class EventRepository(private val eventDao: EventDao) {
 
     fun getEventsByName(eventName: String): LiveData<List<Event>> {
         return eventDao.getEventsByName(eventName)
+    }
+
+    fun getScheduleEvent(startDateTime: Long, endDateTime: Long, categoryId: Int=2): LiveData<List<Event>> {
+        return eventDao.getScheduleEvent(startDateTime, endDateTime, categoryId)
     }
 
 

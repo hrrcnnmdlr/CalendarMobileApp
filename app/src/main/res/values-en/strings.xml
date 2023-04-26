@@ -86,4 +86,9 @@
     <string name="friday_short">Fr</string>
     <string name="saturday_short">Sat</string>
     <string name="choose_photo">Choose photo</string>
+    <string name="home_work">Home work</string>
+    <string name="set_number_of_lesson">Set number of lesson</string>
+    <string name="lesson_description">Lesson Description</string>
+    <string name="lesson_name">Lesson Name</string>
+    <string name="set_day_of_the_week">Set day of the week</string>
 </resources>

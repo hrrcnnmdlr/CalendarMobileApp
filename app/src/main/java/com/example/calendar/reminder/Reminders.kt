@@ -1,5 +1,6 @@
 package com.example.calendar.reminder
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -17,12 +18,40 @@ class EventService : Service() {
 
     private lateinit var timer: Timer
 
+    companion object {
+        private var instance: EventService? = null
+
+        fun getInstance(): EventService? {
+            return instance
+        }
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val channelId = "event_reminder_channel"
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Event Reminder",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Reminder service started")
+            .setContentText("Your reminders have been started in the background")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_SERVICE)
+            .build()
+
+        startForeground(1, notification)
         timer = Timer()
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
@@ -73,6 +102,7 @@ class EventService : Service() {
 
 }
 
+@SuppressLint("UnspecifiedImmutableFlag")
 private fun createReminder(event: Event, context: Context) {
     val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     val notificationIntent = Intent(context, ActivityNavigationDrawer::class.java)

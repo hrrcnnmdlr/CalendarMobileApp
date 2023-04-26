@@ -109,7 +109,7 @@ interface EventDao {
     }
 
     @Query("SELECT * FROM events WHERE startDateTime = :startDateTime AND endDateTime = :endDateTime AND category_id = :categoryId")
-    fun getSheduleEvent(startDateTime: Long, endDateTime: Long, categoryId: Int=2): LiveData<List<Event>>
+    fun getScheduleEvent(startDateTime: Long, endDateTime: Long, categoryId: Int=2): LiveData<List<Event>>
 }
 
 

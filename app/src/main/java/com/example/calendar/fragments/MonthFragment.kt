@@ -3,10 +3,12 @@ package com.example.calendar.fragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -50,24 +52,18 @@ class MonthFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val eventView: RecyclerView = binding.recyclerEventView
 
-        // Створення сповіщення
-        val notification = NotificationCompat.Builder(requireContext(), "CHANNEL_ID")
-            .setContentTitle("Reminder service started")
-            .setContentText("Your reminders have been started in the background")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSmallIcon(R.drawable.ic_notification)
-            .build()
-
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.FOREGROUND_SERVICE), 0)
+        }
         // Запуск служби
         val serviceIntent = Intent(requireContext(), EventService::class.java)
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
-
         // Показ сповіщення
-        val notificationManager = NotificationManagerCompat.from(requireContext())
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.POST_NOTIFICATIONS
@@ -82,7 +78,6 @@ class MonthFragment : Fragment() {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        notificationManager.notify(1, notification)
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val ownerName = sharedPrefs.getString("ownerName", "")
@@ -92,11 +87,13 @@ class MonthFragment : Fragment() {
         val calendarView = binding.calendarView
 
         // Встановлення вибраної дати, якщо вона передана із попередньої активності
-        if (selectedDate != 0L) {calendarView.date = selectedDate}
+        if (selectedDate != 0L) {
+            calendarView.date = selectedDate
+        }
         selectedDate = calendarView.date
 
         calendarView.date = selectedDate
-        calendarView.setOnDateChangeListener { _ , year, month, dayOfMonth ->
+        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             // Виконати дії, коли користувач вибирає дату
             // Наприклад, оновити список подій для вибраної дати
             val selectedDateInMillis = Calendar.getInstance().apply {

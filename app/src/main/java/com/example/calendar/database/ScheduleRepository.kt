@@ -24,7 +24,7 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
         scheduleDao.deleteClasses()
     }
 
-    suspend fun getClassById(id: Int): Schedule? {
+    suspend fun getClassById(id: Int): Schedule {
         return withContext(Dispatchers.IO) {
             scheduleDao.getClassById(id)
         }

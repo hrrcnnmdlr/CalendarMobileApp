@@ -84,4 +84,9 @@
     <string name="friday_short">Пт</string>
     <string name="saturday_short">Сб</string>
     <string name="choose_photo">Обрати фото</string>
+    <string name="home_work">Домашня робота</string>
+    <string name="set_number_of_lesson">Встановити номер уроку</string>
+    <string name="lesson_description">Опис уроку</string>
+    <string name="lesson_name">Назва уроку</string>
+    <string name="set_day_of_the_week">Встановити день тижня</string>
 </resources>

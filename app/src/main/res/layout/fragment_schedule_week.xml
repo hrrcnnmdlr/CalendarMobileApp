@@ -56,8 +56,8 @@
 
                 <TextView
                     android:id="@+id/textView8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:id="@+id/dayOfWeek"
@@ -133,23 +133,11 @@
 
                 <TextView
                     android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
                 <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:padding="8dp"
-                    android:paddingTop="8dp"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textColor="@color/grey"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/date02"
+                    android:id="@+id/date1"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:padding="8dp"
@@ -161,7 +149,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/date03"
+                    android:id="@+id/date2"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:padding="8dp"
@@ -173,7 +161,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/date04"
+                    android:id="@+id/date3"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:padding="8dp"
@@ -185,7 +173,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/date05"
+                    android:id="@+id/date4"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:padding="8dp"
@@ -197,7 +185,19 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/date06"
+                    android:id="@+id/date5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:padding="8dp"
+                    android:paddingTop="8dp"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="@color/grey"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/date6"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
                     android:padding="8dp"
@@ -216,40 +216,40 @@
 
                 <TextView
                     android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="1"
                     android:textAlignment="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/monday_first"
                     android:layout_width="wrap_content"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tuesday_first"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/wednesday_first"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/thusday_first"
+                    android:id="@+id/thursday_first"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friday_first"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/saturday_first"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
             </TableRow>
 
@@ -259,40 +259,40 @@
 
                 <TextView
                     android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="2"
                     android:textAlignment="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/monday_second"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tuesday_second"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/wednesday_second"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/thursday_second"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friday_second"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/saturday_second"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
             </TableRow>
 
@@ -302,40 +302,40 @@
 
                 <TextView
                     android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="3"
                     android:textAlignment="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/monday_third"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tuesday_third"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/wednesday_third"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/thurday_third"
+                    android:id="@+id/thursday_third"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friday_third"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/saturday_third"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
             </TableRow>
 
@@ -345,40 +345,40 @@
 
                 <TextView
                     android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="4"
                     android:textAlignment="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/monday_forth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tuesday_forth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/wednesday_forth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/thursday_forth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friday_forth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/saturday_forth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
             </TableRow>
 
@@ -388,40 +388,40 @@
 
                 <TextView
                     android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="5"
                     android:textAlignment="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/monday_fifth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tuesday_fifth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/wednesday_fifth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/thursday_fifth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friday_fifth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/saturday_fifth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
             </TableRow>
 
@@ -431,164 +431,63 @@
 
                 <TextView
                     android:id="@+id/textView15"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:text="6"
                     android:textAlignment="center" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/monday_sixth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/tuesday_sixth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/wednesday_sixth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/thursday_sixth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/friday_sixth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/saturday_sixth"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="7"
-                    android:textAlignment="center" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/monday_seventh"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tuesday_seventh"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wednesday_seventh"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/thursday_seventh"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/friday_seventh"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/saturday_seventh"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
-
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="8"
-                    android:textAlignment="center" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/monday_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/tuesday_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wednesday_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/thursday_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/friday_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/saturday_eight"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp" />
+                    android:layout_height="70dp" />
 
             </TableRow>
 
         </TableLayout>
 
         <Button
-            android:id="@+id/daybutton2"
-            android:layout_width="100dp"
+            android:id="@+id/addLessonButton"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/weekbutton2"
-            android:layout_alignBottom="@+id/weekbutton2"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/weekbutton2"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/white_blue"
-            android:text="@string/day"
+            android:text="Create lesson"
             android:textColor="@color/dark_blue_green"
-            app:layout_constraintBottom_toBottomOf="@+id/weekbutton2"
-            app:layout_constraintEnd_toStartOf="@+id/weekbutton2"
-            app:layout_constraintTop_toTopOf="@+id/weekbutton2"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/weekbutton2"
-            android:layout_width="100dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:backgroundTint="@color/background_blue"
-            android:text="@string/week"
-            android:textColor="@color/dark_blue_green"
-            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/schedule_table" />
+            app:layout_constraintHorizontal_bias="0.533"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
             android:id="@+id/button_prev_week"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="20dp"
             android:contentDescription="@string/prev_week"
             android:src="?attr/homeAsUpIndicator"
@@ -598,14 +497,17 @@
 
         <ImageButton
             android:id="@+id/button_next_week"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:contentDescription="@string/next_week"
             android:rotationY="-180"
             android:src="?attr/homeAsUpIndicator"
+            app:layout_constraintBottom_toTopOf="@+id/schedule_table"
             app:layout_constraintStart_toEndOf="@+id/button_prev_week"
-            app:layout_constraintTop_toTopOf="@+id/button_prev_week" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

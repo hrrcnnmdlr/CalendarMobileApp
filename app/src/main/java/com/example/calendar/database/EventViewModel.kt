@@ -71,9 +71,10 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         return repository.getEventsForDay(date)
     }
 
-    fun getEventsByName(eventName: String): LiveData<List<Event>> {
-        return repository.getEventsByName(eventName)
+    fun getScheduleEvent(startDateTime: Long, endDateTime: Long, categoryId: Int=2): LiveData<List<Event>> {
+        return repository.getScheduleEvent(startDateTime, endDateTime, categoryId)
     }
+
 
     fun insertCategory(category: Category) = viewModelScope.launch(Dispatchers.IO) {
         categoryRepository.insertCategory(category)
@@ -106,7 +107,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
                 break
             }
             val newSchedule = copyWithNewIdSchedule(schedule, eventId)
-            val newEvent = copyWithNewDatesSchedule(repository.getEventById(eventId), currentEvent.startDateTime, currentEvent.endDateTime)
+            val newEvent = copyWithNewDatesSchedule(repository.getEventById(eventId),
+                currentEvent.startDateTime, currentEvent.endDateTime)
             eventId = repository.insertForClass(newEvent)
             scheduleRepository.insertClass(newSchedule)
             currentEvent = newEvent // Оновлення копії об'єкту currentEvent
@@ -131,16 +133,16 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteForClass(event)
     }
 
-    fun deleteAllRepeatedClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteAllRepeatedClasses(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         val ids = repository.deleteAllRepeated(event)
         for (id in ids)
-            scheduleRepository.getClassById(id)?.let { scheduleRepository.deleteClass(it) }
+            scheduleRepository.getClassById(id).let { scheduleRepository.deleteClass(it) }
     }
 
-    fun deleteAllNextClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteAllNextClasses(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         val ids = repository.deleteAllNextRepeated(event)
         for (id in ids)
-            scheduleRepository.getClassById(id)?.let { scheduleRepository.deleteClass(it) }
+            scheduleRepository.getClassById(id).let { scheduleRepository.deleteClass(it) }
     }
 
     fun updateClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
@@ -148,31 +150,31 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         repository.updateForClass(event)
     }
 
-    fun updateAllNextClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+    fun updateAllNextClasses(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
         if (events != null) {
             for (element in events){
                 if (event.startDateTime <= element.startDateTime){
                     repository.updateForClass(element)
                     scheduleRepository.getClassById(element.id)
-                        ?.let { scheduleRepository.updateClass(it) }
+                        .let { scheduleRepository.updateClass(it) }
                 }
             }
         }
     }
 
-    fun updateAllRepeatedClasses(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
+    fun updateAllRepeatedClasses(event: Event) = viewModelScope.launch(Dispatchers.IO) {
         val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
         if (events != null) {
             for (element in events) {
                 repository.updateForClass(element)
                 scheduleRepository.getClassById(element.id)
-                    ?.let { scheduleRepository.updateClass(it) }
+                    .let { scheduleRepository.updateClass(it) }
             }
         }
     }
 
-    suspend fun getClassById(id: Int): Schedule? {
+    suspend fun getClassById(id: Int): Schedule {
         return scheduleRepository.getClassById(id)
     }
 }

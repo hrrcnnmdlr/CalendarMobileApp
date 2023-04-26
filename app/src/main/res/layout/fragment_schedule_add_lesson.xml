@@ -10,6 +10,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:text="@string/set_day_of_the_week"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/lessonDescriptionEditText"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/lessonDescriptionEditText"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+
+        <Spinner
+            android:id="@+id/spinner_days"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/textView31"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView31"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
         <EditText
             android:id="@+id/lessonNameEditText"
             android:layout_width="match_parent"
@@ -18,7 +42,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="New Event"
-            android:hint="Lesson Name"
+            android:hint="@string/lesson_name"
             android:inputType=""
             android:padding="5dp"
             android:textColor="@color/dark_blue"
@@ -32,7 +56,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:autofillHints=""
-            android:hint="Lesson Description"
+            android:hint="@string/lesson_description"
             android:inputType=""
             android:padding="5dp"
             android:textColor="@color/dark_blue"
@@ -69,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="5dp"
-            android:text="Set number of lesson"
+            android:text="@string/set_number_of_lesson"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/lessonDescriptionEditText"
             app:layout_constraintStart_toStartOf="@+id/lessonDescriptionEditText"
@@ -80,13 +104,14 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:hint="Home work"
+            android:hint="@string/home_work"
             android:inputType="textPersonName"
             android:padding="5dp"
             android:textColor="@color/dark_blue"
             app:layout_constraintEnd_toEndOf="@+id/spinner_lessons"
             app:layout_constraintStart_toStartOf="@+id/spinner_lessons"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons"
+            android:autofillHints="" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
