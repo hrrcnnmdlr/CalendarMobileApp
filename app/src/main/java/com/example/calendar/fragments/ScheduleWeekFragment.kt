@@ -25,6 +25,8 @@ class ScheduleWeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.root
     }
 
     override fun onDestroyView() {

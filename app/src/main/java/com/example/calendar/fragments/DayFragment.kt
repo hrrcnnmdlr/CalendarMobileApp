@@ -16,8 +16,6 @@ import com.example.calendar.R
 import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentDayBinding
-import com.example.calendar.months
-import com.example.calendar.week
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -58,9 +56,11 @@ class DayFragment : Fragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
+        val months = resources.getStringArray(R.array.months)
         // Встановлення тексту для TextView
         binding.month2.text = months[calendar.get(Calendar.MONTH)]
         binding.year2.text = calendar.get(Calendar.YEAR).toString()
+        val week = resources.getStringArray(R.array.week)
         binding.textView17.text = week[dayOfWeek - 1]
         binding.textView18.text = day.toString()
 

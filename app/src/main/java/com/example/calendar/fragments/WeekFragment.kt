@@ -16,8 +16,6 @@ import com.example.calendar.R
 import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.FragmentWeekBinding
-import com.example.calendar.months
-import com.example.calendar.week
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,11 +58,12 @@ class WeekFragment : Fragment() {
         // отримуємо поточний день, день тижня і місяць
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
         val month = calendar.get(Calendar.MONTH)
-
+        val months = resources.getStringArray(R.array.months)
         // встановлюємо назву місяця і рік в текстові поля
         binding.month2.text = months[month]
         binding.year2.text = calendar.get(Calendar.YEAR).toString()
 
+        val week = resources.getStringArray(R.array.week)
         // встановлюємо назви днів тижня в текстові поля
         binding.dayOfWeek01.text = week[if (dayOfWeek < 4){dayOfWeek+7-4}else {dayOfWeek - 4}]
         binding.dayOfWeek02.text = week[if (dayOfWeek < 3){dayOfWeek+7-3}else {dayOfWeek - 3}]

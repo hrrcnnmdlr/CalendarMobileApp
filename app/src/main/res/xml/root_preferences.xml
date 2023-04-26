@@ -13,6 +13,7 @@
             android:key="choose_photo"
             android:layout="@layout/custom_photo_preference"
             android:title="@string/choose_photo_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/date_time_category">

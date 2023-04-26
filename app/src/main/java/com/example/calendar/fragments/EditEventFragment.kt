@@ -107,7 +107,7 @@ class EditEventFragment : Fragment() {
         fun getAllCategories(context: Context) {
             categoryDao.getAllCategories().observeForever { categoriesList ->
                 categories.clear()
-                categories.addAll(categoriesList.map { it.name }) // map categories to their names
+                categories.addAll(categoriesList.filter { it.id != 2 }.map { it.name })// map categories to their names
                 Log.d("DATABASE", "$categories")
                 if (categories.size > 0 && categories[categories.size - 1] != "New category") {
                     categories.add("New category")

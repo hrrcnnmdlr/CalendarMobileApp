@@ -587,34 +587,25 @@
 
         <ImageButton
             android:id="@+id/button_prev_week"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="100dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
             android:contentDescription="@string/prev_week"
             android:src="?attr/homeAsUpIndicator"
             app:layout_constraintBottom_toTopOf="@+id/schedule_table"
-            app:layout_constraintEnd_toStartOf="@+id/button_next_week"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/button_next_week"
             android:layout_width="48dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="100dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
             android:contentDescription="@string/next_week"
             android:rotationY="-180"
             android:src="?attr/homeAsUpIndicator"
-            app:layout_constraintBottom_toTopOf="@+id/schedule_table"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/button_prev_week"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.74" />
+            app:layout_constraintTop_toTopOf="@+id/button_prev_week" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

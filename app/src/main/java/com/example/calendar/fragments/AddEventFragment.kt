@@ -3,6 +3,7 @@ package com.example.calendar.fragments
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -15,6 +16,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.example.calendar.*
@@ -51,30 +53,54 @@ class AddEventFragment : Fragment() {
         val categories = mutableListOf<String>()
         val db = MainDB.getDatabase(requireContext())
         val categoryDao = db.categoryDao()
-        fun getAllCategories() {
+        var selectedCategoryId = 0
+        fun getAllCategories(context: Context) {
             categoryDao.getAllCategories().observeForever { categoriesList ->
                 categories.clear()
-                categories.addAll(categoriesList.map { it.name }) // map categories to their names
+                categories.addAll(categoriesList.filter { it.id != 2 }
+                    .map { it.name })// map categories to their names
+                Log.d("DATABASE", "$categories")
+                if (categories.size > 0 && categories[categories.size - 1] != "New category") {
+                    categories.add("New category")
+                }
+                // Set the adapter for categorySpinner only when categories are loaded
+                val adapter1 = ArrayAdapter(
+                    context,
+                    android.R.layout.simple_spinner_item,
+                    categories
+                )
+                binding.categorySpinner.adapter = adapter1
+                lifecycleScope.launch {
+                    if (categories.size > 0) {
+                        selectedCategoryId = 1
+                        binding.categorySpinner.setSelection(0)
+                    }
+                    binding.categorySpinner.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                if (categories.size > 0 && position == categories.size - 1) {
+                                    showAddCategoryDialog(adapter1, eventViewModel, categories)
+                                } else {
+                                    selectedCategoryId = id.toInt() + 1
+                                }
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                                // do nothing
+                            }
+                        }
+                }
             }
         }
-        getAllCategories()
-        var selectedCategoryId = 0
-        categories.add("New category") // додайте останній елемент у спінері
-        val adapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
-        binding.categorySpinner.adapter = adapter1
-        binding.categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                if (position == categories.size - 1) {
-                    showAddCategoryDialog(adapter1, eventViewModel, categories)
-                } else {
-                    //
-                }
-                selectedCategoryId = position
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // не робіть нічого
-            }
+        lifecycleScope.launch {
+            getAllCategories(requireContext())
+            val adapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
+            binding.categorySpinner.adapter = adapter1
         }
         var selectedRepetition = EventRepetition.NONE
         val eventRepetition = listOf(

@@ -61,12 +61,6 @@ interface EventDao {
         return 0
     }
 
-    private fun copyWithParentId(event: Event, parentId: Int): Event {
-        return event.copy(
-            repeatParentId = parentId
-        )
-    }
-
     suspend fun updateRepeat(event: Event): Int {
         if (event.maxDateForRepeat != null) {
             if (event.startDateTime < event.maxDateForRepeat){
@@ -113,6 +107,9 @@ interface EventDao {
             getEventsForSearch(0, string)
         }
     }
+
+    @Query("SELECT * FROM events WHERE startDateTime = :startDateTime AND endDateTime = :endDateTime AND category_id = :categoryId")
+    fun getSheduleEvent(startDateTime: Long, endDateTime: Long, categoryId: Int=2): LiveData<List<Event>>
 }
 
 
