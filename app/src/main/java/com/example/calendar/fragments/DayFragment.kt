@@ -57,12 +57,14 @@ class DayFragment : Fragment() {
         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
         val months = resources.getStringArray(R.array.months)
+        val weekDays = resources.getStringArray(R.array.week_days)
         // Встановлення тексту для TextView
         binding.month2.text = months[calendar.get(Calendar.MONTH)]
         binding.year2.text = calendar.get(Calendar.YEAR).toString()
         val week = resources.getStringArray(R.array.week)
         binding.textView17.text = week[dayOfWeek - 1]
         binding.textView18.text = day.toString()
+        binding.textDay.text = weekDays[dayOfWeek - 1]
 
         val eventView: RecyclerView = binding.recyclerEventView
         val linearLayoutManager = LinearLayoutManager(requireContext())

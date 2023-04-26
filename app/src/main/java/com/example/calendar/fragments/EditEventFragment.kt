@@ -140,7 +140,11 @@ class EditEventFragment : Fragment() {
                                 if (categories.size > 0 && position == categories.size - 1) {
                                     showAddCategoryDialog(adapter1, eventViewModel, categories)
                                 } else {
-                                    selectedCategoryId = id.toInt() + 1
+                                    selectedCategoryId = if (id < 2L){
+                                        id.toInt() + 1
+                                    } else {
+                                        id.toInt() + 2
+                                    }
                                 }
                             }
 

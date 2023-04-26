@@ -51,11 +51,12 @@ class ScheduleDayFragment : Fragment() {
 
         val month = calendar.get(Calendar.MONTH)
         val months = resources.getStringArray(R.array.months)
+        val weekDays = resources.getStringArray(R.array.week_days)
         // встановлюємо назву місяця і рік в текстові поля
         binding.month.text = months[month]
         binding.year.text = calendar.get(Calendar.YEAR).toString()
         binding.date1.text = calendar.get(Calendar.DAY_OF_MONTH).toString()
-        binding.dayOfWeek.text = "Monday"
+        binding.dayOfWeek.text = weekDays[calendar.get(Calendar.DAY_OF_WEEK)-1]
 
         val lessons = listOf(binding.lessonFirst, binding.lessonSecond,
             binding.lessonThird, binding.lessonForth, binding.lessonFifth, binding.lessonSixth)

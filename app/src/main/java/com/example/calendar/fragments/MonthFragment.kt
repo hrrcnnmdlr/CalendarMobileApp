@@ -91,7 +91,7 @@ class MonthFragment : Fragment() {
             calendarView.date = selectedDate
         }
         selectedDate = calendarView.date
-
+        val weekDays = resources.getStringArray(R.array.week_days)
         calendarView.date = selectedDate
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             // Виконати дії, коли користувач вибирає дату
@@ -116,6 +116,7 @@ class MonthFragment : Fragment() {
             calendar.set(year, month, dayOfMonth)
             // Збереження вибраної дати в поле класу
             selectedDate = calendar.timeInMillis
+            binding.textDay3.text = weekDays[calendar.get(Calendar.DAY_OF_WEEK) - 1]
         }
 
         val linearLayoutManager = LinearLayoutManager(requireContext())
@@ -128,7 +129,7 @@ class MonthFragment : Fragment() {
         }
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = dateInMillis
-
+        binding.textDay3.text = weekDays[calendar.get(Calendar.DAY_OF_WEEK) - 1]
         val cal = Calendar.getInstance()
         cal.timeInMillis = 0
         cal.set(Calendar.YEAR, calendar.get(Calendar.YEAR))
