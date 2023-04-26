@@ -75,12 +75,13 @@
     <string name="language_title">Мова</string>
     <string name="search_edit_text">Введіть назву або айді</string>
     <string name="search_button_name">Пошук</string>
-    <string name="next_week">Next week</string>
-    <string name="prev_week">Prev week</string>
-    <string name="monday_short">Mo</string>
-    <string name="tuesday_short">Tu</string>
-    <string name="wednesday_short">Wed</string>
-    <string name="thursday_short">Th</string>
-    <string name="friday_short">Fr</string>
-    <string name="saturday_short">Sat</string>
+    <string name="next_week">Наступний тиждень</string>
+    <string name="prev_week">Попередній тиждень</string>
+    <string name="monday_short">Пн</string>
+    <string name="tuesday_short">Вт</string>
+    <string name="wednesday_short">Ср</string>
+    <string name="thursday_short">Чт</string>
+    <string name="friday_short">Пт</string>
+    <string name="saturday_short">Сб</string>
+    <string name="choose_photo">Обрати фото</string>
 </resources>

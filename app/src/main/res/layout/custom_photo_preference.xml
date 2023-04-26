@@ -19,7 +19,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/profile_photo"
-        android:text="Обрати фото"
+        android:text="@string/choose_photo"
         android:textSize="18sp" />
 
 </RelativeLayout>
