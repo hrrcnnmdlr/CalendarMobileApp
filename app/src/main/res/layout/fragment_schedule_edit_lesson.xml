@@ -18,7 +18,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="New Event"
-            android:hint="Lesson Name"
+            android:hint="@string/lesson_name"
             android:inputType=""
             android:padding="5dp"
             android:textColor="@color/dark_blue"
@@ -32,7 +32,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:autofillHints=""
-            android:hint="Lesson Description"
+            android:hint="@string/lesson_description"
             android:inputType=""
             android:padding="5dp"
             android:textColor="@color/dark_blue"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:padding="5dp"
-            android:text="Set number of lesson"
+            android:text="@string/set_number_of_lesson"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/lessonDescriptionEditText2"
             app:layout_constraintStart_toStartOf="@+id/lessonDescriptionEditText2"
@@ -63,17 +63,18 @@
             app:layout_constraintTop_toBottomOf="@+id/textView32" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName2"
+            android:id="@+id/homeWork"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:hint="Home work"
+            android:hint="@string/home_work"
             android:inputType="textPersonName"
             android:padding="5dp"
             android:textColor="@color/dark_blue"
             app:layout_constraintEnd_toEndOf="@+id/spinner_lessons2"
             app:layout_constraintStart_toStartOf="@+id/spinner_lessons2"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons2" />
+            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons2"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/addEventButton4"
@@ -88,33 +89,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/switch_attendance"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:text="Attendence"
-            app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName2"
+            android:text="@string/attendence"
+            app:layout_constraintStart_toStartOf="@+id/homeWork"
             app:layout_constraintTop_toBottomOf="@+id/homework_switch" />
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/homework_switch"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:text="Completed Homework"
+            android:checked="false"
+            android:text="@string/completed_homework"
             app:layout_constraintStart_toStartOf="@+id/switch_attendance"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+            app:layout_constraintTop_toBottomOf="@+id/homeWork" />
 
         <EditText
-            android:id="@+id/editTextObtainedGrade"
+            android:id="@+id/obtainedGrade"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginTop="10dp"
-            android:ems="10"
+            android:autofillHints=""
             android:inputType="textPersonName"
-            android:text="Grade"
-            app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName2"
+            android:text="@string/grade"
+            app:layout_constraintEnd_toEndOf="@+id/homeWork"
             app:layout_constraintStart_toStartOf="@+id/homework_switch"
             app:layout_constraintTop_toBottomOf="@+id/switch_attendance" />
     </androidx.constraintlayout.widget.ConstraintLayout>

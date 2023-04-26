@@ -5,10 +5,12 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.Navigation.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
+import com.example.calendar.fragments.EventDetailsFragment
 import com.example.calendar.fragments.eventId
 import java.text.SimpleDateFormat
 import java.util.*

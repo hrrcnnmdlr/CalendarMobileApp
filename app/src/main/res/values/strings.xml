@@ -90,4 +90,7 @@
     <string name="lesson_description">Lesson Description</string>
     <string name="lesson_name">Lesson Name</string>
     <string name="set_day_of_the_week">Set day of the week</string>
+    <string name="grade">Grade</string>
+    <string name="completed_homework">Completed Homework</string>
+    <string name="attendence">Attendence</string>
 </resources>

@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.calendar.R
 import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.MainDB
 import com.example.calendar.databinding.ActivitySearchBinding

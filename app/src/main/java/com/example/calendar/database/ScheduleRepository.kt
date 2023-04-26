@@ -7,17 +7,17 @@ import kotlinx.coroutines.withContext
 class ScheduleRepository(private val scheduleDao: ScheduleDao) {
     val allClasses: LiveData<List<Schedule>> = scheduleDao.getAllClasses()
 
-    suspend fun insertClass(schedule : Schedule) {
-        scheduleDao.insertClass(schedule)
+    suspend fun insertClass(schedule : Schedule): Long {
+        return scheduleDao.insertClass(schedule)
     }
 
 
-    suspend fun updateClass(schedule : Schedule) {
-        scheduleDao.updateClass(schedule)
+    suspend fun updateClass(schedule : Schedule): Long {
+        return scheduleDao.updateClass(schedule)
     }
 
-    suspend fun deleteClass(schedule : Schedule) {
-        scheduleDao.deleteClass(schedule)
+    suspend fun deleteClass(schedule : Schedule): Long {
+        return scheduleDao.deleteClass(schedule)
     }
 
     suspend fun deleteAllClasses() {

@@ -138,7 +138,7 @@ interface CategoryDao {
 @Dao
 interface ScheduleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertClass(schedule : Schedule) : Int = schedule.eventId
+    suspend fun insertClass(schedule : Schedule) : Long
 
     @Query("SELECT * FROM schedule")
     fun getAllClasses(): LiveData<List<Schedule>>
@@ -147,10 +147,10 @@ interface ScheduleDao {
     fun getClassById(id: Int): Schedule
 
     @Update
-    suspend fun updateClass(schedule : Schedule) : Int = schedule.eventId
+    suspend fun updateClass(schedule : Schedule) : Long
 
     @Delete
-    suspend fun deleteClass(schedule : Schedule) : Int = schedule.eventId
+    suspend fun deleteClass(schedule : Schedule) : Long
 
     @Query("DELETE FROM schedule")
     suspend fun deleteClasses()

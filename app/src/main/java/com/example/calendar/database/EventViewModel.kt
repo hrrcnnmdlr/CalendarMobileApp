@@ -94,8 +94,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
 
     fun insertClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
         var currentEvent = event // Створення копії об'єкту event
-        scheduleRepository.insertClass(schedule)
         var eventId = repository.insertForClass(currentEvent)
+        scheduleRepository.insertClass(schedule.copy(eventId = eventId))
         while (true) {
             val calendar1 = Calendar.getInstance()
             calendar1.timeInMillis = currentEvent.startDateTime
@@ -124,8 +124,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insertUniqueClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        scheduleRepository.insertClass(schedule)
-        repository.insertForClass(event)
+        val id = repository.insertForClass(event)
+        scheduleRepository.insertClass(schedule.copy(eventId = id))
     }
 
     fun deleteClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {

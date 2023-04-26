@@ -31,6 +31,7 @@ class EventDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var eventViewModel: EventViewModel
     private var eventIdDetails: Int = -1
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

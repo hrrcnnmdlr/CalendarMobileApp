@@ -21,7 +21,7 @@
             app:layout_constraintEnd_toEndOf="@+id/lessonDescriptionEditText"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/lessonDescriptionEditText"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextHomeWork" />
 
         <Spinner
             android:id="@+id/spinner_days"
@@ -100,7 +100,7 @@
             app:layout_constraintTop_toBottomOf="@+id/lessonDescriptionEditText" />
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editTextHomeWork"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"

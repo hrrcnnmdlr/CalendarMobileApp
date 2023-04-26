@@ -218,6 +218,7 @@
             android:layout_alignEnd="@+id/categorySpinner2"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_rounded"
             android:text="@string/cancel" />
 
         <Button
@@ -227,6 +228,7 @@
             android:layout_alignBottom="@+id/cancelButton"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/cancelButton"
+            android:background="@drawable/bg_rounded"
             android:text="@string/save" />
 
     </RelativeLayout>
