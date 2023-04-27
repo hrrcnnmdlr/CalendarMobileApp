@@ -89,4 +89,20 @@
     <string name="lesson_description">Опис уроку</string>
     <string name="lesson_name">Назва уроку</string>
     <string name="set_day_of_the_week">Встановити день тижня</string>
+    <string name="grade">Оцінки</string>
+    <string name="completed_homework">Виконані домашні завдання</string>
+    <string name="attendance">Відвідуваність</string>
+    <string name="common_setting">Загальні налаштування</string>
+    <string name="schedule_setting">Налаштування розкладу</string>
+    <string name="settings_category_general">Загальні</string>
+    <string name="general_settings_key">Загальні налаштування</string>
+    <string name="general_settings_summary">Налаштування загального характеру</string>
+    <string name="general_settings_title">Загальні налаштування</string>
+    <string name="settings_category_schedule">Розклад</string>
+    <string name="schedule_settings_key">Налаштування розкладу</string>
+    <string name="schedule_settings_summary">Налаштування розкладу занять</string>
+    <string name="schedule_settings_title">Налаштування розкладу</string>
+    <string name="weeks_title">Кількість тижнів навчання</string>
+    <string name="weeks_summary">Виберіть кількість тижнів навчання</string>
+    <string name="number_of_weeks">Кількість тижнів</string>
 </resources>

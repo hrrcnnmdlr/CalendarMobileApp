@@ -1,7 +1,6 @@
 package com.example.calendar.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendar.R
-import com.example.calendar.database.EventAdapter
 import com.example.calendar.database.EventViewModel
-import com.example.calendar.database.LessonAdapter
 import com.example.calendar.database.LessonWeekAdapter
 import com.example.calendar.databinding.FragmentScheduleWeekBinding
 import kotlinx.coroutines.Dispatchers
@@ -42,15 +40,16 @@ class ScheduleWeekFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val dateInMillis = selectedDay
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = dateInMillis
-        calendar.set(Calendar.DAY_OF_WEEK, 2)
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
+        val calendar = Calendar.getInstance().apply {
+            timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+            timeInMillis = dateInMillis // date - це час у мілісекундах
+            set(Calendar.DAY_OF_WEEK, 2)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
         selectedDate = calendar.timeInMillis
-
         val month = calendar.get(Calendar.MONTH)
         val months = resources.getStringArray(R.array.months)
         // встановлюємо назву місяця і рік в текстові поля
@@ -146,13 +145,36 @@ class ScheduleWeekFragment : Fragment() {
             item.layoutManager = linearLayoutManager
             item.visibility = View.VISIBLE
         }
+
         lifecycleScope.launch(Dispatchers.IO) {
+            val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
             val viewModel: EventViewModel by viewModels()
             var date: Long = selectedDate
+            var i = 1
             for (item in monday) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                var cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val startTime = cal.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val endTime = cal.timeInMillis
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     event.observe(viewLifecycleOwner) { lesson ->
@@ -161,15 +183,37 @@ class ScheduleWeekFragment : Fragment() {
                         item.adapter = mAdapter
                     }
                 }
+                i++
             }
-            val cal = Calendar.getInstance()
-            cal.timeInMillis = selectedDay
-            cal.add(Calendar.DAY_OF_MONTH, 1)
-            date = cal.timeInMillis
+            i = 1
+            val cal1 = Calendar.getInstance()
+            cal1.timeInMillis = selectedDay
+            cal1.add(Calendar.DAY_OF_MONTH, 1)
+            date = cal1.timeInMillis
             for (item in tuesday) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                var cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val startTime = cal.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val endTime = cal.timeInMillis
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     event.observe(viewLifecycleOwner) { lesson ->
@@ -178,13 +222,35 @@ class ScheduleWeekFragment : Fragment() {
                         item.adapter = mAdapter
                     }
                 }
+                i++
             }
-            cal.add(Calendar.DAY_OF_MONTH, 1)
-            date = cal.timeInMillis
+            i = 1
+            cal1.add(Calendar.DAY_OF_MONTH, 1)
+            date = cal1.timeInMillis
             for (item in wednesday) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                var cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val startTime = cal.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val endTime = cal.timeInMillis
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     event.observe(viewLifecycleOwner) { lesson ->
@@ -193,13 +259,35 @@ class ScheduleWeekFragment : Fragment() {
                         item.adapter = mAdapter
                     }
                 }
+                i++
             }
-            cal.add(Calendar.DAY_OF_MONTH, 1)
-            date = cal.timeInMillis
+            i = 1
+            cal1.add(Calendar.DAY_OF_MONTH, 1)
+            date = cal1.timeInMillis
             for (item in thursday) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                var cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val startTime = cal.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val endTime = cal.timeInMillis
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     event.observe(viewLifecycleOwner) { lesson ->
@@ -208,13 +296,35 @@ class ScheduleWeekFragment : Fragment() {
                         item.adapter = mAdapter
                     }
                 }
+                i++
             }
-            cal.add(Calendar.DAY_OF_MONTH, 1)
-            date = cal.timeInMillis
+            i = 1
+            cal1.add(Calendar.DAY_OF_MONTH, 1)
+            date = cal1.timeInMillis
             for (item in friday) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                var cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val startTime = cal.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val endTime = cal.timeInMillis
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     event.observe(viewLifecycleOwner) { lesson ->
@@ -223,13 +333,35 @@ class ScheduleWeekFragment : Fragment() {
                         item.adapter = mAdapter
                     }
                 }
+                i++
             }
-            cal.add(Calendar.DAY_OF_MONTH, 1)
-            date = cal.timeInMillis
+            i = 1
+            cal1.add(Calendar.DAY_OF_MONTH, 1)
+            date = cal1.timeInMillis
             for (item in saturday) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                var cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val startTime = cal.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                cal = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) }
+                    minute?.let { set(Calendar.MINUTE, it) }
+                }
+                val endTime = cal.timeInMillis
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
                     event.observe(viewLifecycleOwner) { lesson ->
@@ -238,6 +370,7 @@ class ScheduleWeekFragment : Fragment() {
                         item.adapter = mAdapter
                     }
                 }
+                i++
             }
         }
         val calen = Calendar.getInstance()

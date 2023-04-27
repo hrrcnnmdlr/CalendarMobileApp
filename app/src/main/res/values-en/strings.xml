@@ -91,4 +91,20 @@
     <string name="lesson_description">Lesson Description</string>
     <string name="lesson_name">Lesson Name</string>
     <string name="set_day_of_the_week">Set day of the week</string>
+    <string name="grade">Grade</string>
+    <string name="completed_homework">Completed Homework</string>
+    <string name="attendance">Attendance</string>
+    <string name="common_setting">Common Settings</string>
+    <string name="schedule_setting">Schedule Settings</string>
+    <string name="settings_category_general">General</string>
+    <string name="general_settings_key">General settings</string>
+    <string name="general_settings_summary">General settings description</string>
+    <string name="general_settings_title">General Settings</string>
+    <string name="settings_category_schedule">Schedule</string>
+    <string name="schedule_settings_key">Schedule settings</string>
+    <string name="schedule_settings_summary">Schedule settings description</string>
+    <string name="schedule_settings_title">Schedule Settings</string>
+    <string name="weeks_title">Number of weeks of study</string>
+    <string name="weeks_summary">Select the number of weeks of study</string>
+    <string name="number_of_weeks">Number of weeks</string>
 </resources>

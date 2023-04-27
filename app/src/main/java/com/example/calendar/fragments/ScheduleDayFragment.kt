@@ -1,24 +1,24 @@
 package com.example.calendar.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendar.R
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.database.LessonAdapter
-import com.example.calendar.database.LessonWeekAdapter
-import com.example.calendar.database.Schedule
 import com.example.calendar.databinding.FragmentScheduleDayBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class ScheduleDayFragment : Fragment() {
@@ -37,16 +37,20 @@ class ScheduleDayFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val dateInMillis = selectedDay
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = dateInMillis
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        calendar.set(Calendar.MILLISECOND, 0)
+        var calendar = Calendar.getInstance().apply {
+            timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+            timeInMillis = selectedDay // date - це час у мілісекундах
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        Log.d("TAG", "${calendar.timeInMillis / 86400000 * 86400000} ${calendar.timeInMillis}")
         selectedDate = calendar.timeInMillis
 
         val month = calendar.get(Calendar.MONTH)
@@ -65,13 +69,43 @@ class ScheduleDayFragment : Fragment() {
             item.layoutManager = linearLayoutManager
             item.visibility = View.VISIBLE
         }
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         lifecycleScope.launch(Dispatchers.IO) {
             val viewModel: EventViewModel by viewModels()
-            val date: Long = selectedDate
+            val date: Long = calendar.timeInMillis
+            var i = 1
             for (item in lessons) {
-                val startDateTime = date + 2 // start lesson
-                val endDateTime = date + 2 // end lesson
-                val event = viewModel.getScheduleEvent(startDateTime, endDateTime)
+                var timePreference = sharedPrefs.getString("start_time_preference$i", "00:00")
+                var timeParts = timePreference?.split(":")
+                var hour = timeParts?.get(0)?.toInt()
+                var minute = timeParts?.get(1)?.toInt()
+                calendar = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date // date - це час у мілісекундах
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) } // hour - це година від користувацьких налаштувань
+                    minute?.let { set(Calendar.MINUTE, it) } // minute - це хвилина від користувацьких налаштувань
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                val startTime = calendar.timeInMillis
+                timePreference = sharedPrefs.getString("end_time_preference$i", "00:00")
+                timeParts = timePreference?.split(":")
+                hour = timeParts?.get(0)?.toInt()
+                minute = timeParts?.get(1)?.toInt()
+                Log.d("TAG", "$hour  $minute ${calendar.timeInMillis} ${calendar.get(Calendar.DAY_OF_MONTH)}")
+                calendar = Calendar.getInstance().apply {
+                    timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+                    timeInMillis = date // date - це час у мілісекундах
+                    hour?.let { set(Calendar.HOUR_OF_DAY, it) } // hour - це година від користувацьких налаштувань
+                    minute?.let { set(Calendar.MINUTE, it) } // minute - це хвилина від користувацьких налаштувань
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }
+                val endTime = calendar.timeInMillis
+//                Log.d("TAG", "start_time_preference$i = ${sharedPrefs.getString("start_time_preference$i", "00:00")} " +
+//                        "end_time_preference$i = ${sharedPrefs.getString("end_time_preference$i", "00:00")}")
+//                Log.d("TAG", "$startTime  $endTime")
+                val event = viewModel.getScheduleEvent(startTime, endTime)
                 lifecycleScope.launch {
                     event.observe(viewLifecycleOwner) { lesson ->
                         if (lesson.isNotEmpty()) {
@@ -85,6 +119,7 @@ class ScheduleDayFragment : Fragment() {
                         }
                     }
                 }
+                i++
             }
         }
         val calen = Calendar.getInstance()

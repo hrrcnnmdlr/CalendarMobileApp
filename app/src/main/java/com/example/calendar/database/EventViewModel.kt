@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import androidx.preference.PreferenceManager
+import com.example.calendar.fragments.eventId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -14,8 +16,10 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     private val categoryRepository: CategoryRepository
     private val scheduleRepository: ScheduleRepository
     private val allEvents: LiveData<List<Event>>
+    private val application: Application
 
     init {
+        this.application = application
         val database = MainDB.getDatabase(application)
         val eventsDao = database.getDao()
         val categoryDao = database.categoryDao()
@@ -94,21 +98,24 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
 
     fun insertClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
         var currentEvent = event // Створення копії об'єкту event
-        var eventId = repository.insertForClass(currentEvent)
-        scheduleRepository.insertClass(schedule.copy(eventId = eventId))
+        val parentEventId = repository.insertForClass(currentEvent)
+        scheduleRepository.insertClass(schedule.copy(eventId = parentEventId))
+        var eventId = parentEventId
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
+        val numOfWeek = sharedPrefs.getString("weeks_preference", "1")?.toInt()
         while (true) {
             val calendar1 = Calendar.getInstance()
             calendar1.timeInMillis = currentEvent.startDateTime
-            calendar1.add(Calendar.DAY_OF_MONTH, 7)
+            calendar1.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek!!)
             val calendar2 = Calendar.getInstance()
             calendar2.timeInMillis = currentEvent.endDateTime
-            calendar2.add(Calendar.DAY_OF_MONTH, 7)
+            calendar2.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek)
             if (calendar1.timeInMillis > currentEvent.maxDateForRepeat!!) {
                 break
             }
             val newSchedule = copyWithNewIdSchedule(schedule, eventId)
             val newEvent = copyWithNewDatesSchedule(repository.getEventById(eventId),
-                currentEvent.startDateTime, currentEvent.endDateTime)
+                currentEvent.startDateTime, currentEvent.endDateTime).copy(repeatParentId = parentEventId)
             eventId = repository.insertForClass(newEvent)
             scheduleRepository.insertClass(newSchedule)
             currentEvent = newEvent // Оновлення копії об'єкту currentEvent

@@ -12,11 +12,11 @@ class ScheduleRepository(private val scheduleDao: ScheduleDao) {
     }
 
 
-    suspend fun updateClass(schedule : Schedule): Long {
+    suspend fun updateClass(schedule : Schedule): Int {
         return scheduleDao.updateClass(schedule)
     }
 
-    suspend fun deleteClass(schedule : Schedule): Long {
+    suspend fun deleteClass(schedule : Schedule): Int {
         return scheduleDao.deleteClass(schedule)
     }
 

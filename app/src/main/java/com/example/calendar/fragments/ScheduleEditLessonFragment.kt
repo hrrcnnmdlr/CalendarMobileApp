@@ -96,7 +96,7 @@ class ScheduleEditLessonFragment : Fragment() {
                 endDateTime = endDateTime, // Встановити дату та час закінчення події
                 categoryId = 2,
 
-            )
+                )
             val updatedLesson = lesson!!.copy(
                 classNumber = selectedNumberOfLesson,
                 obtainedGrade = binding.obtainedGrade.text.toString().toFloat(),
@@ -168,11 +168,6 @@ class ScheduleEditLessonFragment : Fragment() {
             }
             findNavController().navigateUp()
         }
-
-//        binding.cancelButton.setOnClickListener {
-//            findNavController().navigateUp()
-//        }
-
     }
 
     override fun onDestroyView() {

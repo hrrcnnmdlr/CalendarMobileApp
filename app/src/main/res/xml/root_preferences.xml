@@ -8,7 +8,7 @@
             android:key="name_preference"
             android:summary="@string/user_name_summary"
             android:title="@string/user_name_title" />
-
+ njii
         <Preference
             android:key="choose_photo"
             android:layout="@layout/custom_photo_preference"

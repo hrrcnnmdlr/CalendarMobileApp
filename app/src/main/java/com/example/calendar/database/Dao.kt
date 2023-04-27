@@ -147,10 +147,26 @@ interface ScheduleDao {
     fun getClassById(id: Int): Schedule
 
     @Update
-    suspend fun updateClass(schedule : Schedule) : Long
+    suspend fun update(schedule : Schedule)
+
+    suspend fun updateClass(schedule: Schedule) : Int {
+        val id = schedule.eventId
+        withContext(Dispatchers.Default) {
+            update(schedule)
+        }
+        return id
+    }
 
     @Delete
-    suspend fun deleteClass(schedule : Schedule) : Long
+    suspend fun delete(schedule : Schedule)
+
+    suspend fun deleteClass(schedule: Schedule) : Int{
+        val id = schedule.eventId
+        withContext(Dispatchers.Default) {
+            delete(schedule)
+        }
+        return id
+    }
 
     @Query("DELETE FROM schedule")
     suspend fun deleteClasses()

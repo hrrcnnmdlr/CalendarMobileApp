@@ -58,4 +58,12 @@
         <item>П\'ятниця</item>
         <item>Субота</item>
     </string-array>
+    <string-array name="weeks_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="weeks_labels">
+        <item>1 тиждень</item>
+        <item>2 тижні</item>
+    </string-array>
 </resources>
