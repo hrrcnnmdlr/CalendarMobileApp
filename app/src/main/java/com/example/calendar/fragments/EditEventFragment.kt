@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.example.calendar.R
 import com.example.calendar.database.*
 import com.example.calendar.databinding.FragmentEditEventBinding
 import kotlinx.coroutines.Dispatchers
@@ -75,7 +76,7 @@ class EditEventFragment : Fragment() {
                     selectedCategoryId = event!!.categoryId
                     binding!!.categorySpinner2.setSelection(selectedCategoryId - 1)
                 } else {
-                    Toast.makeText(requireContext(), "Event not found", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.event_not_found_error), Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }
                 Handler(Looper.getMainLooper()).post {
@@ -109,8 +110,8 @@ class EditEventFragment : Fragment() {
                 categories.clear()
                 categories.addAll(categoriesList.filter { it.id != 2 }.map { it.name })// map categories to their names
                 Log.d("DATABASE", "$categories")
-                if (categories.size > 0 && categories[categories.size - 1] != "New category") {
-                    categories.add("New category")
+                if (categories.size > 0 && categories[categories.size - 1] != getString(R.string.new_category_title)) {
+                    categories.add(getString(R.string.new_category_title))
                 }
 
                 // Set the adapter for categorySpinner only when categories are loaded
@@ -237,7 +238,7 @@ class EditEventFragment : Fragment() {
             if (binding!!.eventNameEditText.text.toString().isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Event name cannot be empty",
+                    getString(R.string.event_name_empty_error),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -246,7 +247,7 @@ class EditEventFragment : Fragment() {
             if (startDateTime > endDateTime) {
                 Toast.makeText(
                     requireContext(),
-                    "Invalid start/end time",
+                    getString(R.string.invalid_time_error),
                     Toast.LENGTH_SHORT
                 )
                     .show()
@@ -279,9 +280,9 @@ class EditEventFragment : Fragment() {
                             val alertDialogBuilder =
                                 androidx.appcompat.app.AlertDialog.Builder(requireContext())
                             alertDialogBuilder.apply {
-                                setTitle("Update Event")
-                                setMessage("What do you want to update?")
-                                setPositiveButton("All Repeated Events") { _, _ ->
+                                setTitle(getString(R.string.update_event_title))
+                                setMessage(getString(R.string.update_event_message))
+                                setPositiveButton(getString(R.string.update_all_events_button)) { _, _ ->
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO) {
                                             Log.d("UPDATE all", "$updatedEvent")
@@ -294,11 +295,11 @@ class EditEventFragment : Fragment() {
                                     }
                                     Toast.makeText(
                                         context,
-                                        "All repeated events updated",
+                                        getString(R.string.all_repeated_events_updated_message),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                                setNegativeButton("Just This One") { _, _ ->
+                                setNegativeButton(getString(R.string.update_one_event_button)) { _, _ ->
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO) {
                                             Log.d("UPDATE one", "$updatedEvent")
@@ -311,11 +312,11 @@ class EditEventFragment : Fragment() {
                                     }
                                     Toast.makeText(
                                         context,
-                                        "Event updated",
+                                        getString(R.string.event_updated_message),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                                setNeutralButton("This And All Next Events") { _, _ ->
+                                setNeutralButton(getString(R.string.update_next_events_button)) { _, _ ->
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO) {
                                             Log.d("UPDATE next", "$updatedEvent")
@@ -328,7 +329,7 @@ class EditEventFragment : Fragment() {
                                     }
                                     Toast.makeText(
                                         context,
-                                        "This and next events updated",
+                                        getString(R.string.update_next_events_button),
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
@@ -344,7 +345,7 @@ class EditEventFragment : Fragment() {
                                 }
                                 Toast.makeText(
                                     requireContext(),
-                                    "Event updated",
+                                    getString(R.string.event_updated_message),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -415,10 +416,10 @@ class EditEventFragment : Fragment() {
         val input = EditText(requireContext())
         input.inputType = InputType.TYPE_CLASS_TEXT
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("New category")
-            .setMessage("Input name of category:")
+            .setTitle(getString(R.string.new_category_title))
+            .setMessage(getString(R.string.new_category_message))
             .setView(input)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.new_category_positive_button)) { _, _ ->
 
                 val categoryName = input.text.toString()
                 if (categoryName.isNotBlank()) {
@@ -426,19 +427,19 @@ class EditEventFragment : Fragment() {
                     // перезавантажити список категорій
                     categories.removeAt(categories.size - 1)
                     categories.add(categoryName)
-                    categories.add("New category")
+                    categories.add(getString(R.string.new_category_title))
                     adapter.notifyDataSetChanged()
                     // відобразіть події з новою категорією
                     // ...
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Name must not be empty",
+                        getString(R.string.new_category_name_empty_error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-            .setNegativeButton("Cansel") { dialog, _ -> dialog.cancel() }
+            .setNegativeButton(getString(R.string.new_category_negative_button))  { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
     }

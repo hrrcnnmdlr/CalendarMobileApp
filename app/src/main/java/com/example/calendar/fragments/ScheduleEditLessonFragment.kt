@@ -1,6 +1,5 @@
 package com.example.calendar.fragments
 
-import android.R
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.example.calendar.R
 import com.example.calendar.database.Event
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.database.Schedule
@@ -89,7 +89,7 @@ class ScheduleEditLessonFragment : Fragment() {
                     binding.obtainedGrade.setText(lesson!!.obtainedGrade.toString())
                 }
             } else {
-                Toast.makeText(requireContext(), "Class not found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.class_not_found_error), Toast.LENGTH_SHORT).show()
                 findNavController().navigateUp()
             }
             // Set selected category ID after loading categories
@@ -104,7 +104,7 @@ class ScheduleEditLessonFragment : Fragment() {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         // Налаштування адаптерів та спінерів
         val numbersOfClass = arrayOf("1", "2", "3", "4", "5", "6")
-        val adapter1 = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, numbersOfClass)
+        val adapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, numbersOfClass)
         binding.spinnerLessons2.adapter = adapter1
         binding.spinnerLessons2.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -164,7 +164,7 @@ class ScheduleEditLessonFragment : Fragment() {
             if (binding.lessonNameEditText2.text.toString().isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Class name cannot be empty",
+                    getString(com.example.calendar.R.string.class_name_empty_error),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -191,9 +191,9 @@ class ScheduleEditLessonFragment : Fragment() {
                         val alertDialogBuilder =
                             androidx.appcompat.app.AlertDialog.Builder(requireContext())
                         alertDialogBuilder.apply {
-                            setTitle("Update Classes")
-                            setMessage("What do you want to update?")
-                            setPositiveButton("All Repeated Classes") { _, _ ->
+                            setTitle(getString(R.string.update_classes_title))
+                            setMessage(getString(R.string.update_classes_message))
+                            setPositiveButton(getString(R.string.update_classes_all)) { _, _ ->
                                 lifecycleScope.launch {
                                     withContext(Dispatchers.IO) {
                                         Log.d("UPDATE all", "$updatedEvent $updatedLesson")
@@ -204,11 +204,11 @@ class ScheduleEditLessonFragment : Fragment() {
                                 }
                                 Toast.makeText(
                                     context,
-                                    "All repeated classes updated",
+                                    getString(R.string.update_classes_all_toast),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                            setNegativeButton("Just This One") { _, _ ->
+                            setNegativeButton(getString(R.string.update_classes_one)) { _, _ ->
                                 lifecycleScope.launch {
                                     withContext(Dispatchers.IO) {
                                         Log.d("UPDATE one", "$updatedEvent $updatedLesson")
@@ -219,11 +219,11 @@ class ScheduleEditLessonFragment : Fragment() {
                                 }
                                 Toast.makeText(
                                     context,
-                                    "Class updated",
+                                    getString(R.string.update_classes_one_toast),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
-                            setNeutralButton("This And All Next Classes") { _, _ ->
+                            setNeutralButton(getString(R.string.update_classes_next)) { _, _ ->
                                 lifecycleScope.launch {
                                     withContext(Dispatchers.IO) {
                                         Log.d("UPDATE next", "$updatedEvent $updatedLesson")
@@ -234,7 +234,7 @@ class ScheduleEditLessonFragment : Fragment() {
                                 }
                                 Toast.makeText(
                                     context,
-                                    "This and next classes updated",
+                                    getString(R.string.update_classes_next_toast),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }

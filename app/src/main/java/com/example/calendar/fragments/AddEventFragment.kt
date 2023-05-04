@@ -60,8 +60,8 @@ class AddEventFragment : Fragment() {
                 categories.addAll(categoriesList.filter { it.id != 2 }
                     .map { it.name })// map categories to their names
                 Log.d("DATABASE", "$categories")
-                if (categories.size > 0 && categories[categories.size - 1] != "New category") {
-                    categories.add("New category")
+                if (categories.size > 0 && categories[categories.size - 1] != getString(R.string.new_category_title)) {
+                    categories.add(getString(R.string.new_category_title))
                 }
                 // Set the adapter for categorySpinner only when categories are loaded
                 val adapter1 = ArrayAdapter(
@@ -146,7 +146,7 @@ class AddEventFragment : Fragment() {
             if (binding.eventNameEditText.text.toString().isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Event name cannot be empty",
+                    getString(R.string.event_name_empty_error),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -155,7 +155,7 @@ class AddEventFragment : Fragment() {
             if (startDateTime == 0L || endDateTime == 0L || startDateTime > endDateTime) {
                 Toast.makeText(
                     requireContext(),
-                    "Invalid start/end time",
+                    getString(R.string.invalid_time_error),
                     Toast.LENGTH_SHORT
                 )
                     .show()
@@ -244,25 +244,25 @@ class AddEventFragment : Fragment() {
         val input = EditText(requireContext())
         input.inputType = InputType.TYPE_CLASS_TEXT
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("New category")
-            .setMessage("Input name of category:")
+            .setTitle(getString(R.string.new_category_title))
+            .setMessage(getString(R.string.new_category_message))
             .setView(input)
-            .setPositiveButton("Add") { _, _ ->
+            .setPositiveButton(getString(R.string.new_category_positive_button)) { _, _ ->
                 val categoryName = input.text.toString()
                 if (categoryName.isNotBlank()) {
                     eventViewModel.insertCategory(Category(0, categoryName))
                     // перезавантажити список категорій
                     categories.removeAt(categories.size - 1)
                     categories.add(categoryName)
-                    categories.add("New category")
+                    categories.add(getString(R.string.new_category_title))
                     adapter.notifyDataSetChanged()
                     // відобразіть події з новою категорією
                     // ...
                 } else {
-                    Toast.makeText(requireContext(), "Name must not be empty", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.new_category_name_empty_error), Toast.LENGTH_SHORT).show()
                 }
             }
-            .setNegativeButton("Cansel") { dialog, _ -> dialog.cancel() }
+            .setNegativeButton(getString(R.string.new_category_negative_button)) { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
     }

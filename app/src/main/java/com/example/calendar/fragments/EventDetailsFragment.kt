@@ -87,9 +87,9 @@ class EventDetailsFragment : Fragment() {
                 if (event.repeat != EventRepetition.NONE.toString()) {
                     val alertDialogBuilder = AlertDialog.Builder(requireContext())
                     alertDialogBuilder.apply {
-                        setTitle("Delete Event")
-                        setMessage("Do you want to delete all recurring events or just this one?")
-                        setPositiveButton("All Recurring Events") { _, _ ->
+                        setTitle(getString(R.string.delete_event_title))
+                        setMessage(getString(R.string.delete_event_message))
+                        setPositiveButton(getString(R.string.delete_event_all_button)) { _, _ ->
                             lifecycleScope.launch {
                                 withContext(Dispatchers.IO) {
                                     eventViewModel.deleteAllRepeated(event)
@@ -97,12 +97,12 @@ class EventDetailsFragment : Fragment() {
                             }
                             Toast.makeText(
                                 requireContext(),
-                                "All recurring events deleted",
+                                getString(R.string.all_recurring_deleted),
                                 Toast.LENGTH_SHORT
                             ).show()
                             findNavController().navigateUp()
                         }
-                        setNegativeButton("Just This One") { _, _ ->
+                        setNegativeButton(getString(R.string.delete_event_one_button)) { _, _ ->
                             lifecycleScope.launch {
                                 withContext(Dispatchers.IO) {
                                     eventViewModel.delete(event)
@@ -110,12 +110,12 @@ class EventDetailsFragment : Fragment() {
                             }
                             Toast.makeText(
                                 requireContext(),
-                                "Event deleted",
+                                getString(R.string.event_deleted),
                                 Toast.LENGTH_SHORT
                             ).show()
                             findNavController().navigateUp()
                         }
-                        setNeutralButton("This And All Next Events") { _, _ ->
+                        setNeutralButton(getString(R.string.delete_event_next_button)) { _, _ ->
                             lifecycleScope.launch {
                                 withContext(Dispatchers.IO) {
                                     eventViewModel.deleteAllNext(event)
@@ -123,7 +123,7 @@ class EventDetailsFragment : Fragment() {
                             }
                             Toast.makeText(
                                 requireContext(),
-                                "This and next events deleted",
+                                getString(R.string.this_next_deleted),
                                 Toast.LENGTH_SHORT
                             ).show()
                             findNavController().navigateUp()
@@ -138,7 +138,7 @@ class EventDetailsFragment : Fragment() {
                     }
                     Toast.makeText(
                         requireContext(),
-                        "Event deleted",
+                        getString(R.string.event_deleted),
                         Toast.LENGTH_SHORT
                     ).show()
                     findNavController().navigateUp()

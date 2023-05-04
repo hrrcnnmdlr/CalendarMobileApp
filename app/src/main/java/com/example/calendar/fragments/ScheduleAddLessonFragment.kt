@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.example.calendar.R
 import com.example.calendar.database.*
 import com.example.calendar.databinding.FragmentScheduleAddLessonBinding
 import kotlinx.coroutines.*
@@ -165,7 +166,7 @@ class ScheduleAddLessonFragment : Fragment() {
             if (binding.lessonNameEditText.text.toString().isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Class name cannot be empty",
+                    getString(com.example.calendar.R.string.class_name_empty_error),
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -173,7 +174,7 @@ class ScheduleAddLessonFragment : Fragment() {
             if (startDate == 0L || endDate == 0L || startDate > endDate) {
                 Toast.makeText(
                     requireContext(),
-                    "Invalid start/end time",
+                    getString(R.string.invalid_time_error),
                     Toast.LENGTH_SHORT
                 )
                     .show()
@@ -204,30 +205,30 @@ class ScheduleAddLessonFragment : Fragment() {
                 val alertDialogBuilder =
                     androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 alertDialogBuilder.apply {
-                    setTitle("Insert Сlasses")
-                    setMessage("What do you want to insert?")
-                    setPositiveButton("All Сlasses") { _, _ ->
+                    setTitle(getString(R.string.insert_classes_title))
+                    setMessage(getString(R.string.insert_classes_message))
+                    setPositiveButton(getString(R.string.insert_classes_all_button)) { _, _ ->
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO) {
                                 eventViewModel.insertClass(lesson, event)
                             }
                         }
                         Toast.makeText(
-                            context,
-                            "Classes insert",
+                            requireContext(),
+                            getString(R.string.classes_inserted),
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.d("EVENT", "$lesson $event")
                     }
-                    setNegativeButton("Just One") { _, _ ->
+                    setNegativeButton(getString(R.string.insert_classes_one_button)) { _, _ ->
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO) {
                                 eventViewModel.insertUniqueClass(lesson, event)
                             }
                         }
                         Toast.makeText(
-                            context,
-                            "Сlass insert",
+                            requireContext(),
+                            getString(R.string.class_inserted),
                             Toast.LENGTH_SHORT
                         ).show()
                         Log.d("EVENT", "$lesson $event")

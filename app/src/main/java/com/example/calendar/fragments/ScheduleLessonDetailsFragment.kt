@@ -54,10 +54,10 @@ class ScheduleLessonDetailsFragment : Fragment() {
                 event = eventIdDetails.let { eventViewModel.getEventById(it) }
                 lesson = eventIdDetails.let { eventViewModel.getClassById(it) }
             }
-            val dateFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
-            getString("date_format_preference", "dd/MM/yyyy")
-            val timeFormat = PreferenceManager.getDefaultSharedPreferences(requireContext()).
-            getString("time_format_preference", "HH:mm")
+            val dateFormat = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getString("date_format_preference", "dd/MM/yyyy")
+            val timeFormat = PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .getString("time_format_preference", "HH:mm")
             // Відобразити дані про зустріч
             binding.lessonName.text = event.eventName
             binding.lessonDescription.text = event.description
@@ -74,65 +74,51 @@ class ScheduleLessonDetailsFragment : Fragment() {
             }
             // Додати обробник для кнопки видалення
             binding.deleteEventButton2.setOnClickListener {
-                if (event.repeat != EventRepetition.NONE.toString()) {
-                    val alertDialogBuilder = AlertDialog.Builder(requireContext())
-                    alertDialogBuilder.apply {
-                        setTitle("Delete Event")
-                        setMessage("Do you want to delete all recurring events or just this one?")
-                        setPositiveButton("All Recurring Events") { _, _ ->
-                            lifecycleScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    eventViewModel.deleteAllRepeatedClasses(event)
-                                }
+                val alertDialogBuilder = AlertDialog.Builder(requireContext())
+                alertDialogBuilder.apply {
+                    setTitle(getString(R.string.delete_lesson_title))
+                    setMessage(getString(R.string.delete_lesson_message))
+                    setPositiveButton(getString(R.string.delete_lesson_all_button)) { _, _ ->
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                eventViewModel.deleteAllRepeatedClasses(event)
                             }
-                            Toast.makeText(
-                                requireContext(),
-                                "All recurring events deleted",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            findNavController().navigateUp()
                         }
-                        setNegativeButton("Just This One") { _, _ ->
-                            lifecycleScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    eventViewModel.deleteClass(lesson, event)
-                                }
-                            }
-                            Toast.makeText(
-                                requireContext(),
-                                "Event deleted",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            findNavController().navigateUp()
-                        }
-                        setNeutralButton("This And All Next Events") { _, _ ->
-                            lifecycleScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    eventViewModel.deleteAllNextClasses(event)
-                                }
-                            }
-                            Toast.makeText(
-                                requireContext(),
-                                "This and next events deleted",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            findNavController().navigateUp()
-                        }
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.all_recurring_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().navigateUp()
                     }
-                    alertDialogBuilder.create().show()
-                } else {
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO) {
-                            eventViewModel.delete(event)
+                    setNegativeButton(getString(R.string.delete_lesson_one_button)) { _, _ ->
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                eventViewModel.deleteClass(lesson, event)
+                            }
                         }
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.lesson_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().navigateUp()
                     }
-                    Toast.makeText(
-                        requireContext(),
-                        "Event deleted",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    findNavController().navigateUp()
+                    setNeutralButton(getString(R.string.delete_lesson_next_button)) { _, _ ->
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                eventViewModel.deleteAllNextClasses(event)
+                            }
+                        }
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.this_next_deleted),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().navigateUp()
+                    }
                 }
+                alertDialogBuilder.create().show()
             }
             Log.d("EVENT", "$event")
         }
