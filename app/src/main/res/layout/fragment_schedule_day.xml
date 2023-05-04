@@ -241,7 +241,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="20dp"
             android:backgroundTint="@color/white_blue"
-            android:text="Create lesson"
+            android:text="@string/create_lesson"
             android:textColor="@color/dark_blue_green"
             android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"

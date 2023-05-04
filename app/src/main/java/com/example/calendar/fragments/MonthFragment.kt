@@ -10,8 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -29,6 +27,7 @@ import com.example.calendar.reminder.EventService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalTime
 import java.util.*
 
 var selectedDate: Long = 0L
@@ -56,6 +55,16 @@ class MonthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val eventView: RecyclerView = binding.recyclerEventView
+
+        val textView = binding.goodMorning
+        val currentTime = LocalTime.now()
+        val greeting = when {
+            currentTime < LocalTime.of(5, 0) -> getString(R.string.greeting_night)
+            currentTime < LocalTime.NOON -> getString(R.string.greeting_morning)
+            currentTime < LocalTime.of(18, 0) -> getString(R.string.greeting_afternoon)
+            else -> getString(R.string.greeting_evening)
+        }
+        textView.text = greeting
 
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.FOREGROUND_SERVICE), 0)

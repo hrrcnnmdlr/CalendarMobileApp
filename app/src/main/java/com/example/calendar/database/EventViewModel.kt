@@ -100,7 +100,8 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     fun insertClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
         var currentEvent = event // Створення копії об'єкту event
         val parentEventId = repository.insertForClass(currentEvent)
-        repository.updateForClass(currentEvent.copy(repeatParentId = currentEvent.id))
+        repository.updateForClass(currentEvent.copy(repeatParentId = parentEventId))
+        Log.d("INSERT EVENT", "$currentEvent $parentEventId")
         scheduleRepository.insertClass(schedule.copy(eventId = parentEventId))
         var eventId: Int
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
@@ -112,11 +113,12 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
             val calendar2 = Calendar.getInstance()
             calendar2.timeInMillis = currentEvent.endDateTime
             calendar2.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek)
-            if (calendar1.timeInMillis > currentEvent.maxDateForRepeat!!) {
+            if (calendar1.timeInMillis >= currentEvent.maxDateForRepeat!!) {
                 break
             }
             val newEvent = copyWithNewDatesSchedule(currentEvent,
                 calendar1.timeInMillis, calendar2.timeInMillis).copy(repeatParentId = parentEventId)
+
             eventId = repository.insertForClass(newEvent)
             val newSchedule = copyWithNewIdSchedule(schedule, eventId)
             scheduleRepository.insertClass(newSchedule)
@@ -166,10 +168,9 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
             val sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
             val numOfWeek = sharedPrefs.getString("weeks_preference", "1")?.toInt()
-            var parentEventId = 0
+            val parentEventId = currentEvent.repeatParentId
             Log.d("DELETE EDIT", "$events")
             if (events != null) {
-                parentEventId = events[0].repeatParentId!!
                 for (element in events) {
                     if (currentEvent.startDateTime <= element.startDateTime) {
                         repository.delete(element)
@@ -202,11 +203,12 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
             val sharedPrefs =
                 PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
             val numOfWeek = sharedPrefs.getString("weeks_preference", "1")?.toInt()
-            var parentEventId = 0
+            val parentEventId = currentEvent.repeatParentId
             Log.d("DELETE EDIT", "$events")
             if (events != null) {
-                parentEventId = events[0].repeatParentId!!
-                currentEvent = events[0]
+                currentEvent = currentEvent.copy(
+                    startDateTime = events[0].startDateTime,
+                    endDateTime = events[0].endDateTime)
                 for (element in events) {
                     repository.delete(element)
                     scheduleRepository.getClassById(element.id).let {scheduleRepository.deleteClass(it)}

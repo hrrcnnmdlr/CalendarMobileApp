@@ -1,10 +1,12 @@
 package com.example.calendar.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +21,7 @@ import com.example.calendar.databinding.FragmentDayBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalTime
 import java.util.*
 
 
@@ -38,9 +41,19 @@ class DayFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val textView = binding.goodMorning
+        val currentTime = LocalTime.now()
+        val greeting = when {
+            currentTime < LocalTime.of(5, 0) -> getString(R.string.greeting_night)
+            currentTime < LocalTime.NOON -> getString(R.string.greeting_morning)
+            currentTime < LocalTime.of(18, 0) -> getString(R.string.greeting_afternoon)
+            else -> getString(R.string.greeting_evening)
+        }
+        textView.text = greeting
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val ownerName = sharedPrefs.getString("ownerName", "")

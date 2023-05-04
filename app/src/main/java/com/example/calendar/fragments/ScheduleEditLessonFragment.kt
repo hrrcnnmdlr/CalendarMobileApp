@@ -19,7 +19,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.example.calendar.database.Event
-import com.example.calendar.database.EventRepetition
 import com.example.calendar.database.EventViewModel
 import com.example.calendar.database.Schedule
 import com.example.calendar.databinding.FragmentScheduleEditLessonBinding
@@ -63,6 +62,7 @@ class ScheduleEditLessonFragment : Fragment() {
     private suspend fun updateData(binding: FragmentScheduleEditLessonBinding) {
         withContext(Dispatchers.IO) {
             event = viewModel.getEventById(eventIdEdit)
+            Log.d("REPEAT", "${event!!.repeatParentId}")
             lesson = viewModel.getClassById(eventIdEdit)
             Log.d("EDIT EVENT", "$eventIdEdit")
             if (event != null) {
@@ -175,8 +175,8 @@ class ScheduleEditLessonFragment : Fragment() {
                 startDateTime = startDate + startTime, // Встановити дату та час початку події
                 endDateTime = startDate + endTime // Встановити дату та час закінчення події
             )
-            var obtainedGrade = 0F
-            obtainedGrade = if (binding.obtainedGrade.text.toString() == "null") 0F
+            Log.d("REPEAT", "${updatedEvent.repeatParentId}")
+            val obtainedGrade: Float = if (binding.obtainedGrade.text.toString() == "null") 0F
             else binding.obtainedGrade.text.toString().toFloat()
             val updatedLesson = lesson!!.copy(
                 classNumber = selectedNumberOfLesson,

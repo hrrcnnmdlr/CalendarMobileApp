@@ -1,6 +1,7 @@
 package com.example.calendar.activity
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,6 +12,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
+import com.example.calendar.FirstActivity
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityNavigationDrawerBinding
 import com.google.android.material.navigation.NavigationView
@@ -26,6 +29,20 @@ class ActivityNavigationDrawer : AppCompatActivity() {
 
         binding = ActivityNavigationDrawerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Перевірка, чи програма запускається вперше
+        // Перевірка, чи програма запускається вперше
+        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val isFirstLaunch = prefs.getBoolean("isFirstLaunch", true)
+        if (isFirstLaunch) {
+            // Запуск активності налаштувань
+            val intent = Intent(this, FirstActivity::class.java)
+            startActivity(intent)
+            // Збереження статусу першого запуску
+            val editor = prefs.edit()
+            editor.putBoolean("isFirstLaunch", false)
+            editor.apply()
+        }
 
         setSupportActionBar(binding.appBarActivityNavigationDrawer.toolbar)
 
