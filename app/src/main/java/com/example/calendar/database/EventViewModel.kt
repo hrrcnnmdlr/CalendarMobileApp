@@ -2,6 +2,7 @@ package com.example.calendar.database
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
@@ -99,8 +100,9 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
     fun insertClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
         var currentEvent = event // Створення копії об'єкту event
         val parentEventId = repository.insertForClass(currentEvent)
+        repository.updateForClass(currentEvent.copy(repeatParentId = currentEvent.id))
         scheduleRepository.insertClass(schedule.copy(eventId = parentEventId))
-        var eventId = parentEventId
+        var eventId: Int
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
         val numOfWeek = sharedPrefs.getString("weeks_preference", "1")?.toInt()
         while (true) {
@@ -113,10 +115,10 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
             if (calendar1.timeInMillis > currentEvent.maxDateForRepeat!!) {
                 break
             }
-            val newSchedule = copyWithNewIdSchedule(schedule, eventId)
-            val newEvent = copyWithNewDatesSchedule(repository.getEventById(eventId),
-                currentEvent.startDateTime, currentEvent.endDateTime).copy(repeatParentId = parentEventId)
+            val newEvent = copyWithNewDatesSchedule(currentEvent,
+                calendar1.timeInMillis, calendar2.timeInMillis).copy(repeatParentId = parentEventId)
             eventId = repository.insertForClass(newEvent)
+            val newSchedule = copyWithNewIdSchedule(schedule, eventId)
             scheduleRepository.insertClass(newSchedule)
             currentEvent = newEvent // Оновлення копії об'єкту currentEvent
         }
@@ -152,31 +154,80 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
             scheduleRepository.getClassById(id).let { scheduleRepository.deleteClass(it) }
     }
 
-    fun updateClass(schedule: Schedule, event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        scheduleRepository.updateClass(schedule)
-        repository.updateForClass(event)
-    }
-
-    fun updateAllNextClasses(event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
-        if (events != null) {
-            for (element in events){
-                if (event.startDateTime <= element.startDateTime){
-                    repository.updateForClass(element)
-                    scheduleRepository.getClassById(element.id)
-                        .let { scheduleRepository.updateClass(it) }
+    fun updateClass(event: Event, schedule: Schedule, updateOne: Boolean = false, updateNext: Boolean = false, updateAll: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
+        if (updateOne) {
+            scheduleRepository.updateClass(schedule)
+            repository.updateForClass(event)
+        }
+        else if (updateNext) {
+            var currentEvent = event // Створення копії об'єкту event
+            // Отримати список всіх повторюваних подій, пов'язаних з подією, яку потрібно оновити
+            val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
+            val sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
+            val numOfWeek = sharedPrefs.getString("weeks_preference", "1")?.toInt()
+            var parentEventId = 0
+            Log.d("DELETE EDIT", "$events")
+            if (events != null) {
+                parentEventId = events[0].repeatParentId!!
+                for (element in events) {
+                    if (currentEvent.startDateTime <= element.startDateTime) {
+                        repository.delete(element)
+                        scheduleRepository.getClassById(element.id).let {scheduleRepository.deleteClass(it)}
+                    }
                 }
             }
+            while (true) {
+                val calendar1 = Calendar.getInstance()
+                calendar1.timeInMillis = currentEvent.startDateTime
+                calendar1.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek!!)
+                val calendar2 = Calendar.getInstance()
+                calendar2.timeInMillis = currentEvent.endDateTime
+                calendar2.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek)
+                if (calendar1.timeInMillis > currentEvent.maxDateForRepeat!!) {
+                    break
+                }
+                val newEvent = copyWithNewDatesSchedule(currentEvent,
+                    calendar1.timeInMillis, calendar2.timeInMillis).copy(repeatParentId = parentEventId)
+                eventId = repository.insertForClass(newEvent)
+                val newSchedule = copyWithNewIdSchedule(schedule, eventId)
+                scheduleRepository.insertClass(newSchedule)
+                currentEvent = newEvent // Оновлення копії об'єкту currentEvent
+            }
         }
-    }
-
-    fun updateAllRepeatedClasses(event: Event) = viewModelScope.launch(Dispatchers.IO) {
-        val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
-        if (events != null) {
-            for (element in events) {
-                repository.updateForClass(element)
-                scheduleRepository.getClassById(element.id)
-                    .let { scheduleRepository.updateClass(it) }
+        else if (updateAll) {
+            var currentEvent = event // Створення копії об'єкту event
+            // Отримати список всіх повторюваних подій, пов'язаних з подією, яку потрібно оновити
+            val events = event.repeatParentId?.let { repository.getEventsByParentId(it) }
+            val sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(application.applicationContext)
+            val numOfWeek = sharedPrefs.getString("weeks_preference", "1")?.toInt()
+            var parentEventId = 0
+            Log.d("DELETE EDIT", "$events")
+            if (events != null) {
+                parentEventId = events[0].repeatParentId!!
+                currentEvent = events[0]
+                for (element in events) {
+                    repository.delete(element)
+                    scheduleRepository.getClassById(element.id).let {scheduleRepository.deleteClass(it)}
+                }
+            }
+            while (true) {
+                val calendar1 = Calendar.getInstance()
+                calendar1.timeInMillis = currentEvent.startDateTime
+                calendar1.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek!!)
+                val calendar2 = Calendar.getInstance()
+                calendar2.timeInMillis = currentEvent.endDateTime
+                calendar2.add(Calendar.DAY_OF_MONTH, 7 * numOfWeek)
+                if (calendar1.timeInMillis > currentEvent.maxDateForRepeat!!) {
+                    break
+                }
+                val newEvent = copyWithNewDatesSchedule(currentEvent,
+                    calendar1.timeInMillis, calendar2.timeInMillis).copy(repeatParentId = parentEventId)
+                eventId = repository.insertForClass(newEvent)
+                val newSchedule = copyWithNewIdSchedule(schedule, eventId)
+                scheduleRepository.insertClass(newSchedule)
+                currentEvent = newEvent // Оновлення копії об'єкту currentEvent
             }
         }
     }

@@ -41,7 +41,6 @@ class ScheduleDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dateInMillis = selectedDay
         var calendar = Calendar.getInstance().apply {
             timeZone = TimeZone.getDefault() // встановлення локального часового поясу
             timeInMillis = selectedDay // date - це час у мілісекундах
@@ -51,7 +50,7 @@ class ScheduleDayFragment : Fragment() {
             set(Calendar.MILLISECOND, 0)
         }
         Log.d("TAG", "${calendar.timeInMillis / 86400000 * 86400000} ${calendar.timeInMillis}")
-        selectedDate = calendar.timeInMillis
+        selectedDay = calendar.timeInMillis
 
         val month = calendar.get(Calendar.MONTH)
         val months = resources.getStringArray(R.array.months)

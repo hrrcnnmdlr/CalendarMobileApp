@@ -108,7 +108,11 @@ interface EventDao {
         }
     }
 
-    @Query("SELECT * FROM events WHERE startDateTime = :startDateTime AND endDateTime = :endDateTime AND category_id = :categoryId")
+    @Query("SELECT * FROM events WHERE startDateTime > :startDateTime - 4800000 " +
+            "AND startDateTime < :startDateTime + 4800000 " +
+            "AND endDateTime > :endDateTime - 4800000 " +
+            "AND endDateTime < :endDateTime + 4800000 " +
+            "AND category_id = :categoryId")
     fun getScheduleEvent(startDateTime: Long, endDateTime: Long, categoryId: Int=2): LiveData<List<Event>>
 }
 
@@ -149,23 +153,15 @@ interface ScheduleDao {
     @Update
     suspend fun update(schedule : Schedule)
 
-    suspend fun updateClass(schedule: Schedule) : Int {
-        val id = schedule.eventId
-        withContext(Dispatchers.Default) {
-            update(schedule)
-        }
-        return id
+    suspend fun updateClass(schedule: Schedule){
+        update(schedule)
     }
 
     @Delete
     suspend fun delete(schedule : Schedule)
 
-    suspend fun deleteClass(schedule: Schedule) : Int{
-        val id = schedule.eventId
-        withContext(Dispatchers.Default) {
-            delete(schedule)
-        }
-        return id
+    suspend fun deleteClass(schedule: Schedule){
+        delete(schedule)
     }
 
     @Query("DELETE FROM schedule")

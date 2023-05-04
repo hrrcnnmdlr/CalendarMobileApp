@@ -107,4 +107,15 @@
     <string name="weeks_title">Number of weeks of study</string>
     <string name="weeks_summary">Select the number of weeks of study</string>
     <string name="number_of_weeks">Number of weeks</string>
+    <string name="nav_day">Day</string>
+    <string name="nav_week">Week</string>
+    <string name="nav_add_event">Add Event</string>
+    <string name="nav_month">Month</string>
+    <string name="nav_edit_event">Edit Event</string>
+    <string name="nav_details_event">Event Details</string>
+    <string name="nav_schedule_day">Day Schedule</string>
+    <string name="nav_schedule_week">Week Schedule</string>
+    <string name="nav_add_class">Add Class</string>
+    <string name="nav_details_class">Class Details</string>
+    <string name="nav_edit_class">Edit Class</string>
 </resources>

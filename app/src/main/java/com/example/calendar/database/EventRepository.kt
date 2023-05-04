@@ -266,12 +266,10 @@ class EventRepository(private val eventDao: EventDao) {
     suspend fun deleteAllRepeated(event: Event): List<Int> {
         val ids = mutableListOf<Int>()
         ids.add(eventDao.deleteEvent(event))
-        if (event.repeat != EventRepetition.NONE.toString()) {
-            val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
-            if (events != null) {
-                for (element in events) {
-                    ids.add(eventDao.deleteEvent(element))
-                }
+        val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
+        if (events != null) {
+            for (element in events) {
+                ids.add(eventDao.deleteEvent(element))
             }
         }
         return ids
@@ -307,13 +305,11 @@ class EventRepository(private val eventDao: EventDao) {
     suspend fun deleteAllNextRepeated(event: Event): List<Int> {
         val ids = mutableListOf<Int>()
         ids.add(eventDao.deleteEvent(event))
-        if (event.repeat != EventRepetition.NONE.toString()) {
-            val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
-            if (events != null) {
-                for (element in events) {
-                    if (element.startDateTime >= event.startDateTime) {
-                        ids.add(eventDao.deleteEvent(element))
-                    }
+        val events = event.repeatParentId?.let { eventDao.getEventsByParentId(it) }
+        if (events != null) {
+            for (element in events) {
+                if (element.startDateTime >= event.startDateTime) {
+                    ids.add(eventDao.deleteEvent(element))
                 }
             }
         }

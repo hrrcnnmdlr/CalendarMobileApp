@@ -67,14 +67,15 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_marginTop="10dp"
+            android:autofillHints=""
             android:hint="@string/home_work"
             android:inputType="textPersonName"
             android:padding="5dp"
             android:textColor="@color/dark_blue"
             app:layout_constraintEnd_toEndOf="@+id/spinner_lessons2"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/spinner_lessons2"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons2"
-            android:autofillHints="" />
+            app:layout_constraintTop_toBottomOf="@+id/startDateTimeTextView3" />
 
         <Button
             android:id="@+id/addEventButton4"
@@ -119,5 +120,24 @@
             app:layout_constraintEnd_toEndOf="@+id/homeWork"
             app:layout_constraintStart_toStartOf="@+id/homework_switch"
             app:layout_constraintTop_toBottomOf="@+id/switch_attendance" />
+
+        <TextView
+            android:id="@+id/startDateTimeTextView3"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hint="Дата проведення"
+            android:padding="5dp"
+            android:textColor="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_lessons2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

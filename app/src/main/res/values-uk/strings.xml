@@ -105,4 +105,15 @@
     <string name="weeks_title">Кількість тижнів навчання</string>
     <string name="weeks_summary">Виберіть кількість тижнів навчання</string>
     <string name="number_of_weeks">Кількість тижнів</string>
+    <string name="nav_day">День</string>
+    <string name="nav_week">Тиждень</string>
+    <string name="nav_add_event">Додати подію</string>
+    <string name="nav_month">Місяць</string>
+    <string name="nav_edit_event">Редагувати подію</string>
+    <string name="nav_details_event">Деталі події</string>
+    <string name="nav_schedule_day">Розклад на день</string>
+    <string name="nav_schedule_week">Розклад на тиждень</string>
+    <string name="nav_add_class">Додати клас</string>
+    <string name="nav_details_class">Деталі класу</string>
+    <string name="nav_edit_class">Редагувати клас</string>
 </resources>

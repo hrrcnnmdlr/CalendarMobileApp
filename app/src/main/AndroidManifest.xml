@@ -19,23 +19,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Calendar"
         tools:targetApi="31">
+
         <activity
             android:name=".activity.SearchActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label="@string/action_search">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.ActivityNavigationDrawer"
             android:exported="true"
-            android:label="@string/title_activity_navigation_drawer"
             android:theme="@style/Theme.Calendar.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.SettingsActivityGeneral"
             android:exported="true"
@@ -47,6 +50,7 @@
                 <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.SettingsActivitySchedule"
             android:exported="true"
@@ -57,6 +61,7 @@
                 <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.SettingsActivity"
             android:exported="true"
@@ -67,6 +72,7 @@
                 <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".reminder.EventService"
             android:enabled="true"
@@ -75,6 +81,7 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

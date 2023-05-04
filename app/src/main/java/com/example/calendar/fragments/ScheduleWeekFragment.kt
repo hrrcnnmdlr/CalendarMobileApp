@@ -33,7 +33,7 @@ class ScheduleWeekFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentScheduleWeekBinding.inflate(inflater, container, false)
-
+        selectedDay = selectedDate
         return binding.root
     }
 
@@ -373,17 +373,22 @@ class ScheduleWeekFragment : Fragment() {
                 i++
             }
         }
-        val calen = Calendar.getInstance()
-        calen.timeInMillis = selectedDay
+        val calen = Calendar.getInstance().apply {
+            timeZone = TimeZone.getDefault() // встановлення локального часового поясу
+            timeInMillis = selectedDay
+        }
+
         binding.buttonNextWeek.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, 7)
             selectedDay = calen.timeInMillis
+            selectedDate = selectedDay
             controller.navigateUp()
             controller.navigate(R.id.nav_schedule_week)
         }
         binding.buttonPrevWeek.setOnClickListener {
             calen.add(Calendar.DAY_OF_MONTH, -7)
             selectedDay = calen.timeInMillis
+            selectedDate = selectedDay
             controller.navigateUp()
             controller.navigate(R.id.nav_schedule_week)
         }
