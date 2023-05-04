@@ -42,16 +42,6 @@ class EventService : Service() {
             )
             notificationManager.createNotificationChannel(channel)
         }
-
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle("Reminder service started")
-            .setContentText("Your reminders have been started in the background")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            .build()
-
-        startForeground(1, notification)
         timer = Timer()
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
@@ -108,19 +98,21 @@ private fun createReminder(event: Event, context: Context) {
     val notificationIntent = Intent(context, ActivityNavigationDrawer::class.java)
     notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
     val pendingIntent = PendingIntent.getActivity(context, event.id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
     val cal = Calendar.getInstance()
     cal.timeInMillis = event.startDateTime - System.currentTimeMillis()
     val min = (cal.timeInMillis / 60000).toInt()
-    val notificationBuilder = NotificationCompat.Builder(context, "EVENT_REMINDER")
-        .setContentTitle(event.eventName)
-        .setContentText("${event.eventName} starts in $min minutes")
+    val channelId = context.getString(R.string.event_reminder_channel_id)
+    val channelName = context.getString(R.string.event_reminder_channel_name)
+    val contentTitle = context.getString(R.string.event_reminder_content_title, event.eventName)
+    val contentText = context.getString(R.string.event_reminder_content_text, event.eventName, min)
+    val notificationBuilder = NotificationCompat.Builder(context, channelId)
+        .setContentTitle(contentTitle)
+        .setContentText(contentText)
         .setSmallIcon(R.drawable.ic_launcher_foreground)
         .setAutoCancel(true)
         .setContentIntent(pendingIntent)
-
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val channel = NotificationChannel("EVENT_REMINDER", "Event Reminder", NotificationManager.IMPORTANCE_DEFAULT)
+        val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
         notificationManager.createNotificationChannel(channel)
         notificationBuilder.setChannelId(channel.id)
     }

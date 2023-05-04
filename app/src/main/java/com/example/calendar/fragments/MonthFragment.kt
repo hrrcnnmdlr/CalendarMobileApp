@@ -3,6 +3,7 @@ package com.example.calendar.fragments
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -65,7 +67,22 @@ class MonthFragment : Fragment() {
             else -> getString(R.string.greeting_evening)
         }
         textView.text = greeting
+        val notificationManager = context?.let { NotificationManagerCompat.from(it) }
 
+        if (notificationManager != null) {
+            if (!notificationManager.areNotificationsEnabled()) {
+                val intent = Intent()
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+                    intent.putExtra("android.provider.extra.APP_PACKAGE", context?.packageName)
+                } else {
+                    intent.action = "android.settings.APPLICATION_DETAILS_SETTINGS"
+                    intent.addCategory(Intent.CATEGORY_DEFAULT)
+                    intent.data = Uri.parse("package:" + context?.packageName)
+                }
+                context?.startActivity(intent)
+            }
+        }
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.FOREGROUND_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.FOREGROUND_SERVICE), 0)
         }

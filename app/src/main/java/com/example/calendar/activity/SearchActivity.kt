@@ -5,8 +5,10 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendar.database.EventAdapter
+import com.example.calendar.database.EventAdapterSearch
 import com.example.calendar.database.MainDB
 import com.example.calendar.databinding.ActivitySearchBinding
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +27,6 @@ class SearchActivity : AppCompatActivity() {
         val linearLayoutManager = LinearLayoutManager(this)
         searchView.layoutManager = linearLayoutManager
         searchView.visibility = View.VISIBLE
-
         binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 searchText = binding.editTextSearch.text.toString()
@@ -36,7 +37,7 @@ class SearchActivity : AppCompatActivity() {
                     withContext(Dispatchers.Main) {
                         events.observe(this@SearchActivity) { events ->
                             // This code will be executed when the LiveData object emits a new value
-                            val mAdapter = EventAdapter(this@SearchActivity, events)
+                            val mAdapter = EventAdapterSearch(this@SearchActivity, events)
                             searchView.adapter = mAdapter
                         }
                     }
@@ -52,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     events.observe(this@SearchActivity) { events ->
                         // This code will be executed when the LiveData object emits a new value
-                        val mAdapter = EventAdapter(this@SearchActivity, events)
+                        val mAdapter = EventAdapterSearch(this@SearchActivity, events)
                         searchView.adapter = mAdapter
                     }
                 }

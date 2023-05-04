@@ -174,4 +174,8 @@
     <string name="all_recurring_deleted_lesson">All recurring lessons deleted</string>
     <string name="lesson_deleted">Lesson deleted</string>
     <string name="this_next_deleted_lesson">This and next lessons deleted</string>
+    <string name="event_reminder_channel_id">EVENT_REMINDER</string>
+    <string name="event_reminder_channel_name">Event Reminder</string>
+    <string name="event_reminder_content_title">%s</string>
+    <string name="event_reminder_content_text">%s starts in %d minutes</string>
 </resources>

@@ -173,4 +173,8 @@
     <string name="all_recurring_deleted_lesson">Всі повторювані уроки видалено</string>
     <string name="lesson_deleted">Урок видалено</string>
     <string name="this_next_deleted_lesson">Цей та наступні уроки видалено</string>
+    <string name="event_reminder_channel_id">Нагадування про подію</string>
+    <string name="event_reminder_channel_name">Нагадування про подію</string>
+    <string name="event_reminder_content_title">%s</string>
+    <string name="event_reminder_content_text">%s починається через %d хвилин</string>
 </resources>
