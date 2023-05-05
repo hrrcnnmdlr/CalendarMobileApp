@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.example.calendar.R
@@ -14,7 +15,7 @@ import com.example.calendar.database.Event
 import com.example.calendar.database.MainDB
 import java.util.*
 
-class EventService : Service() {
+class EventService : Service(){
 
     private lateinit var timer: Timer
 
@@ -32,6 +33,7 @@ class EventService : Service() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("REMINDER","Запуск вдалий, сервіс запущено")
         val channelId = "event_reminder_channel"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -47,7 +49,7 @@ class EventService : Service() {
             override fun run() {
                 val currentTimeMillis = System.currentTimeMillis()
                 val events = getEventsFromDatabase()
-                for (event in events) {
+                events.forEach { event ->
                     if (event.remind5MinutesBefore && currentTimeMillis >= event.startDateTime - 330000
                         && currentTimeMillis <= event.startDateTime - 270000) {
                         createReminder(event, this@EventService)
@@ -86,8 +88,8 @@ class EventService : Service() {
     private fun getEventsFromDatabase(): List<Event> {
         val db = MainDB.getDatabase(applicationContext)
         val eventDao = db.getDao()
-        val events = eventDao.getAllEvents()
-        return events.value ?: emptyList()
+        val events = eventDao.getAllEventsNotLive()
+        return events
     }
 
 }
