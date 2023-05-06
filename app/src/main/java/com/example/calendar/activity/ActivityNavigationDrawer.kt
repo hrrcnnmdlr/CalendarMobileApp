@@ -7,14 +7,16 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.example.calendar.FirstActivity
 import com.example.calendar.R
+import com.example.calendar.database.Category
+import com.example.calendar.database.EventViewModel
 import com.example.calendar.databinding.ActivityNavigationDrawerBinding
 import com.google.android.material.navigation.NavigationView
 
@@ -42,6 +44,14 @@ class ActivityNavigationDrawer : AppCompatActivity() {
             val editor = prefs.edit()
             editor.putBoolean("isFirstLaunch", false)
             editor.apply()
+            val eventViewModel = ViewModelProvider(this)[EventViewModel::class.java]
+            eventViewModel.insertCategory(Category(0, "Business"))
+            eventViewModel.insertCategory(Category(0, "Education"))
+            val categories = listOf("Entertainment", "Food and Drink",
+                "Health and Wellness", "Hobbies", "Music", "Networking", "Sports", "Technology", "Travel")
+            for (category in categories) {
+                eventViewModel.insertCategory(Category(0, category))
+            }
         }
 
         setSupportActionBar(binding.appBarActivityNavigationDrawer.toolbar)

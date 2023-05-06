@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/dark_blue</item>
         <item name="colorPrimaryDark">@color/dark_blue_green</item>
-        <item name="colorAccent">@color/white_blue</item>
+        <item name="colorAccent">@color/background_blue</item>
         <!-- Customize your theme here. -->
     </style>
     <style name="Theme.Calendar.NoActionBar">

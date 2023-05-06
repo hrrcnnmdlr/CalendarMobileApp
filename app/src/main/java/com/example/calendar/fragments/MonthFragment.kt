@@ -35,7 +35,6 @@ import java.util.*
 var selectedDate: Long = 0L
 var eventId: Int = 0
 class MonthFragment : Fragment() {
-
     private var _binding: FragmentMonthBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -89,21 +88,6 @@ class MonthFragment : Fragment() {
         // Запуск служби
         val serviceIntent = Intent(requireContext(), EventService::class.java)
         ContextCompat.startForegroundService(requireContext(), serviceIntent)
-        // Показ сповіщення
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val ownerName = sharedPrefs.getString("ownerName", "")

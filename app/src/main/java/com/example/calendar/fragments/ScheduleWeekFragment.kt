@@ -361,15 +361,16 @@ class ScheduleWeekFragment : Fragment() {
                     minute?.let { set(Calendar.MINUTE, it) }
                 }
                 val endTime = cal.timeInMillis
-                val event = viewModel.getScheduleEvent(startTime, endTime)
                 // switch back to the main thread to update the UI
                 withContext(Dispatchers.Main) {
-                    event.observe(viewLifecycleOwner) { lesson ->
-                        // This code will be executed when the LiveData object emits a new value
-                        val mAdapter = LessonWeekAdapter(requireContext(), lesson)
+                    val event = viewModel.getScheduleEvent(startTime, endTime)
+                    event.observe(viewLifecycleOwner) { events ->
+                        val eventList = events ?: emptyList() // handle null case
+                        val mAdapter = LessonWeekAdapter(requireContext(), eventList)
                         item.adapter = mAdapter
                     }
                 }
+
                 i++
             }
         }

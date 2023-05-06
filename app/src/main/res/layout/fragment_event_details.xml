@@ -199,10 +199,10 @@
             android:layout_alignStart="@+id/deleteEventButton"
             android:layout_alignEnd="@+id/deleteEventButton"
             android:layout_marginBottom="20dp"
-            android:background="@color/light_blue"
+            android:background="@color/background_blue"
             android:padding="10dp"
             android:text="@string/edit"
-            android:textColor="@color/dark_blue"
+            android:textColor="@color/dark_blue_green"
             android:textSize="20sp" />
 
         <Button
@@ -213,10 +213,10 @@
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/light_blue"
+            android:background="@color/background_blue"
             android:padding="10dp"
             android:text="@string/delete"
-            android:textColor="@color/dark_blue"
+            android:textColor="@color/dark_blue_green"
             android:textSize="20sp" />
     </RelativeLayout>
 

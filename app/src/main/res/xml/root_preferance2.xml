@@ -1,100 +1,100 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Semester Date">
+    <PreferenceCategory android:title="@string/semester_date_category">
         <EditTextPreference
+            android:defaultValue="2023-02-01"
+            android:inputType="date"
             android:key="start_date_preference"
-            android:title="Дата початку навчання"
-            android:defaultValue="2023-09-01"
-            android:inputType="date" />
+            android:title="@string/start_date_title" />
         <EditTextPreference
+            android:defaultValue="2023-05-30"
+            android:inputType="date"
             android:key="end_date_preference"
-            android:title="Дата закінчення навчання"
-            android:defaultValue="2024-06-30"
-            android:inputType="date" />
+            android:title="@string/end_date_title" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Class Time">
-        <PreferenceCategory android:title="First class">
+    <PreferenceCategory android:title="@string/class_time_category">
+        <PreferenceCategory android:title="@string/start_time_category1">
             <EditTextPreference
                 android:defaultValue="08:20"
                 android:key="start_time_preference1"
-                android:title="Час початку першої пари"
+                android:title="@string/start_time_title1"
                 android:inputType="datetime"
                 android:selectAllOnFocus="true"/>
 
             <EditTextPreference
                 android:defaultValue="09:40"
                 android:key="end_time_preference1"
-                android:title="Час закінчення першої пари"
+                android:title="@string/end_time_title1"
                 android:inputType="time"
                 android:selectAllOnFocus="true"/>
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Second class">
+        <PreferenceCategory android:title="@string/start_time_category2">
             <EditTextPreference
             android:defaultValue="09:50"
             android:key="start_time_preference2"
-            android:title="Час початку другої пари"
+            android:title="@string/start_time_title2"
             android:inputType="time"/>
 
             <EditTextPreference
             android:defaultValue="11:10"
             android:key="end_time_preference2"
-            android:title="Час закінчення другої пари"
+            android:title="@string/end_time_title2"
             android:inputType="time"/>
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Third class">
+        <PreferenceCategory android:title="@string/start_time_category3">
             <EditTextPreference
             android:defaultValue="11:30"
             android:key="start_time_preference3"
-            android:title="Час початку третьої пари"
+            android:title="@string/start_time_title3"
             android:inputType="time"/>
 
             <EditTextPreference
             android:defaultValue="12:50"
             android:key="end_time_preference3"
-            android:title="Час закінчення третьої пари"
+            android:title="@string/end_time_title3"
             android:inputType="time"/>
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Forth class">
+        <PreferenceCategory android:title="@string/start_time_category4">
             <EditTextPreference
             android:defaultValue="13:00"
             android:key="start_time_preference4"
-            android:title="Час початку четвертої пари"
+            android:title="@string/start_time_title4"
             android:inputType="time"/>
 
             <EditTextPreference
             android:defaultValue="14:20"
             android:key="end_time_preference4"
-            android:title="Час закінчення четвертої пари"
+            android:title="@string/end_time_title4"
             android:inputType="time"/>
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Fifth class">
+        <PreferenceCategory android:title="@string/start_time_category5">
             <EditTextPreference
             android:defaultValue="14:40"
             android:key="start_time_preference5"
-            android:title="Час початку п'ятої пари"
+            android:title="@string/start_time_title5"
             android:inputType="time"/>
 
             <EditTextPreference
             android:defaultValue="16:00"
             android:key="end_time_preference5"
-            android:title="Час закінчення п'ятої пари"
+            android:title="@string/end_time_title5"
             android:inputType="time"/>
         </PreferenceCategory>
 
-        <PreferenceCategory android:title="Sixth class">
+        <PreferenceCategory android:title="@string/start_time_category6">
             <EditTextPreference
             android:defaultValue="16:10"
             android:key="start_time_preference6"
-            android:title="Час початку шостої пари"
+            android:title="@string/start_time_title6"
             android:inputType="time"/>
             <EditTextPreference
             android:defaultValue="17:30"
             android:key="end_time_preference6"
-            android:title="Час закінчення шостої пари"
+            android:title="@string/end_time_title6"
             android:inputType="time"/>
         </PreferenceCategory>
     </PreferenceCategory>

@@ -177,4 +177,26 @@
     <string name="event_reminder_channel_name">Нагадування про подію</string>
     <string name="event_reminder_content_title">%s</string>
     <string name="event_reminder_content_text">%s починається через %d хвилин</string>
+    <string name="start_date_title">Дата початку навчання</string>
+    <string name="end_date_title">Дата закінчення навчання</string>
+    <string name="start_time_title1">Час початку першої пари</string>
+    <string name="end_time_title1">Час закінчення першої пари</string>
+    <string name="start_time_title2">Час початку другої пари</string>
+    <string name="end_time_title2">Час закінчення другої пари</string>
+    <string name="start_time_title3">Час початку третьої пари</string>
+    <string name="end_time_title3">Час закінчення третьої пари</string>
+    <string name="start_time_title4">Час початку четвертої пари</string>
+    <string name="end_time_title4">Час закінчення четвертої пари</string>
+    <string name="start_time_title5">Час початку п\'ятої пари</string>
+    <string name="end_time_title5">Час закінчення п\'ятої пари</string>
+    <string name="start_time_title6">Час початку шостої пари</string>
+    <string name="end_time_title6">Час закінчення шостої пари</string>
+    <string name="semester_date_category">Дата семестру</string>
+    <string name="class_time_category">Час занять</string>
+    <string name="start_time_category1">Перша пара</string>
+    <string name="start_time_category2">Друга пара</string>
+    <string name="start_time_category3">Третя пара</string>
+    <string name="start_time_category4">Четверта пара</string>
+    <string name="start_time_category5">П\'ята пара</string>
+    <string name="start_time_category6">Шоста пара</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.calendar
+package com.example.calendar.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

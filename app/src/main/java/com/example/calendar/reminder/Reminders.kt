@@ -45,6 +45,12 @@ class EventService : Service(){
             )
             notificationManager.createNotificationChannel(channel)
         }
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle("Event Reminder")
+            .setContentText("Running...")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .build()
+        startForeground(1, notification) // call startForeground() method here
         timer = Timer()
         timer.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {

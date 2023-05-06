@@ -2,12 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Calendar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white_blue</item>
+        <item name="colorPrimary">@color/dark_blue</item>
         <item name="colorPrimaryDark">@color/dark_blue_green</item>
-        <item name="colorAccent">@color/white_blue</item>
+        <item name="colorAccent">@color/background_blue</item>
         <!-- Customize your theme here. -->
     </style>
-
     <style name="Theme.Calendar.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

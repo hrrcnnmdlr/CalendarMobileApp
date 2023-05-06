@@ -54,8 +54,8 @@ class ScheduleAddLessonFragment : Fragment() {
 
 
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val startDatePref = sharedPrefs.getString("start_date_preference", "00-00-0000")
-        val endDatePref = sharedPrefs.getString("end_date_preference", "00-00-0000")
+        val startDatePref = sharedPrefs.getString("start_date_preference", "2023-02-01")
+        val endDatePref = sharedPrefs.getString("end_date_preference", "2023-05-30")
         Log.d("PREF", "$startDatePref $endDatePref")
         // Формат дати, відповідний формату рядка дати
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -213,12 +213,6 @@ class ScheduleAddLessonFragment : Fragment() {
                                 eventViewModel.insertClass(lesson, event)
                             }
                         }
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.classes_inserted),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.d("EVENT", "$lesson $event")
                     }
                     setNegativeButton(getString(R.string.insert_classes_one_button)) { _, _ ->
                         lifecycleScope.launch {
@@ -226,12 +220,6 @@ class ScheduleAddLessonFragment : Fragment() {
                                 eventViewModel.insertUniqueClass(lesson, event)
                             }
                         }
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.class_inserted),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        Log.d("EVENT", "$lesson $event")
                     }
                 }
                 requireActivity().runOnUiThread {

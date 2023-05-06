@@ -179,4 +179,26 @@
     <string name="event_reminder_channel_name">Event Reminder</string>
     <string name="event_reminder_content_title">%s</string>
     <string name="event_reminder_content_text">%s starts in %d minutes</string>
+    <string name="start_date_title">Start Date of Education</string>
+    <string name="end_date_title">End Date of Education</string>
+    <string name="start_time_title1">Start Time of First Class</string>
+    <string name="end_time_title1">End Time of First Class</string>
+    <string name="start_time_title2">Start Time of Second Class</string>
+    <string name="end_time_title2">End Time of Second Class</string>
+    <string name="start_time_title3">Start Time of Third Class</string>
+    <string name="end_time_title3">End Time of Third Class</string>
+    <string name="start_time_title4">Start Time of Fourth Class</string>
+    <string name="end_time_title4">End Time of Fourth Class</string>
+    <string name="start_time_title5">Start Time of Fifth Class</string>
+    <string name="end_time_title5">End Time of Fifth Class</string>
+    <string name="start_time_title6">Start Time of Sixth Class</string>
+    <string name="end_time_title6">End Time of Sixth Class</string>
+    <string name="semester_date_category">Semester Date</string>
+    <string name="class_time_category">Class Time</string>
+    <string name="start_time_category1">First class</string>
+    <string name="start_time_category2">Second class</string>
+    <string name="start_time_category3">Third class</string>
+    <string name="start_time_category4">Forth class</string>
+    <string name="start_time_category5">Fifth class</string>
+    <string name="start_time_category6">Sixth class</string>
 </resources>
